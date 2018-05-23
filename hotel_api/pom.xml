@@ -47,7 +47,6 @@
             <groupId>javax.servlet.jsp</groupId>
             <artifactId>jsp-api</artifactId>
             <version>2.1</version>
-            <scope>provided</scope>
         </dependency>
 
         <!-- log -->
@@ -62,6 +61,17 @@
             <version>1.1.7</version>
         </dependency>
 
+        <!--swagger2-->
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger2</artifactId>
+            <version>2.9.0</version>
+        </dependency>
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger-ui</artifactId>
+            <version>2.9.0</version>
+        </dependency>
     </dependencies>
 
 </project>

@@ -13,4 +13,12 @@ import com.zxt.hotel.entity.SysWechat;
  */
 public interface SysWechatService extends IService<SysWechat> {
 
+    Boolean addRecord(SysWechat sysWechat);
+
+    /**
+     * 通过openid获取绑定记录
+     * @param openid
+     * @return
+     */
+    SysWechat findByOpenid(String openid);
 }

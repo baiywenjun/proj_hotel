@@ -13,4 +13,10 @@ import com.zxt.hotel.entity.SysUser;
  */
 public interface SysUserService extends IService<SysUser> {
 
+    /**
+     * 通过用户名（手机号）获取用户信息
+     * @param username username
+     * @return SysUser
+     */
+    SysUser findOneByUsername(String username);
 }

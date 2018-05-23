@@ -1,6 +1,7 @@
 package com.zxt.hotel.service;
 
 import com.baomidou.mybatisplus.service.IService;
+import com.zxt.common.result.Rt;
 import com.zxt.hotel.entity.SysAdmin;
 
 /**
@@ -14,4 +15,8 @@ import com.zxt.hotel.entity.SysAdmin;
 public interface SysAdminService extends IService<SysAdmin> {
 
     SysAdmin queryByLogin(String adminName);
+
+    Rt querySysAdminByPage(Integer page, Integer limit);
+
+    Boolean addSysAdmin(SysAdmin sysAdmin);
 }

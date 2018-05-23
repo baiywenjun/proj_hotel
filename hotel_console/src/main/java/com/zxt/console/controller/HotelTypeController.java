@@ -2,6 +2,7 @@ package com.zxt.console.controller;
 
 import com.zxt.common.result.Rt;
 import com.zxt.common.util.PageUtil;
+import com.zxt.hotel.pojo.HotelRoomTypeQuery;
 import com.zxt.hotel.service.HotelRoomTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -25,7 +26,8 @@ public class HotelTypeController {
     @ResponseBody
     public Rt queryHotelTypeList(Integer page, Integer limit){
         PageUtil.PageDomain handle = PageUtil.handle(page, limit);
-        return hotelRoomTypeService.queryHotelRoomTypeByPage(handle.getPage(),handle.getLimit());
+        HotelRoomTypeQuery query = new HotelRoomTypeQuery();
+        return hotelRoomTypeService.queryHotelRoomTypeByPage(query, handle.getPage(),handle.getLimit());
     }
 
 }

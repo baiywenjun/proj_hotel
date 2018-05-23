@@ -34,6 +34,7 @@ public class HotelInfo implements Serializable {
 	private String address;
 	private String lng;
 	private String lat;
+	private String business;
 	private String description;
 	private String phone;
 	@TableField("contact_name")
@@ -191,6 +192,14 @@ public class HotelInfo implements Serializable {
 		this.remark = remark;
 	}
 
+	public String getBusiness() {
+		return business;
+	}
+
+	public void setBusiness(String business) {
+		this.business = business;
+	}
+
 	@Override
 	public String toString() {
 		return "HotelInfo{" +
@@ -205,6 +214,7 @@ public class HotelInfo implements Serializable {
 			", address=" + address +
 			", lng=" + lng +
 			", lat=" + lat +
+			", business=" + business +
 			", description=" + description +
 			", phone=" + phone +
 			", contactName=" + contactName +

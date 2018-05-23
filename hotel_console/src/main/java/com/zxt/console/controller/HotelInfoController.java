@@ -4,6 +4,7 @@ import com.zxt.common.result.R;
 import com.zxt.common.result.Rt;
 import com.zxt.common.util.PageUtil;
 import com.zxt.hotel.entity.HotelInfo;
+import com.zxt.hotel.pojo.HotelInfoQuery;
 import com.zxt.hotel.service.HotelInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -30,7 +31,9 @@ public class HotelInfoController {
     @ResponseBody
     public Rt queryHotelIntoList(String hotelName, Integer page, Integer limit){
         PageUtil.PageDomain handle = PageUtil.handle(page, limit);
-        return hotelInfoService.queryHotelInfoByPage(handle.getPage(), handle.getLimit());
+        HotelInfoQuery query = new HotelInfoQuery();
+        query.setName(hotelName);
+        return hotelInfoService.queryHotelInfoByPage(query, handle.getPage(), handle.getLimit());
     }
 
 
@@ -42,4 +45,15 @@ public class HotelInfoController {
         return (flag)?R.ok():R.error();
     }
 
+    @PostMapping("/update")
+    @ResponseBody
+    public R updateHotelInfo(@RequestBody HotelInfo hotel){
+        // todo 参数校验后续
+        // 实体主键必校验
+        if(hotel.getHotelId() == null){
+            return R.error(403,"主键不能为空");
+        }
+        Boolean flag = hotelInfoService.updateHotelInfo(hotel);
+        return (flag)?R.ok():R.error();
+    }
 }

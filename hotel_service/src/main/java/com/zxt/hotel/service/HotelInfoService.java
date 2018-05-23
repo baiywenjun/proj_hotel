@@ -3,6 +3,7 @@ package com.zxt.hotel.service;
 import com.baomidou.mybatisplus.service.IService;
 import com.zxt.common.result.Rt;
 import com.zxt.hotel.entity.HotelInfo;
+import com.zxt.hotel.pojo.HotelInfoQuery;
 
 /**
  * <p>
@@ -20,7 +21,9 @@ public interface HotelInfoService extends IService<HotelInfo> {
      * @param limit limit
      * @return rt
      */
-    Rt queryHotelInfoByPage(Integer page, Integer limit);
+    Rt queryHotelInfoByPage(HotelInfoQuery query, Integer page, Integer limit);
 
     Boolean addHotelInfo(HotelInfo hotel);
+
+    Boolean updateHotelInfo(HotelInfo hotel);
 }

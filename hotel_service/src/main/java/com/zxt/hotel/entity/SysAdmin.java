@@ -31,6 +31,7 @@ public class SysAdmin implements Serializable {
 	private Integer sex;
 	private Date birthday;
 	private String phone;
+	private String type;
 	private String status;
 	@TableField("create_time")
 	private Date createTime;
@@ -125,6 +126,14 @@ public class SysAdmin implements Serializable {
 		this.remark = remark;
 	}
 
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+
 	@Override
 	public String toString() {
 		return "SysAdmin{" +
@@ -136,6 +145,7 @@ public class SysAdmin implements Serializable {
 			", sex=" + sex +
 			", birthday=" + birthday +
 			", phone=" + phone +
+			", type=" + type +
 			", status=" + status +
 			", createTime=" + createTime +
 			", remark=" + remark +

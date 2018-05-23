@@ -28,6 +28,12 @@
         <url-pattern>/</url-pattern>
     </servlet-mapping>
 
+    <!-- 配置swagger-ui的url请求路径-->
+    <servlet-mapping>
+        <servlet-name>springmvc</servlet-name>
+        <url-pattern>/v2/api-docs</url-pattern>
+    </servlet-mapping>
+
     <filter>
         <description>字符集过滤器</description>
         <filter-name>encodingFilter</filter-name>
