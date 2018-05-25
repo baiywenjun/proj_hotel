@@ -11,6 +11,6 @@ import com.baomidou.mybatisplus.service.IService;
  * @author wenjun
  * @since 2018-05-21
  */
-public interface IServeHotelOrderService extends IService<ServeHotelOrder> {
+public interface ServeHotelOrderService extends IService<ServeHotelOrder> {
 
 }

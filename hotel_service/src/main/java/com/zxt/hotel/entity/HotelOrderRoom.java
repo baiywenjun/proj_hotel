@@ -35,16 +35,16 @@ public class HotelOrderRoom implements Serializable {
 	@TableField("room_no")
 	private String roomNo;
 	private String username;
-	@TableField("uer_real_name")
-	private String uerRealName;
+	@TableField("user_real_name")
+	private String userRealName;
 	@TableField("user_phone")
 	private String userPhone;
 	@TableField("begin_date")
 	private Date beginDate;
 	@TableField("end_date")
 	private Date endDate;
-	@TableField("total_data")
-	private Integer totalData;
+	@TableField("total_date")
+	private Integer totalDate;
 	@TableField("amount_price")
 	private Integer amountPrice;
 	@TableField("payment_type")
@@ -132,14 +132,6 @@ public class HotelOrderRoom implements Serializable {
 		this.username = username;
 	}
 
-	public String getUerRealName() {
-		return uerRealName;
-	}
-
-	public void setUerRealName(String uerRealName) {
-		this.uerRealName = uerRealName;
-	}
-
 	public String getUserPhone() {
 		return userPhone;
 	}
@@ -162,14 +154,6 @@ public class HotelOrderRoom implements Serializable {
 
 	public void setEndDate(Date endDate) {
 		this.endDate = endDate;
-	}
-
-	public Integer getTotalData() {
-		return totalData;
-	}
-
-	public void setTotalData(Integer totalData) {
-		this.totalData = totalData;
 	}
 
 	public Integer getAmountPrice() {
@@ -228,6 +212,22 @@ public class HotelOrderRoom implements Serializable {
 		this.remark = remark;
 	}
 
+	public Integer getTotalDate() {
+		return totalDate;
+	}
+
+	public void setTotalDate(Integer totalDate) {
+		this.totalDate = totalDate;
+	}
+
+	public String getUserRealName() {
+		return userRealName;
+	}
+
+	public void setUserRealName(String userRealName) {
+		this.userRealName = userRealName;
+	}
+
 	@Override
 	public String toString() {
 		return "HotelOrderRoom{" +
@@ -240,11 +240,11 @@ public class HotelOrderRoom implements Serializable {
 			", storey=" + storey +
 			", roomNo=" + roomNo +
 			", username=" + username +
-			", uerRealName=" + uerRealName +
+			", userRealName=" + userRealName +
 			", userPhone=" + userPhone +
 			", beginDate=" + beginDate +
 			", endDate=" + endDate +
-			", totalData=" + totalData +
+			", totalDate=" + totalDate +
 			", amountPrice=" + amountPrice +
 			", paymentType=" + paymentType +
 			", payNo=" + payNo +

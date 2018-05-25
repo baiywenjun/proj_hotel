@@ -33,6 +33,28 @@ public interface HotelOrderRoomService extends IService<HotelOrderRoom> {
     StayInfoVO getStayInfo(SysUser sysUser);
 
     /**
+     * 用户扫码退房操作
+     * @param roomId roomId
+     * @param orderRoomId orderRoomId
+     * @return flag
+     */
+    Boolean quitRoom(Long roomId, Long orderRoomId);
+
+    /**
+     * 走线上订单，已包含分房信息
+     * @param hotelOrderId
+     * @return
+     */
+    Boolean addRecordByHotelOrder(Long hotelOrderId);
+
+    /**
+     * 续住
+     * @param hotelOrderId
+     * @return
+     */
+    Boolean continueOrder(Long hotelOrderId);
+
+    /**
      * 走线上的分房
      * @param hotelOrderId 订单id
      * @param roomIds 房间Id数组

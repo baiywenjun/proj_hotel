@@ -1,5 +1,6 @@
 package com.zxt.hotel.entity;
 
+import com.baomidou.mybatisplus.enums.IdType;
 import java.util.Date;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableField;
@@ -12,14 +13,14 @@ import java.io.Serializable;
  * </p>
  *
  * @author wenjun
- * @since 2018-05-21
+ * @since 2018-05-24
  */
 @TableName("serve_hotel_order")
 public class ServeHotelOrder implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @TableId("serve_hotel_id")
+	@TableId(value="serve_hotel_id", type= IdType.AUTO)
 	private Long serveHotelId;
 	@TableField("is_serve_type_id")
 	private Long isServeTypeId;
@@ -28,7 +29,16 @@ public class ServeHotelOrder implements Serializable {
 	@TableField("is_order_room_id")
 	private Long isOrderRoomId;
 	private String phone;
+    /**
+     * 服务超时时间
+     */
+	@TableField("time_out")
+	private Date timeOut;
 	private String status;
+    /**
+     * 服务说明
+     */
+	private String remark;
 	@TableField("create_time")
 	private Date createTime;
 
@@ -73,12 +83,28 @@ public class ServeHotelOrder implements Serializable {
 		this.phone = phone;
 	}
 
+	public Date getTimeOut() {
+		return timeOut;
+	}
+
+	public void setTimeOut(Date timeOut) {
+		this.timeOut = timeOut;
+	}
+
 	public String getStatus() {
 		return status;
 	}
 
 	public void setStatus(String status) {
 		this.status = status;
+	}
+
+	public String getRemark() {
+		return remark;
+	}
+
+	public void setRemark(String remark) {
+		this.remark = remark;
 	}
 
 	public Date getCreateTime() {
@@ -97,7 +123,9 @@ public class ServeHotelOrder implements Serializable {
 			", isOrderId=" + isOrderId +
 			", isOrderRoomId=" + isOrderRoomId +
 			", phone=" + phone +
+			", timeOut=" + timeOut +
 			", status=" + status +
+			", remark=" + remark +
 			", createTime=" + createTime +
 			"}";
 	}

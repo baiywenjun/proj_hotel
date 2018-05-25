@@ -1,6 +1,6 @@
 package com.zxt.hotel.entity;
 
-import java.util.Date;
+import com.baomidou.mybatisplus.enums.IdType;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableName;
@@ -12,14 +12,14 @@ import java.io.Serializable;
  * </p>
  *
  * @author wenjun
- * @since 2018-05-21
+ * @since 2018-05-24
  */
 @TableName("serve_type")
 public class ServeType implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @TableId("serve_type_id")
+	@TableId(value="serve_type_id", type= IdType.AUTO)
 	private Long serveTypeId;
 	@TableField("type_code")
 	private String typeCode;
@@ -27,10 +27,14 @@ public class ServeType implements Serializable {
 	private String serveName;
 	@TableField("serve_content")
 	private String serveContent;
-	@TableField("serve_timeout")
-	private Date serveTimeout;
+    /**
+     * 服务价格
+     */
+	@TableField("serve_price")
+	private Integer servePrice;
 	@TableField("sort_id")
 	private Integer sortId;
+	private String status;
 	private String remark;
 
 
@@ -66,12 +70,12 @@ public class ServeType implements Serializable {
 		this.serveContent = serveContent;
 	}
 
-	public Date getServeTimeout() {
-		return serveTimeout;
+	public Integer getServePrice() {
+		return servePrice;
 	}
 
-	public void setServeTimeout(Date serveTimeout) {
-		this.serveTimeout = serveTimeout;
+	public void setServePrice(Integer servePrice) {
+		this.servePrice = servePrice;
 	}
 
 	public Integer getSortId() {
@@ -90,6 +94,14 @@ public class ServeType implements Serializable {
 		this.remark = remark;
 	}
 
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
 	@Override
 	public String toString() {
 		return "ServeType{" +
@@ -97,8 +109,9 @@ public class ServeType implements Serializable {
 			", typeCode=" + typeCode +
 			", serveName=" + serveName +
 			", serveContent=" + serveContent +
-			", serveTimeout=" + serveTimeout +
+			", servePrice=" + servePrice +
 			", sortId=" + sortId +
+			", status=" + status +
 			", remark=" + remark +
 			"}";
 	}

@@ -11,7 +11,7 @@ public class Rt extends HashMap<String, Object> {
 	private static final long serialVersionUID = 1L;
 
 	public Rt() {
-		put("code", 0);
+		put("code", 200);
 		put("count",0);
 		put("msg", "success");
 	}

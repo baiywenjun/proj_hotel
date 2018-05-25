@@ -63,7 +63,7 @@ public class HotelOrderRoomServiceImpl extends ServiceImpl<HotelOrderRoomMapper,
         hotelOrderRoom.setRoomNo(hotelRoom.getRoomNo());
         // 添加用户信息
         hotelOrderRoom.setUsername(sysUser.getUsername());
-        hotelOrderRoom.setUerRealName(sysUser.getName());
+        hotelOrderRoom.setUserRealName(sysUser.getName());
         hotelOrderRoom.setUserPhone(sysUser.getPhone());
         // 添加入住信息
         // 通过扫码添加的入住信息，默认入住开始时间是扫码时间，结束时间是第二天12点
@@ -76,7 +76,10 @@ public class HotelOrderRoomServiceImpl extends ServiceImpl<HotelOrderRoomMapper,
         hotelOrderRoom.setCreateTime(new Date());
         // insert
         boolean insert = this.insert(hotelOrderRoom);
-        return insert;
+        // 因为走线下，不知道房间是否入住，只有在扫码时才知道已经有入住
+        hotelRoom.setStayStatus(horConst.STAY);
+        Integer flag = hotelRoomMapper.updateById(hotelRoom);
+        return (insert && flag>0);
     }
 
     // 获取第二天12点的日期对象
@@ -100,7 +103,9 @@ public class HotelOrderRoomServiceImpl extends ServiceImpl<HotelOrderRoomMapper,
      */
     public StayInfoVO getStayInfo(SysUser sysUser){
         Wrapper<HotelOrderRoom> wrapper = new EntityWrapper<>();
+        // 获取 当前用户 正在入住的 未过期的
         wrapper.eq("username",sysUser.getUsername());
+        wrapper.eq("stay_status",horConst.STAY);
         wrapper.gt("end_date",new Date());
         List<HotelOrderRoom> hotelOrderRoomList = this.selectList(wrapper);
         if(hotelOrderRoomList.size() < 1){
@@ -114,10 +119,97 @@ public class HotelOrderRoomServiceImpl extends ServiceImpl<HotelOrderRoomMapper,
         HotelInfo hotelInfo = hotelInfoMapper.selectById(hotelRoom.getIsHotelId());
         StayInfoVO stayInfoVO = new StayInfoVO();
         stayInfoVO.setHotelInfo(hotelInfo);
+        stayInfoVO.setHotelOrderRoom(hotelOrderRoom);
         stayInfoVO.setRoomNo(hotelOrderRoom.getRoomNo());
         stayInfoVO.setHotelOrderRoomId(hotelOrderRoom.getOrderRoomId());
+        stayInfoVO.setHotelOrderId(hotelOrderRoom.getIsOrderId());
         return stayInfoVO;
 
+    }
+
+
+    @Override
+    /**
+     * 用户扫码退房操作
+     * @param roomId roomId
+     * @param orderRoomId orderRoomId
+     * @return flag
+     */
+    public Boolean quitRoom(Long roomId, Long orderRoomId){
+        HotelOrderRoom orderRoom = new HotelOrderRoom();
+        orderRoom.setOrderRoomId(orderRoomId);
+        // 订单更新为离开状态
+        orderRoom.setStayStatus(horConst.QUIT);
+        boolean flag1 = this.updateById(orderRoom);
+        // 房间信息更新为离开状态
+        HotelRoom hotelRoom = new HotelRoom();
+        hotelRoom.setRoomId(roomId);
+        hotelRoom.setStayStatus(horConst.QUIT);
+        Integer flag2 = hotelRoomMapper.updateById(hotelRoom);
+        return (flag1 && flag2>0);
+    }
+
+    @Override
+    /**
+     * 走线上订单，已包含分房信息
+     * @param hotelOrderId
+     * @return
+     */
+    public Boolean addRecordByHotelOrder(Long hotelOrderId){
+        HotelOrder hotelOrder = hotelOrderMapper.selectById(hotelOrderId);
+        HotelRoomType hotelRoomType = hotelRoomTypeMapper.selectById(hotelOrder.getIsRoomTypeId());
+        // 不可复用新增订单
+        String roomIds = hotelOrder.getRoomIds();
+        if(StringUtils.isEmpty(roomIds)){
+            throw new RRException("roomIds是空");
+        }
+        String[] roomIdArr = roomIds.split(",");
+        if(roomIdArr.length<1){
+            throw new RRException("roomIds中没有房间主键");
+        }
+        int flag = 0;
+        for (String roomId : roomIdArr) {
+            HotelRoom hotelRoom = hotelRoomMapper.selectById(Long.parseLong(roomId));
+            // create entity
+            HotelOrderRoom hotelOrderRoom = new HotelOrderRoom();
+            // 冗余hotelOrder信息
+            hotelOrderRoom.setIsOrderId(hotelOrder.getOrderId());
+            hotelOrderRoom.setIsRoomId(Long.parseLong(roomId));
+            hotelOrderRoom.setUsername(hotelOrder.getUsername());
+            hotelOrderRoom.setUserPhone(hotelOrder.getUserPhone());
+            hotelOrderRoom.setUserRealName(hotelOrder.getUserRealName());
+            hotelOrderRoom.setBeginDate(hotelOrder.getBeginDate());
+            hotelOrderRoom.setEndDate(hotelOrder.getEndDate());
+            hotelOrderRoom.setTotalDate(hotelOrder.getTotalDate());
+            hotelOrderRoom.setAmountPrice(hotelOrder.getAmountPrice());
+            hotelOrderRoom.setPaymentType(hotelOrder.getPaymentType());
+            hotelOrderRoom.setPayNo(hotelOrder.getPayNo());
+            // 冗余房间信息
+            hotelOrderRoom.setTypeName(hotelRoomType.getTypeName());
+            hotelOrderRoom.setTypeSpec(hotelRoomType.getTypeSpec());
+            hotelOrderRoom.setStorey(hotelRoom.getStorey());
+            hotelOrderRoom.setRoomNo(hotelRoom.getRoomNo());
+            // other
+            hotelOrderRoom.setCreateTime(new Date());
+            hotelOrderRoom.setStayStatus(horConst.STAY);
+            hotelOrderRoom.setConsumeType(horConst.ONLINE);
+            boolean insert = this.insert(hotelOrderRoom);
+            if(insert){
+                flag ++;
+            }
+        }
+        return (flag == roomIdArr.length);
+    }
+
+
+    @Override
+    /**
+     * 续住
+     * @param hotelOrderId
+     * @return
+     */
+    public Boolean continueOrder(Long hotelOrderId){
+        return this.addRecordByHotelOrder(hotelOrderId);
     }
 
 
@@ -153,11 +245,11 @@ public class HotelOrderRoomServiceImpl extends ServiceImpl<HotelOrderRoomMapper,
             hotelOrderRoom.setStorey(hotelRoom.getStorey());
             hotelOrderRoom.setRoomNo(hotelRoom.getRoomNo());
             // 添加订单的信息
-            hotelOrderRoom.setUerRealName(hotelOrder.getUserRealName());
+            hotelOrderRoom.setUserRealName(hotelOrder.getUserRealName());
             hotelOrderRoom.setUserPhone(hotelOrder.getUserPhone());
             hotelOrderRoom.setBeginDate(hotelOrder.getBeginDate());
             hotelOrderRoom.setEndDate(hotelOrder.getEndDate());
-            hotelOrderRoom.setTotalData(hotelOrder.getTotalDate());
+            hotelOrderRoom.setTotalDate(hotelOrder.getTotalDate());
             hotelOrderRoom.setAmountPrice(hotelOrder.getAmountPrice());
             hotelOrderRoom.setPaymentType(hotelOrder.getPaymentType());
             hotelOrderRoom.setPayNo(hotelOrder.getPayNo());

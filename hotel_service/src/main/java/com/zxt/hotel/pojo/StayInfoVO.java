@@ -1,6 +1,7 @@
 package com.zxt.hotel.pojo;
 
 import com.zxt.hotel.entity.HotelInfo;
+import com.zxt.hotel.entity.HotelOrderRoom;
 
 /**
  * Title: 入住信息
@@ -11,8 +12,10 @@ import com.zxt.hotel.entity.HotelInfo;
 public class StayInfoVO {
 
     private HotelInfo hotelInfo;
+    private HotelOrderRoom hotelOrderRoom;
     private String roomNo;
     private Long hotelOrderRoomId;
+    private Long hotelOrderId;
 
     public String getRoomNo() {
         return roomNo;
@@ -36,5 +39,21 @@ public class StayInfoVO {
 
     public void setHotelInfo(HotelInfo hotelInfo) {
         this.hotelInfo = hotelInfo;
+    }
+
+    public HotelOrderRoom getHotelOrderRoom() {
+        return hotelOrderRoom;
+    }
+
+    public void setHotelOrderRoom(HotelOrderRoom hotelOrderRoom) {
+        this.hotelOrderRoom = hotelOrderRoom;
+    }
+
+    public Long getHotelOrderId() {
+        return hotelOrderId;
+    }
+
+    public void setHotelOrderId(Long hotelOrderId) {
+        this.hotelOrderId = hotelOrderId;
     }
 }

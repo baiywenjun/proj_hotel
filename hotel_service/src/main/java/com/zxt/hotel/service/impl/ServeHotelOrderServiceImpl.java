@@ -1,9 +1,12 @@
 package com.zxt.hotel.service.impl;
 
+import com.zxt.hotel.entity.HotelOrderRoom;
 import com.zxt.hotel.entity.ServeHotelOrder;
+import com.zxt.hotel.mapper.HotelOrderRoomMapper;
 import com.zxt.hotel.mapper.ServeHotelOrderMapper;
-import com.zxt.hotel.service.IServeHotelOrderService;
+import com.zxt.hotel.service.ServeHotelOrderService;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
@@ -15,6 +18,6 @@ import org.springframework.stereotype.Service;
  * @since 2018-05-21
  */
 @Service
-public class ServeHotelOrderServiceImpl extends ServiceImpl<ServeHotelOrderMapper, ServeHotelOrder> implements IServeHotelOrderService {
+public class ServeHotelOrderServiceImpl extends ServiceImpl<ServeHotelOrderMapper, ServeHotelOrder> implements ServeHotelOrderService {
 
 }

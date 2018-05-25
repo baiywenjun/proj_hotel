@@ -6,6 +6,8 @@ import com.zxt.hotel.entity.HotelOrderRoom;
 import com.zxt.hotel.entity.SysUser;
 import com.zxt.hotel.pojo.StayInfoVO;
 import com.zxt.hotel.service.HotelOrderRoomService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,6 +25,7 @@ import javax.servlet.http.HttpServletRequest;
  */
 @RestController
 @RequestMapping("/hotel/order/room")
+@Api(tags = "房间订单")
 public class HotelOrderRoomController {
     private static Logger log = LoggerFactory.getLogger(HotelOrderRoomController.class);
 
@@ -44,6 +47,7 @@ public class HotelOrderRoomController {
      * @return
      */
     @RequestMapping("/stay-info")
+    @ApiOperation(httpMethod = "GET", value="查看入住信息")
     public R viewStayInfo(HttpServletRequest request){
         SysUser sysUser = authService.getUserInfoByReq(request);
         StayInfoVO stayInfo = hotelOrderRoomService.getStayInfo(sysUser);
@@ -60,6 +64,7 @@ public class HotelOrderRoomController {
      * @return
      */
     @RequestMapping("/scan-add")
+    @ApiOperation(httpMethod = "GET", value="扫码添加房间订单信息")
     public R addRecordByUserScan(String roomId, HttpServletRequest request){
         if(! StringUtils.isNumeric(roomId)){
             return R.error(403,"二维码缺少主键信息");
@@ -73,12 +78,34 @@ public class HotelOrderRoomController {
     /**
      * 退房操作
      * @param roomId
-     * @param request
+     * @param orderRoomId
      * @return
      */
-    public R quitRoom(String roomId, HttpServletRequest request){
+    @RequestMapping("/quit")
+    @ApiOperation(httpMethod = "GET", value="退房操作")
+    public R quitRoom(String roomId, String orderRoomId){
+        if(StringUtils.isEmpty(roomId)){
+            return R.error(403,"房间主键不能为空");
+        }
+        if(StringUtils.isEmpty(orderRoomId)){
+            return R.error(403,"房间订单主键不能为空");
+        }
+        Boolean flag = hotelOrderRoomService.quitRoom(Long.parseLong(roomId), Long.parseLong(orderRoomId));
+        return (flag)?R.ok():R.error();
+    }
 
-
-        return null;
+    /**
+     * 续住
+     * @param hotelOrderId
+     * @return
+     */
+    @PostMapping("/continue")
+    @ApiOperation(httpMethod = "POST", value = "续住，生成房间订单")
+    public R continueStay(Long hotelOrderId){
+        if(hotelOrderId == null){
+            return R.error(403,"订单主键不能为空");
+        }
+        Boolean flag = hotelOrderRoomService.continueOrder(hotelOrderId);
+        return (flag)?R.ok():R.error();
     }
 }

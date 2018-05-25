@@ -10,6 +10,9 @@ import com.zxt.hotel.entity.SysUser;
 import com.zxt.hotel.entity.SysWechat;
 import com.zxt.hotel.service.SysUserService;
 import com.zxt.hotel.service.SysWechatService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,6 +40,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("/auth")
+@Api(tags = "登录")
 public class AuthController {
 
     private static Logger log = LoggerFactory.getLogger(AuthController.class);
@@ -61,6 +65,7 @@ public class AuthController {
      * @return
      */
     @RequestMapping("/wxlogin")
+    @ApiOperation(httpMethod = "GET", value="小程序登录")
     public R wxlogin(String code){
         Map<String,String> param = new HashMap<>();
         param.put("appid",wxAppid);
@@ -95,6 +100,7 @@ public class AuthController {
      * @return
      */
     @RequestMapping("/getopenid")
+    @ApiOperation(httpMethod = "GET", value="在系统获取openId")
     public R getWxToken(HttpServletRequest request, HttpServletResponse response){
         String token = request.getHeader("token");
         if(StringUtils.isEmpty(token)){
@@ -115,6 +121,7 @@ public class AuthController {
      * @return
      */
     @RequestMapping("/bind")
+    @ApiOperation(httpMethod = "GET", value="手机号码绑定系统")
     public R bindPhone(String phone, String openid){
         if(StringUtils.isEmpty(phone)){
             return R.error(403,"手机号码不能为空");
@@ -140,5 +147,27 @@ public class AuthController {
             return (flag1 && flag2)?R.ok():R.error();
         }
         return (flag1)?R.ok():R.error();
+    }
+
+
+    /**
+     * 模拟登陆
+     * @param username
+     * @return
+     */
+    @RequestMapping("/testlogin")
+    @ApiOperation(httpMethod = "GET", value = "模拟小程序登陆")
+    public R testLogin(String  username){
+        if(StringUtils.isEmpty(username)){
+            return R.error(403,"用户名不能为空");
+        }
+        OpenidInfo openidInfo = new OpenidInfo();
+        openidInfo.setOpenid("THIS_IS_TEST_OPENID");
+        openidInfo.setSessionKey("THIS_IS_TEST_SESSION_KEY");
+        // redis 登录
+        String tokenKey = authService.loginFromRedis(openidInfo,username);
+        Map<String,Object> map = new HashMap<>(1);
+        map.put("token",tokenKey);
+        return R.ok(map);
     }
 }

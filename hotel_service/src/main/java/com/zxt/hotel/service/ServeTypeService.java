@@ -1,5 +1,6 @@
 package com.zxt.hotel.service;
 
+import com.zxt.common.result.Rt;
 import com.zxt.hotel.entity.ServeType;
 import com.baomidou.mybatisplus.service.IService;
 
@@ -11,6 +12,11 @@ import com.baomidou.mybatisplus.service.IService;
  * @author wenjun
  * @since 2018-05-21
  */
-public interface IServeTypeService extends IService<ServeType> {
+public interface ServeTypeService extends IService<ServeType> {
 
+    /**
+     * 酒店服务列表
+     * @return rt
+     */
+    Rt serveTypeList();
 }

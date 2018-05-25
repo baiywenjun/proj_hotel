@@ -36,6 +36,8 @@ public class HotelRoom implements Serializable {
 	private String qrCodeContent;
 	@TableField("dev_no")
 	private String devNo;
+	@TableField("stay_status")
+	private String stayStatus;
 	@TableField("create_time")
 	private Date createTime;
 
@@ -120,6 +122,14 @@ public class HotelRoom implements Serializable {
 		this.createTime = createTime;
 	}
 
+	public String getStayStatus() {
+		return stayStatus;
+	}
+
+	public void setStayStatus(String stayStatus) {
+		this.stayStatus = stayStatus;
+	}
+
 	@Override
 	public String toString() {
 		return "HotelRoom{" +
@@ -132,6 +142,7 @@ public class HotelRoom implements Serializable {
 			", qrCode=" + qrCode +
 			", qrCodeContent=" + qrCodeContent +
 			", devNo=" + devNo +
+			", stayStatus=" + stayStatus +
 			", createTime=" + createTime +
 			"}";
 	}
