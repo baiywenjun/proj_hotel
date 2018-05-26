@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zxt.hotel.mapper.HotelRoomTypeMapper" >
+    <resultMap id="hotelRoomTypeFullMap" type="com.zxt.hotel.pojo.HotelRoomTypeFullVO" >
+        <id column="room_type_id" property="roomTypeId" />
+        <result column="is_hotel_id" property="isHotelId" />
+        <result column="type_code" property="typeCode" />
+        <result column="type_name" property="typeName" />
+        <result column="type_spec" property="typeSpec" />
+        <result column="type_price" property="typePrice" />
+        <result column="type_img" property="typeImg" />
+        <result column="type_content" property="typeContent" />
+        <result column="type_status" property="typeStatus" />
+        <collection  property="hotelDictList" ofType="com.zxt.hotel.entity.HotelDict" >
+            <id column="dict_id" property="dictId" />
+            <result column="code" property="code"/>
+            <result column="value" property="value"/>
+            <result column="name" property="name"/>
+            <result column="sort_id" property="sortId"/>
+            <result column="parent_id" property="parentId"/>
+            <result column="level" property="level"/>
+            <result column="type" property="type"/>
+            <result column="remark" property="remark"/>
+        </collection>
+    </resultMap>
+
+    <!--<select id="queryHotelRoomTypeFullByPage" resultMap="hotelRoomTypeFullMap">
+        SELECT
+            hrt.*, hd.*
+        FROM
+            hotel_room_type hrt
+        <if test="query.typeSpecArr!=null">
+        LEFT JOIN hotel_dict hd ON hd.dict_id IN
+            <foreach collection="query.typeSpecArr" item="item" open="(" separator="," close=")">
+              #{item}
+            </foreach>
+        </if>
+        WHERE 1=1
+        <if test="query.isHotelId!=null and query.isHotelId!=''">
+            and hrt.is_hotel_id = #{query.isHotelId}
+        </if>
+    </select>-->
+
+    <select id="queryHotelRoomTypeFullByPage" resultMap="hotelRoomTypeFullMap" >
+        SELECT
+            hry.*,
+            hd.*
+        FROM
+            hotel_room_type hry,
+            hotel_type_dict_rel ydl,
+            hotel_dict hd
+        WHERE ydl.room_type_id = hry.room_type_id
+        and ydl.dict_id = hd.dict_id
+        <if test="query.isHotelId != null and query.isHotelId !=''">
+        and hry.is_hotel_id = #{query.isHotelId}
+        </if>
+    </select>
+
+
+
+</mapper>

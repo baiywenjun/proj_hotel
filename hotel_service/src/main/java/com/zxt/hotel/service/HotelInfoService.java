@@ -23,6 +23,14 @@ public interface HotelInfoService extends IService<HotelInfo> {
      */
     Rt queryHotelInfoByPage(HotelInfoQuery query, Integer page, Integer limit);
 
+    /**
+     * 查询酒店信息
+     * @param page page
+     * @param limit limit
+     * @return rt
+     */
+    Rt queryHotelInfoFullByPage(HotelInfoQuery query, Integer page, Integer limit);
+
     Boolean addHotelInfo(HotelInfo hotel);
 
     Boolean updateHotelInfo(HotelInfo hotel);
