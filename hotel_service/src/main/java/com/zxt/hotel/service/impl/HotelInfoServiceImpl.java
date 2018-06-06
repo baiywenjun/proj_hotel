@@ -85,9 +85,9 @@ public class HotelInfoServiceImpl extends ServiceImpl<HotelInfoMapper, HotelInfo
                 }
             }
             // 酒店描述，包含图片
-           String descriptionIds = hotelInfo.getDescription();
-            if(StringUtils.isNotEmpty(descriptionIds)){
-                String[] contentIdArr = descriptionIds.split(",");
+           String contentIds = hotelInfo.getContent();
+            if(StringUtils.isNotEmpty(contentIds)){
+                String[] contentIdArr = contentIds.split(",");
                 for (String contentId : contentIdArr) {
                     HotelContent hotelContent = hotelContentMapper.selectById(contentId);
                     hotelContentList.add(hotelContent);

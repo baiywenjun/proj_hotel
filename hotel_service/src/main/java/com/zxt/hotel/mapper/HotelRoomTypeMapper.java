@@ -21,4 +21,6 @@ public interface HotelRoomTypeMapper extends BaseMapper<HotelRoomType> {
 
     List<HotelRoomTypeFullVO> queryHotelRoomTypeFullByPage(Page page, @Param("query") HotelRoomTypeQuery query);
 
+    HotelRoomTypeFullVO queryById(Long roomTypeId);
+
 }

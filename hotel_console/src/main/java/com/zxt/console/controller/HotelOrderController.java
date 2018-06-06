@@ -24,24 +24,6 @@ public class HotelOrderController {
     @Autowired
     private HotelOrderService hotelOrderService;
 
-    /**
-     * 列表
-     * @param page
-     * @param limit
-     * @return
-     */
-    @RequestMapping("/list")
-    public Rt hotelOrderList(Integer page, Integer limit){
-        PageUtil.PageDomain handle = PageUtil.handle(page, limit);
-        return hotelOrderService.queryHotelOrderList(handle.getPage(), handle.getLimit());
-    }
 
-
-    @PostMapping("/add")
-    public R addHotelOrder(@RequestBody HotelOrder hotelOrder){
-        // todo 欠缺校验，如金额校验
-        Boolean flag = hotelOrderService.addHotelOrder(hotelOrder);
-        return (flag)?R.ok():R.error();
-    }
 
 }

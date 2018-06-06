@@ -43,19 +43,29 @@
 
     <select id="queryHotelRoomTypeFullByPage" resultMap="hotelRoomTypeFullMap" >
         SELECT
-            hry.*,
-            hd.*
+        hry.*,
+        hd.*
         FROM
-            hotel_room_type hry,
-            hotel_type_dict_rel ydl,
-            hotel_dict hd
-        WHERE ydl.room_type_id = hry.room_type_id
-        and ydl.dict_id = hd.dict_id
+        hotel_room_type hry
+        LEFT JOIN	hotel_type_dict_rel ydl ON hry.room_type_id = ydl.room_type_id
+        LEFT JOIN hotel_dict hd ON hd.dict_id = ydl.dict_id
+        WHERE 1=1
         <if test="query.isHotelId != null and query.isHotelId !=''">
         and hry.is_hotel_id = #{query.isHotelId}
         </if>
     </select>
 
+    <select id="queryById" parameterType="long" resultMap="hotelRoomTypeFullMap" >
+        SELECT
+            hry.*,
+            hd.*
+        FROM
+            hotel_room_type hry
+        LEFT JOIN	hotel_type_dict_rel ydl ON hry.room_type_id = ydl.room_type_id
+        LEFT JOIN hotel_dict hd ON hd.dict_id = ydl.dict_id
+        WHERE 1=1
+        and hry.room_type_id = #{roomTypeId}
+    </select>
 
 
 </mapper>

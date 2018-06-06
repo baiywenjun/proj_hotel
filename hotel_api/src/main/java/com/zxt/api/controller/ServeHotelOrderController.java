@@ -4,7 +4,7 @@ import com.zxt.api.sersvice.AuthService;
 import com.zxt.common.constant.shoConst;
 import com.zxt.common.result.R;
 import com.zxt.common.result.Rt;
-import com.zxt.common.util.DateUtil;
+import com.zxt.common.util.PageUtil;
 import com.zxt.hotel.entity.ServeHotelOrder;
 import com.zxt.hotel.entity.SysUser;
 import com.zxt.hotel.service.ServeHotelOrderService;
@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Title: 酒店服务
@@ -45,15 +47,36 @@ public class ServeHotelOrderController {
         return serveTypeService.serveTypeList();
     }
 
+    @RequestMapping("/my-list")
+    @ApiOperation(httpMethod = "GET", value="用户服务订单列表")
+    public Rt serveHotelOrderList(HttpServletRequest request, Integer page, Integer limit){
+        SysUser sysUser = authService.getUserInfoByReq(request);
+        PageUtil.PageDomain handle = PageUtil.handle(page, limit);
+        return serveHotelOrderService.queryListByUser(sysUser.getUserId(),handle.getPage(),handle.getLimit());
+    }
+
+    @RequestMapping("/find-one")
+    @ApiOperation(httpMethod = "GET", value="根据主键查询服务订单")
+    public R findOneById(Long serveHotelId){
+        if(serveHotelId == null){
+            return R.error(403,"主键不能为空");
+        }
+        ServeHotelOrder serveHotelOrder = serveHotelOrderService.findOneById(serveHotelId);
+        return (serveHotelOrder != null)?R.ok("success",serveHotelOrder):R.error();
+    }
+
     @PostMapping("/add")
     @ApiOperation(httpMethod = "POST", value="新增订单")
-    public R addRecord(Long hotelOrderRoomId,Long hotelOrderId, Long serveTypeId, String remark, String timeOut,
-                       HttpServletRequest request){
+    public R addRecord(Long hotelOrderRoomId,Long hotelOrderId, Long serveTypeId, String remark, Long timeOut,
+                       String hotelName, Long isRoomId, String roomNo, String serveName, HttpServletRequest request){
         if(hotelOrderRoomId == null){
             return R.error(403,"hotelOrderRoomId不能为空");
         }
         if(serveTypeId == null){
             return R.error(403,"serveTypeId不能为空");
+        }
+        if(isRoomId == null){
+            return R.error(403,"isRoomId不能为空");
         }
         SysUser sysUser = authService.getUserInfoByReq(request);
         ServeHotelOrder serveHotelOrder = new ServeHotelOrder();
@@ -61,12 +84,33 @@ public class ServeHotelOrderController {
         serveHotelOrder.setIsOrderId(hotelOrderId);
         serveHotelOrder.setIsServeTypeId(serveTypeId);
         serveHotelOrder.setPhone(sysUser.getPhone());
+        serveHotelOrder.setIsUserId(sysUser.getUserId());
         serveHotelOrder.setRemark(remark);
-        Date timeOutDate = DateUtil.parseDateTime(timeOut);
+        serveHotelOrder.setHotelName(hotelName);
+        serveHotelOrder.setIsRoomId(isRoomId);
+        serveHotelOrder.setRoomNo(roomNo);
+        serveHotelOrder.setServeName(serveName);
+        //serveHotelOrder.setPhone(phone);
+        //Date timeOutDate = DateUtil.parseDateTime(timeOut);
+        Date timeOutDate = new Date(timeOut);
         serveHotelOrder.setTimeOut(timeOutDate);
         serveHotelOrder.setStatus(shoConst.APPLY);
         serveHotelOrder.setCreateTime(new Date());
         boolean flag = serveHotelOrderService.insert(serveHotelOrder);
+        Long serveHotelId = serveHotelOrder.getServeHotelId();
+        Map<String,Object> map = new HashMap<>(1);
+        map.put("serveHotelId",serveHotelId);
+        return (flag)?R.ok(map):R.error();
+    }
+
+
+    @RequestMapping("/cancel")
+    @ApiOperation(httpMethod = "GET", value="取消订单")
+    public R cancelOrder(Long serveHotelId){
+        if(serveHotelId == null){
+            return R.error(403,"主键不能为空");
+        }
+        Boolean flag = serveHotelOrderService.cancelOrder(serveHotelId);
         return (flag)?R.ok():R.error();
     }
 

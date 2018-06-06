@@ -37,9 +37,12 @@
 			<mvc:interceptor>
 				<mvc:mapping path="/**"/>
 				<mvc:exclude-mapping path="/auth/**"/>
+				<mvc:exclude-mapping path="/pay/**"/>
 				<mvc:exclude-mapping path="/swagger*/**"/>
 				<mvc:exclude-mapping path="/webjars/**"/>
 				<mvc:exclude-mapping path="/v2/**"/>
+				<mvc:exclude-mapping path="/hotel/info/**"/>
+				<mvc:exclude-mapping path="/hotel/type/**"/>
 				<bean id="authAdminInterceptor" class="com.zxt.api.interceptor.AuthInterceptor"/>
 			</mvc:interceptor>
 		</mvc:interceptors>

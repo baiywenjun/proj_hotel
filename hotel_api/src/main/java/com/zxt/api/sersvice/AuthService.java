@@ -4,7 +4,6 @@ import com.zxt.api.pojo.OpenidInfo;
 import com.zxt.api.pojo.TokenInfo;
 import com.zxt.common.config.RedisUtils;
 import com.zxt.common.exception.RRException;
-import com.zxt.common.result.R;
 import com.zxt.common.util.DateUtil;
 import com.zxt.common.util.MD5Utils;
 import com.zxt.hotel.entity.SysUser;
@@ -89,5 +88,18 @@ public class AuthService {
             throw new RRException("token错误",403);
         }
         return sysUser;
+    }
+
+    // 通过request 获取openid
+    public OpenidInfo getOpenidInfoByReq(HttpServletRequest request){
+        String token = request.getHeader("token");
+        if(StringUtils.isEmpty(token)){
+            throw new RRException("token是空",403);
+        }
+        OpenidInfo openidInfo = this.getOpenidInfoByToken(token);
+        if(openidInfo == null){
+            throw new RRException("token错误",403);
+        }
+        return openidInfo;
     }
 }

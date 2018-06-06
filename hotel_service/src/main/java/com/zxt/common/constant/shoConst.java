@@ -9,6 +9,10 @@ package com.zxt.common.constant;
 public interface shoConst {
 
     /**
+     * 取消订单
+     */
+    String CANCEL = "cancel";
+    /**
      * 下单
      */
     String APPLY = "apply";
@@ -17,7 +21,10 @@ public interface shoConst {
      * 接单
      */
     String ACCEPT = "accept";
-
+    /**
+     * 处理中
+     */
+    String PROCESS = "process";
     /**
      * 订单完成
      */

@@ -27,6 +27,8 @@ public class HotelInfo implements Serializable {
 	private String hotelNo;
 	@TableField("img_url")
 	private String imgUrl;
+	@TableField("welcome_img_url")
+	private String welcomeImgUrl;
 	private Integer rank;
 	private String province;
 	private String city;
@@ -36,6 +38,7 @@ public class HotelInfo implements Serializable {
 	private String lat;
 	private String business;
 	private String description;
+	private String content;
 	private String phone;
 	@TableField("contact_name")
 	private String contactName;
@@ -198,6 +201,22 @@ public class HotelInfo implements Serializable {
 
 	public void setBusiness(String business) {
 		this.business = business;
+	}
+
+	public String getContent() {
+		return content;
+	}
+
+	public void setContent(String content) {
+		this.content = content;
+	}
+
+	public String getWelcomeImgUrl() {
+		return welcomeImgUrl;
+	}
+
+	public void setWelcomeImgUrl(String welcomeImgUrl) {
+		this.welcomeImgUrl = welcomeImgUrl;
 	}
 
 	@Override

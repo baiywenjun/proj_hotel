@@ -57,4 +57,9 @@ public class HotelRoomTypeServiceImpl extends ServiceImpl<HotelRoomTypeMapper, H
         return Rt.ok(count,hotelRoomTypeFullVOList);
     }
 
+    @Override
+    public HotelRoomTypeFullVO findOneById(Long roomTypeId){
+         return hotelRoomTypeMapper.queryById(roomTypeId);
+    }
+
 }

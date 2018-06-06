@@ -1,5 +1,11 @@
 package com.zxt.hotel.service.impl;
 
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.baomidou.mybatisplus.mapper.Wrapper;
+import com.baomidou.mybatisplus.plugins.Page;
+import com.zxt.common.constant.shoConst;
+import com.zxt.common.result.R;
+import com.zxt.common.result.Rt;
 import com.zxt.hotel.entity.HotelOrderRoom;
 import com.zxt.hotel.entity.ServeHotelOrder;
 import com.zxt.hotel.mapper.HotelOrderRoomMapper;
@@ -8,6 +14,8 @@ import com.zxt.hotel.service.ServeHotelOrderService;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * <p>
@@ -20,4 +28,36 @@ import org.springframework.stereotype.Service;
 @Service
 public class ServeHotelOrderServiceImpl extends ServiceImpl<ServeHotelOrderMapper, ServeHotelOrder> implements ServeHotelOrderService {
 
+    @Override
+    /**
+     * 查询用户自己的订单
+     * @param userId
+     * @param page
+     * @param limit
+     * @return
+     */
+    public Rt queryListByUser(Long userId, Integer page, Integer limit){
+        Wrapper<ServeHotelOrder> wrapper = new EntityWrapper<>();
+        wrapper.eq("is_user_id",userId);
+        //wrapper.ne("status", shoConst.CANCEL);
+        int count = this.selectCount(wrapper);
+        wrapper.orderBy("create_time",false);
+        Page<ServeHotelOrder> serveHotelOrderPage = this.selectPage(new Page<>(page, limit), wrapper);
+        List<ServeHotelOrder> records = serveHotelOrderPage.getRecords();
+        return Rt.ok(count,records);
+    }
+
+
+    @Override
+    public ServeHotelOrder findOneById(Long serveHotelId){
+        return this.selectById(serveHotelId);
+    }
+
+    @Override
+    public Boolean cancelOrder(Long serveHotelId){
+        ServeHotelOrder order = new ServeHotelOrder();
+        order.setServeHotelId(serveHotelId);
+        order.setStatus(shoConst.CANCEL);
+        return this.updateById(order);
+    }
 }

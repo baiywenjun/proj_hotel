@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import java.util.Calendar;
+
 /**
  * Title: todoedit
  * Description: todoedit
@@ -32,4 +34,6 @@ public class SysWechatTest {
         SysWechat wechat = sysWechatService.findByOpenid(opendid);
         System.err.println(wechat);
     }
+
+
 }

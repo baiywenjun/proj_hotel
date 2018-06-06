@@ -51,5 +51,9 @@ public class mybatisTest {
         }
     }
 
-
+    @Test
+    public void selectSSS(){
+        HotelRoomTypeFullVO hotelRoomTypeFullVO = hotelRoomTypeMapper.queryById(1l);
+        System.out.println(hotelRoomTypeFullVO);
+    }
 }

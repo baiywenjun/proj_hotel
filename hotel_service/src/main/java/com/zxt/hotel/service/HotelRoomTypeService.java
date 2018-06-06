@@ -3,6 +3,7 @@ package com.zxt.hotel.service;
 import com.zxt.common.result.Rt;
 import com.zxt.hotel.entity.HotelRoomType;
 import com.baomidou.mybatisplus.service.IService;
+import com.zxt.hotel.pojo.HotelRoomTypeFullVO;
 import com.zxt.hotel.pojo.HotelRoomTypeQuery;
 
 /**
@@ -18,4 +19,6 @@ public interface HotelRoomTypeService extends IService<HotelRoomType> {
     Rt queryHotelRoomTypeByPage(HotelRoomTypeQuery query, Integer page, Integer limit);
 
     Rt queryHotelRoomTypeFullByPage(HotelRoomTypeQuery query, Integer page, Integer limit);
+
+    HotelRoomTypeFullVO findOneById(Long roomTypeId);
 }

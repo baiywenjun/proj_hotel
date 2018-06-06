@@ -5,6 +5,8 @@
         <id column="hotel_id" property="hotelId" />
         <result column="name" property="name" />
         <result column="hotel_no" property="hotelNo" />
+        <result column="img_url" property="imgUrl" />
+        <result column="welcome_img_url" property="welcomeImgUrl" />
         <result column="rank" property="rank" />
         <result column="province" property="province" />
         <result column="city" property="city" />

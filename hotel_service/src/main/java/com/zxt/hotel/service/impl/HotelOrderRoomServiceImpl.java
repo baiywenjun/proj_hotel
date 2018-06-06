@@ -187,6 +187,7 @@ public class HotelOrderRoomServiceImpl extends ServiceImpl<HotelOrderRoomMapper,
             // 冗余房间信息
             hotelOrderRoom.setTypeName(hotelRoomType.getTypeName());
             hotelOrderRoom.setTypeSpec(hotelRoomType.getTypeSpec());
+            hotelOrderRoom.setTypePrice(hotelRoomType.getTypePrice());
             hotelOrderRoom.setStorey(hotelRoom.getStorey());
             hotelOrderRoom.setRoomNo(hotelRoom.getRoomNo());
             // other

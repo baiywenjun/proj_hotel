@@ -1,21 +1,19 @@
 package com.zxt.api.controller;
 
-import com.zxt.common.result.R;
 import com.zxt.common.result.Rt;
 import com.zxt.common.util.MathUtil;
 import com.zxt.common.util.PageUtil;
-import com.zxt.hotel.entity.HotelInfo;
 import com.zxt.hotel.pojo.HotelInfoQuery;
 import com.zxt.hotel.service.HotelInfoService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.models.HttpMethod;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 
 /**

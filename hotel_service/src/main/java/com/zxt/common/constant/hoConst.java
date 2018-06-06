@@ -8,11 +8,19 @@ package com.zxt.common.constant;
  */
 public interface hoConst {
     /**
-     * 待支付
+     * 支付状态-待支付
      */
     String WAIT = "wait";
     /**
-     * 已支付
+     * 支付状态-已支付
      */
     String PAID = "paid";
+    /**
+     * 支付类型-微信支付
+     */
+    String WECHAT = "wechat";
+    /**
+     * 支付类型-易支付
+     */
+    String YI = "yi";
 }

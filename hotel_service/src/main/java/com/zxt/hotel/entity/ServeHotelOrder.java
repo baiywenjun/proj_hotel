@@ -28,7 +28,17 @@ public class ServeHotelOrder implements Serializable {
 	private Long isOrderId;
 	@TableField("is_order_room_id")
 	private Long isOrderRoomId;
+	@TableField("is_user_id")
+	private Long isUserId;
+	@TableField("hotel_name")
+	private String hotelName;
+	@TableField("is_room_id")
+	private Long isRoomId;
+	@TableField("room_no")
+	private String roomNo;
 	private String phone;
+	@TableField("serve_name")
+	private String serveName;
     /**
      * 服务超时时间
      */
@@ -113,6 +123,46 @@ public class ServeHotelOrder implements Serializable {
 
 	public void setCreateTime(Date createTime) {
 		this.createTime = createTime;
+	}
+
+	public String getHotelName() {
+		return hotelName;
+	}
+
+	public void setHotelName(String hotelName) {
+		this.hotelName = hotelName;
+	}
+
+	public String getRoomNo() {
+		return roomNo;
+	}
+
+	public void setRoomNo(String roomNo) {
+		this.roomNo = roomNo;
+	}
+
+	public Long getIsUserId() {
+		return isUserId;
+	}
+
+	public void setIsUserId(Long isUserId) {
+		this.isUserId = isUserId;
+	}
+
+	public String getServeName() {
+		return serveName;
+	}
+
+	public void setServeName(String serveName) {
+		this.serveName = serveName;
+	}
+
+	public Long getIsRoomId() {
+		return isRoomId;
+	}
+
+	public void setIsRoomId(Long isRoomId) {
+		this.isRoomId = isRoomId;
 	}
 
 	@Override
