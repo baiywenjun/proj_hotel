@@ -21,4 +21,12 @@ public interface HotelRoomTypeService extends IService<HotelRoomType> {
     Rt queryHotelRoomTypeFullByPage(HotelRoomTypeQuery query, Integer page, Integer limit);
 
     HotelRoomTypeFullVO findOneById(Long roomTypeId);
+
+    /**
+     * 新增房型信息
+     * @param hotelRoomType
+     * @param dictId
+     * @return
+     */
+    Boolean addRecord(HotelRoomType hotelRoomType, Long dictId);
 }

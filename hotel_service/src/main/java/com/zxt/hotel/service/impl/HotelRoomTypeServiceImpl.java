@@ -7,8 +7,10 @@ import com.zxt.common.result.Rt;
 import com.zxt.hotel.entity.HotelDict;
 import com.zxt.hotel.entity.HotelInfo;
 import com.zxt.hotel.entity.HotelRoomType;
+import com.zxt.hotel.entity.HotelTypeDictRel;
 import com.zxt.hotel.mapper.HotelDictMapper;
 import com.zxt.hotel.mapper.HotelRoomTypeMapper;
+import com.zxt.hotel.mapper.HotelTypeDictRelMapper;
 import com.zxt.hotel.pojo.HotelRoomTypeFullVO;
 import com.zxt.hotel.pojo.HotelRoomTypeQuery;
 import com.zxt.hotel.service.HotelRoomTypeService;
@@ -33,6 +35,9 @@ public class HotelRoomTypeServiceImpl extends ServiceImpl<HotelRoomTypeMapper, H
 
     @Autowired
     private HotelRoomTypeMapper hotelRoomTypeMapper;
+
+    @Autowired
+    private HotelTypeDictRelMapper hotelTypeDictRelMapper;
 
     @Override
     public Rt queryHotelRoomTypeByPage(HotelRoomTypeQuery query, Integer page, Integer limit){
@@ -62,4 +67,22 @@ public class HotelRoomTypeServiceImpl extends ServiceImpl<HotelRoomTypeMapper, H
          return hotelRoomTypeMapper.queryById(roomTypeId);
     }
 
+
+    @Override
+    /**
+     * 新增房型信息
+     * @param hotelRoomType
+     * @param dictId
+     * @return
+     */
+    public Boolean addRecord(HotelRoomType hotelRoomType, Long dictId){
+        hotelRoomType.setTypeStatus("1");
+        boolean insert1 = this.insert(hotelRoomType);
+        Long roomTypeId = hotelRoomType.getRoomTypeId();
+        HotelTypeDictRel hotelTypeDictRel = new HotelTypeDictRel();
+        hotelTypeDictRel.setRoomTypeId(roomTypeId);
+        hotelTypeDictRel.setDictId(dictId);
+        Integer insert2 = hotelTypeDictRelMapper.insert(hotelTypeDictRel);
+        return (insert1 && insert2 > 0);
+    }
 }
