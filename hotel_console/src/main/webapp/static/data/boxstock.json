@@ -1,0 +1,48 @@
+{
+    "code": 0,
+    "msg": "",
+    "count": 5,
+    "data": [
+        {
+            "id": 1,
+            "box_no":"1918192313",
+            "capacity": "90L",
+            "type":"C型号",
+            "material":"PE",
+            "size":"129mm*211mm*176mm",
+            "tempera":"2~8℃"
+        },{
+            "id": 2,
+            "box_no":"1918192313",
+            "capacity": "90L",
+            "type":"C型号",
+            "material":"PE",
+            "size":"129mm*211mm*176mm",
+            "tempera":"2~8℃"
+        },{
+            "id": 3,
+            "box_no":"1918192313",
+            "capacity": "90L",
+            "type":"C型号",
+            "material":"PE",
+            "size":"129mm*211mm*176mm",
+            "tempera":"2~8℃"
+        },{
+            "id": 4,
+            "box_no":"1918192313",
+            "capacity": "90L",
+            "type":"C型号",
+            "material":"PE",
+            "size":"129mm*211mm*176mm",
+            "tempera":"2~8℃"
+        },{
+            "id": 5,
+            "box_no":"1918192313",
+            "capacity": "90L",
+            "type":"C型号",
+            "material":"PE",
+            "size":"129mm*211mm*176mm",
+            "tempera":"2~8℃"
+        }
+    ]
+}

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zxt.hotel.mapper.ServeHotelOrderMapper" >
+    <resultMap id="serveHotelOrderFullMap" type="com.zxt.hotel.pojo.ServeHotelOrderFullVO" >
+        <id column="serve_hotel_id" property="serveHotelId" jdbcType="BIGINT" />
+        <result column="is_serve_type_id" property="isServeTypeId" jdbcType="BIGINT" />
+        <result column="is_order_id" property="isOrderId" jdbcType="BIGINT" />
+        <result column="is_order_room_id" property="isOrderRoomId" jdbcType="BIGINT" />
+        <result column="is_user_id" property="isUserId" jdbcType="BIGINT" />
+        <result column="hotel_name" property="hotelName" jdbcType="VARCHAR" />
+        <result column="is_room_id" property="isRoomId" jdbcType="BIGINT" />
+        <result column="room_no" property="roomNo" jdbcType="VARCHAR" />
+        <result column="serve_name" property="serveName" jdbcType="VARCHAR" />
+        <result column="phone" property="phone" jdbcType="VARCHAR" />
+        <result column="time_out" property="timeOut" jdbcType="TIMESTAMP" />
+        <result column="status" property="status" jdbcType="VARCHAR" />
+        <result column="remark" property="remark" jdbcType="VARCHAR" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+        <association property="serveType" javaType="com.zxt.hotel.entity.ServeType" >
+            <id column="serve_type_id" property="serveTypeId" jdbcType="BIGINT" />
+            <result column="type_code" property="typeCode" jdbcType="VARCHAR" />
+            <result column="serve_name" property="serveName" jdbcType="VARCHAR" />
+            <result column="serve_content" property="serveContent" jdbcType="VARCHAR" />
+            <result column="serve_price" property="servePrice" jdbcType="INTEGER" />
+            <result column="sort_id" property="sortId" jdbcType="INTEGER" />
+            <result column="status" property="status" jdbcType="VARCHAR" />
+            <result column="remark" property="remark" jdbcType="VARCHAR" />
+        </association>
+    </resultMap>
+
+    <select id="queryListByPage" resultMap="serveHotelOrderFullMap">
+        SELECT
+            st.*, sho.*
+        FROM
+            serve_hotel_order sho,
+            serve_type st
+        <where>
+          sho.is_serve_type_id = st.serve_type_id
+          ${ew.sqlSegment}
+        </where>
+    </select>
+
+
+
+</mapper>

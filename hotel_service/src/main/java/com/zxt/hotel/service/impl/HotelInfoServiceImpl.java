@@ -12,8 +12,8 @@ import com.zxt.hotel.mapper.HotelContentMapper;
 import com.zxt.hotel.mapper.HotelDictMapper;
 import com.zxt.hotel.mapper.HotelInfoMapper;
 import com.zxt.hotel.pojo.HotelInfoExt;
+import com.zxt.hotel.pojo.HotelInfoFullDistanceVO;
 import com.zxt.hotel.pojo.HotelInfoFullVO;
-import com.zxt.hotel.pojo.HotelInfoFullVOBack;
 import com.zxt.hotel.pojo.HotelInfoQuery;
 import com.zxt.hotel.service.HotelInfoService;
 import org.apache.commons.lang3.StringUtils;
@@ -56,12 +56,100 @@ public class HotelInfoServiceImpl extends ServiceImpl<HotelInfoMapper, HotelInfo
 
     @Override
     /**
+     * 酒店列表不带距离
+     * @param query
+     * @param page
+     * @param limit
+     * @return
+     */
+    public Rt queryHotelInfoFullByPage(HotelInfoQuery query, Integer page, Integer limit){
+        Wrapper<HotelInfo> wrapper = new EntityWrapper<>();
+        if(StringUtils.isNotEmpty(query.getName())){
+            wrapper.like("name",query.getName());
+        }
+        int count = this.selectCount(wrapper);
+        List<HotelInfoFullVO> hotelInfoFullVOList = hotelInfoMapper.queryHotelInfoFullByPage(wrapper,page-1,limit);
+        return Rt.ok(count,hotelInfoFullVOList);
+    }
+
+    @Override
+    /**
+     * 根据主键查找酒店详细信息
+     * @param hotelId
+     * @return
+     */
+    public HotelInfoFullVO queryHotelInfoFUllVOById(Long hotelId){
+        Wrapper<HotelInfo> wrapper = new EntityWrapper<>();
+        wrapper.eq("hotel_id",hotelId);
+        List<HotelInfoFullVO> hotelInfoFullVOS = hotelInfoMapper.queryHotelInfoFullByPage(wrapper,0,1);
+        if(hotelInfoFullVOS!=null && hotelInfoFullVOS.size()>0){
+            return hotelInfoFullVOS.get(0);
+        }
+        return null;
+    }
+
+    @Override
+    /**
+     * 酒店列表带距离
+     * @param query
+     * @param page
+     * @param limit
+     * @return
+     */
+    public Rt queryHotelInfoFullDistanceByPage(HotelInfoQuery query, Integer page, Integer limit){
+        Wrapper<HotelInfo> wrapper = new EntityWrapper<>();
+        if(StringUtils.isNotEmpty(query.getName())){
+            wrapper.like("name",query.getName());
+        }
+        int count = this.selectCount(wrapper);
+        List<HotelInfoFullVO> hotelInfoFullVOList = hotelInfoMapper.queryHotelInfoFullDistanceByPage(query, wrapper,page-1,limit);
+        return Rt.ok(count,hotelInfoFullVOList);
+    }
+
+    @Override
+    /**
+     * 酒店列表带距离,过渡
+     * @param query
+     * @param page
+     * @param limit
+     * @return
+     */
+    public Rt queryHotelInfoFullDistanceByPageOver(HotelInfoQuery query, Integer page, Integer limit){
+        Wrapper<HotelInfo> wrapper = new EntityWrapper<>();
+        if(StringUtils.isNotEmpty(query.getName())){
+            wrapper.like("name",query.getName());
+        }
+        int count = this.selectCount(wrapper);
+        // todo 此处为过渡方法，小程序按最新接口后，此处可废弃
+        List<HotelInfoFullVO> hotelInfoFullVOList = hotelInfoMapper.queryHotelInfoFullDistanceByPage(query, wrapper, page - 1, limit);
+        List<HotelInfoExt> hotelInfoExtList = hotelInfoMapper.queryHotelInfoExtByPage(new Page<>(page, limit), query);
+        List<HotelInfoFullDistanceVO> hotelInfoListOver = new ArrayList<>();
+        for (HotelInfoExt hotelInfoExt : hotelInfoExtList) {
+            for (HotelInfoFullVO hotelInfoFullVO : hotelInfoFullVOList) {
+                if(hotelInfoExt.getHotelId() == hotelInfoFullVO.getHotelId()){
+                    HotelInfoFullDistanceVO temp = new HotelInfoFullDistanceVO();
+                    temp.setHotelInfoExt(hotelInfoExt);
+                    temp.setHotelDictList(hotelInfoFullVO.getHotelDictList());
+                    temp.setHotelContentList(hotelInfoFullVO.getHotelContentList());
+                    hotelInfoListOver.add(temp);
+                }
+
+            }
+
+        }
+        //List<HotelInfoFullDistanceVO> hotelInfoFullDistanceVOS = hotelInfoMapper.queryHotelInfoFullDistanceByPageOver(query, wrapper,page-1,limit);
+        return Rt.ok(count,hotelInfoListOver);
+    }
+
+    @Deprecated
+    @Override
+    /**
      * 查询酒店信息
      * @param page page
      * @param limit limit
      * @return rt
      */
-    public Rt queryHotelInfoFullByPage(HotelInfoQuery query, Integer page, Integer limit){
+    public Rt queryHotelInfoFullByPageDiscard(HotelInfoQuery query, Integer page, Integer limit){
         Wrapper<HotelInfo> wrapper = new EntityWrapper<>();
         if(StringUtils.isNotEmpty(query.getName())){
             wrapper.like("name",query.getName());
@@ -70,7 +158,7 @@ public class HotelInfoServiceImpl extends ServiceImpl<HotelInfoMapper, HotelInfo
         //Page<HotelInfo> hotelInfoPage = this.selectPage(new Page<>(page, limit), wrapper);
         //List<HotelInfo> records = hotelInfoPage.getRecords();
         List<HotelInfoExt> hotelInfoExts = hotelInfoMapper.queryHotelInfoExtByPage(new Page<>(page, limit), query);
-        List<HotelInfoFullVO> hotelInfoFullList = new ArrayList<>();
+        List<HotelInfoFullDistanceVO> hotelInfoFullList = new ArrayList<>();
         for (HotelInfoExt hotelInfo : hotelInfoExts) {
             // 创建数组
             List<HotelDict> hotelDictList = new ArrayList<>();
@@ -94,15 +182,15 @@ public class HotelInfoServiceImpl extends ServiceImpl<HotelInfoMapper, HotelInfo
                 }
             }
             // 组装添加
-            HotelInfoFullVO hotelInfoFull = new HotelInfoFullVO();
+            HotelInfoFullDistanceVO hotelInfoFull = new HotelInfoFullDistanceVO();
             hotelInfoFull.setHotelInfoExt(hotelInfo);
             hotelInfoFull.setHotelDictList(hotelDictList);
             hotelInfoFull.setHotelContentList(hotelContentList);
             hotelInfoFullList.add(hotelInfoFull);
         }
-        Collections.sort(hotelInfoFullList, new Comparator<HotelInfoFullVO>() {
+        Collections.sort(hotelInfoFullList, new Comparator<HotelInfoFullDistanceVO>() {
             @Override
-            public int compare(HotelInfoFullVO o1, HotelInfoFullVO o2) {
+            public int compare(HotelInfoFullDistanceVO o1, HotelInfoFullDistanceVO o2) {
                 String o1Distance = o1.getHotelInfoExt().getDistance();
                 String o2Distance = o2.getHotelInfoExt().getDistance();
                 int o1d = Integer.parseInt(o1Distance);
@@ -114,11 +202,11 @@ public class HotelInfoServiceImpl extends ServiceImpl<HotelInfoMapper, HotelInfo
     }
 
     @Override
-    public Boolean addHotelInfo(HotelInfo hotel) {
+    public Long addHotelInfo(HotelInfo hotel) {
         hotel.setCreateTime(new Date());
         boolean insert = this.insert(hotel);
-        return insert;
-
+        Long hotelId = hotel.getHotelId();
+        return hotelId;
     }
 
     @Override

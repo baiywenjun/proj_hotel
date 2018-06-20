@@ -1,0 +1,34 @@
+a,a:hover{
+			color: #fff;
+		}
+		html,body,.layui-container{
+			display: block;
+			height: 100%;
+		}
+		.search-settings{
+			display: block;
+			height: calc(100% - 151px);
+		}
+		#map{
+			display: block;
+			margin-top: 10px;
+			height: 100%;
+			margin-bottom: 20px;
+			
+		}
+		.my-filter {
+			border-bottom: solid 1px #f2f2f2;			
+			border-radius: 2px;
+			margin-top: 20px;
+			padding-bottom: 10px;
+		}
+		.my-filter .layui-form-item{
+			margin-bottom: 0;
+		}
+		.my-filter .layui-input,.my-filter .layui-btn{
+			height: 30px;
+			line-height: 30px;
+		}
+		.my-filter .layui-form-label{
+			padding: 5px 15px;
+		}

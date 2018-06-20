@@ -45,6 +45,7 @@
             <result column="create_time" property="createTime"  />
             <result column="create_id" property="createId"  />
             <result column="hotel_status" property="hotelStatus"  />
+            <result column="alias_no" property="aliasNo" />
             <result column="remark" property="remark"  />
         </association>
         <association property="hotelRoomType" javaType="com.zxt.hotel.entity.HotelRoomType">
@@ -68,6 +69,7 @@
         LEFT JOIN hotel_info hoi ON hoi.hotel_id = ho.is_hotel_id
         LEFT JOIN hotel_room_type hrt ON hrt.room_type_id = ho.is_room_type_id
         <where>
+            1=1
           ${ew.sqlSegment}
         </where>
     </select>

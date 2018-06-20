@@ -1,7 +1,9 @@
 package com.zxt.hotel.service;
 
 import com.baomidou.mybatisplus.service.IService;
+import com.zxt.common.result.Rt;
 import com.zxt.hotel.entity.SysUser;
+import com.zxt.hotel.pojo.SysUserQuery;
 
 /**
  * <p>
@@ -19,4 +21,6 @@ public interface SysUserService extends IService<SysUser> {
      * @return SysUser
      */
     SysUser findOneByUsername(String username);
+
+    Rt queryUserByPage(SysUserQuery query, Integer page, Integer limit);
 }

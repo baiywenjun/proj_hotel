@@ -19,8 +19,8 @@
 				/auth/** = anon         <!-- 登录相关，可匿名访问 -->
 				/auth/logout = anon
 				/auth/logout = logout
-				/** = anon <!-- 前期开发，全部放行 -->
-				<!-- /** = authc &lt;!&ndash; 权限配置放在后面 &ndash;&gt;-->
+				/** = anon  <!--前期开发，全部放行-->
+				<!--/** = authc-->   <!--权限配置放在后面-->
 			</value>
 		</property>
 	</bean>

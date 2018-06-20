@@ -48,6 +48,8 @@ public class HotelInfo implements Serializable {
 	private Long createId;
 	@TableField("hotel_status")
 	private String hotelStatus;
+	@TableField("alias_no")
+	private String aliasNo;
 	private String remark;
 
 
@@ -219,6 +221,14 @@ public class HotelInfo implements Serializable {
 		this.welcomeImgUrl = welcomeImgUrl;
 	}
 
+	public String getAliasNo() {
+		return aliasNo;
+	}
+
+	public void setAliasNo(String aliasNo) {
+		this.aliasNo = aliasNo;
+	}
+
 	@Override
 	public String toString() {
 		return "HotelInfo{" +
@@ -240,6 +250,7 @@ public class HotelInfo implements Serializable {
 			", createTime=" + createTime +
 			", createId=" + createId +
 			", hotelStatus=" + hotelStatus +
+			", aliasNo=" + aliasNo +
 			", remark=" + remark +
 			"}";
 	}

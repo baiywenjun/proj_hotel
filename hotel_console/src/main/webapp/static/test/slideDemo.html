@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>SlideDemo</title>
+    <link rel="stylesheet" href="../lib/jqueryui/jquery-ui.min.css">
+    <link rel="stylesheet" href="../lib/jqueryui/jquery-ui.theme.min.css">
+    <script src="../js/jquery-1.12.4.min.js"></script>
+    <script src="../lib/jqueryui/jquery-ui.min.js"></script>
+    <style>
+        #custom-handle {
+            width: 3em;
+            height: 1.6em;
+            top: 50%;
+            margin-top: -.8em;
+            text-align: center;
+            line-height: 1.6em;
+        }
+    </style>
+</head>
+<body>
+    <div id="slider">
+        <div id="custom-handle" class="ui-slider-handle"></div>
+    </div>
+    <button onclick="submit()">提交</button>
+</body>
+<script>
+    var handle = $( "#custom-handle" );
+    $( "#slider" ).slider({
+        max: 5,
+        create: function() {
+            handle.text( $( this ).slider( "value" ) );
+        },
+        slide: function( event, ui ) {
+            handle.text( ui.value );
+        }
+    });
+
+    function submit(){
+        var rank = $( "#slider" ).slider( "option", "value" );
+        console.log(rank);
+    }
+</script>
+</html>

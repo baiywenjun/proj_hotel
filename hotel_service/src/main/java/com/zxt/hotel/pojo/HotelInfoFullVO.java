@@ -7,26 +7,16 @@ import com.zxt.hotel.entity.HotelInfo;
 import java.util.List;
 
 /**
- * Title: 酒店详情
- * Description: todoedit
+ * Title: todoedit
+ * Description: master
  * author: wenjun
- * date: 2018/5/25 10:20
+ * date: 2018/6/12 11:06
  */
-public class HotelInfoFullVO {
-
-    private HotelInfoExt hotelInfoExt;
-    // 规格
+public class HotelInfoFullVO extends HotelInfo {
+    // 距离
+    private String distance;
     private List<HotelDict> hotelDictList;
-    // 酒店详情
     private List<HotelContent> hotelContentList;
-
-    public HotelInfoExt getHotelInfoExt() {
-        return hotelInfoExt;
-    }
-
-    public void setHotelInfoExt(HotelInfoExt hotelInfoExt) {
-        this.hotelInfoExt = hotelInfoExt;
-    }
 
     public List<HotelDict> getHotelDictList() {
         return hotelDictList;
@@ -44,4 +34,20 @@ public class HotelInfoFullVO {
         this.hotelContentList = hotelContentList;
     }
 
+    public String getDistance() {
+        return distance;
+    }
+
+    public void setDistance(String distance) {
+        this.distance = distance;
+    }
+
+    @Override
+    public String toString() {
+        return "HotelInfoFullVO{" +
+                "distance='" + distance + '\'' +
+                ", hotelDictList=" + hotelDictList +
+                ", hotelContentList=" + hotelContentList +
+                '}';
+    }
 }

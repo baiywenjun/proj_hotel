@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html>
+#parse("common/base.html")
+<head>
+    <meta charset="UTF-8">
+    <title>添加酒店 - e.TV酒店服务平台</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
+    <link rel="shortcut icon" href="../favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="$baseUrl/static/css/font.css">
+    <!--<link rel="stylesheet" href="$baseUrl/static/css/reset.css">-->
+    <!--<link rel="stylesheet" href="$baseUrl/static/css/myset.css">-->
+    <!--<link rel="stylesheet" href="$baseUrl/static/css/normalize.css">-->
+    <!--<link rel="stylesheet" href="$baseUrl/static/css/xadmin.css">-->
+    <link rel="stylesheet" href="$baseUrl/static/lib/layui/css/layui.css">
+    <link rel="stylesheet" href="$baseUrl/static/lib/jqueryui/jquery-ui.min.css">
+    <link rel="stylesheet" href="$baseUrl/static/lib/jqueryui/jquery-ui.theme.min.css">
+    <!--[if lt IE 9]>
+      <script src="$baseUrl/static/js/html5.min.js"></script>
+      <script src="$baseUrl/static/js/respond.min.js"></script>
+    <![endif]-->
+    <style type="text/css">
+        .layui-input-block input {
+            width: 80%;
+        }
+        .custom-box {
+            margin: 0px 10px;
+        }
+        .layui-upload-img {
+            width: 120px;
+            height: 120px;
+        }
+        .layui-form-label{
+            width: 120px;
+        }
+        .custom-slide{
+            margin-left: 160px;
+            padding-top: 12px;
+            height: 25px;
+            width: 69%;
+        }
+        .layui-input-inline select{
+            width: 100%;
+            height: 35px;
+        }
+    </style>
+</head>
+<body>
+<div class="custom-box">
+    <div class="layui-form" >
+        <fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
+            <legend>酒店信息</legend>
+        </fieldset>
+        <div class="layui-form-item">
+            <label class="layui-form-label">酒店名称</label>
+            <div class="layui-input-block">
+                <input type="text" id="hotelName" name="hotelName" value="$!hotelInfo.name" lay-verify="required" autocomplete="off" placeholder="请输入名称" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">描述</label>
+            <div class="layui-input-block">
+                <input type="text" id="description" name="description" value="$!hotelInfo.description" placeholder="请输入" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">联系人名字</label>
+                <div class="layui-input-inline">
+                    <input type="tel" id="contactName" name="contactName" value="$!hotelInfo.contactName"  autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">联系人电话</label>
+                <div class="layui-input-inline">
+                    <input type="text" id="phone" name="phone" value="$!hotelInfo.phone" lay-verify="phone" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">星级</label>
+            <div class="custom-slide">
+                <div id="slider">
+                    <div id="custom-handle" class="ui-slider-handle"></div>
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">酒店设施</label>
+            <div class="layui-input-block">
+                <input type="checkbox" name="business" value="4" title="免费WIFI">
+                <input type="checkbox" name="business" value="5" title="云端智控">
+                <input type="checkbox" name="business" value="6" title="免费停车">
+                <input type="checkbox" name="business" value="7" title="智能房卡">
+                <input type="checkbox" name="business" value="8" title="送餐服务">
+            </div>
+        </div>
+    </div>
+    <!-- 脱离layui -->
+    <div class="layui-form-item" id="custom">
+        <label class="layui-form-label">省市区选择</label>
+        <div class="layui-input-inline">
+            <select id="province" name="province" onChange="showWholeList()"></select>
+        </div>
+        <div class="layui-input-inline">
+            <select id="city" name="city" onChange="showAreaList()"></select>
+        </div>
+        <div class="layui-input-inline">
+            <select id="area" name="area" class="dist"></select>
+        </div>
+    </div>
+    <!-- 脱离layui END -->
+    <div class="layui-form">
+        <div class="layui-form-item">
+            <label class="layui-form-label">详细地址</label>
+            <div class="layui-input-block">
+                <input type="text" id="address" name="address" value="$!hotelInfo.address" autocomplete="off" placeholder="请输入地址" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">酒店坐标</label>
+            <div class="layui-input-block">
+                #if($operate == "update")
+                #set($location = $!hotelInfo.lng + "," + $!hotelInfo.lat)
+                #end
+                <input type="text" id="location" name="location" value="$!location" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+
+        <!-- 图片上传区 -->
+        <fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
+            <legend>酒店图片</legend>
+        </fieldset>
+        <div class="layui-upload">
+            <label class="layui-form-label">
+                <button type="button" class="layui-btn layui-btn-primary" id="uploadLogo">LOGO上传</button>
+                <p id="uploadLogoText"></p>
+            </label>
+            <div class="layui-upload-list">
+                <img class="layui-upload-img" id="uploadLogoImg">
+            </div>
+        </div>
+        <div class="layui-upload">
+            <label class="layui-form-label">
+                <button type="button" class="layui-btn layui-btn-primary" id="uploadWelcome">欢迎页上传</button>
+                <p id="uploadWelcomeText"></p>
+            </label>
+            <div class="layui-upload-list">
+                <img class="layui-upload-img" id="uploadWelcomeImg">
+            </div>
+        </div>
+        <div class="layui-upload" style="margin-top: 20px;margin-bottom: 20px">
+            <label class="layui-form-label">
+                <button type="button" class="layui-btn layui-btn-primary" id="uploadContent">描述图上传</button>
+            </label>
+            <div class="layui-input-block" style="margin-left: 148px">
+                <blockquote class="layui-elem-quote layui-quote-nm" style="margin-top: 10px;">
+                    预览图：
+                    <div class="layui-upload-list" id="uploadContentImg"></div>
+                </blockquote>
+            </div>
+        </div>
+        <!-- 图片上传区 END -->
+
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn" onclick="submit();">立即提交</button>
+                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script type="text/javascript" src="$baseUrl/static/js/jquery-1.12.4.min.js"></script>
+<script type="text/javascript" src="$baseUrl/static/lib/layui/layui.js" charset="utf-8"></script>
+<script type="text/javascript" src="$baseUrl/static/js/xadmin.js"></script>
+<script type="text/javascript" src="$baseUrl/static/js/function.js"></script>
+<script type="text/javascript" src="$baseUrl/static/data/cities.js"></script>
+<script type="text/javascript" src="$baseUrl/static/lib/jqueryui/jquery-ui.min.js"></script>
+<script>
+    var province = document.getElementById("province");
+    var city = document.getElementById("city");
+    var area = document.getElementById("area");
+    window.onload = function() {
+        //debugger;
+        for (var i = 0; i < cityJson.length; i++) {
+            if (cityJson[i].postcode.substr(2, 4) == "0000")
+                province.add(new Option(cityJson[i].name, cityJson[i].postcode));
+        }
+        showWholeList();
+    }
+    function showWholeList() {
+        city.innerHTML = "";
+        area.innerHTML = "";
+        for (var i = 0; i < cityJson.length; i++) {
+            if (province.value.substr(0, 2) == cityJson[i].postcode.substr(0, 2) && cityJson[i].postcode.substr(2, 2) != "00" && cityJson[i].postcode.substr(4, 2) == "00")
+                city.add(new Option(cityJson[i].name, cityJson[i].postcode));
+            else if (city.value.substr(0, 4) == cityJson[i].postcode.substr(0, 4))
+                area.add(new Option(cityJson[i].name, cityJson[i].postcode));
+
+        }
+    }
+    function showAreaList() {
+        area.innerHTML = "";
+        for (var i = 0; i < cityJson.length; i++) {
+            if (city.value.substr(0, 4) == cityJson[i].postcode.substr(0, 4) && city.value.substr(4, 2) != cityJson[i].postcode.substr(4, 2))
+                area.add(new Option(cityJson[i].name, cityJson[i].postcode));
+        }
+    }
+</script>
+<script>
+
+    var operate = '$!operate';
+    // slide 条渲染
+    var handle = $( "#custom-handle" );
+    $( "#slider" ).slider({
+        max: 5,
+        create: function() {
+            handle.text( $( this ).slider( "value" ) );
+        },
+        slide: function( event, ui ) {
+            handle.text( ui.value );
+        }
+    });
+    if(operate === 'update'){
+        // checkbox 回显,直接使用模版引擎
+        console.log("ok")
+        #foreach($item in $hotelInfo.hotelDictList)
+        var dictId = $item.dictId
+        $(":checkbox[value='"+dictId+"']").prop("checked", true)
+        #end
+
+        // 图片回显，直接使用模版引擎
+        var hotelLogoPath = '$baseServer' + '$hotelInfo.imgUrl';
+        var hotelWelcomePath = '$baseServer' + '$hotelInfo.welcomeImgUrl';
+        $("#uploadLogoImg").attr("src",hotelLogoPath);
+        $("#uploadWelcomeImg").attr("src",hotelWelcomePath)
+        #foreach($item in $hotelInfo.hotelContentList)
+        var contentImg = '$baseServer' + '$item.content'
+        $('#uploadContentImg').append('<img src="'+ contentImg +'" alt="" class="layui-upload-img">')
+        #end
+
+        // slider 回显
+        var rank = '$hotelInfo.rank'
+        $( "#slider" ).slider( "option", "value", rank );
+        handle.text(rank);
+
+        // 省市区回显
+        var sheng = '$hotelInfo.province'
+        var shi = '$hotelInfo.city'
+        var qu = '$hotelInfo.county'
+        echoAdd(sheng,shi,qu);
+    }
+
+    // 用于数据提交的变量
+    var hotelLogoPath = '';
+    var hotelWelComePath = '';
+    var hotelContentList = [];
+    var contentSortId = 1;
+
+    // 选择坐标方法
+    $("#location").click(function () {
+        showModal('选择坐标','$baseUrl/hotel/info/amap',802,545,null);
+    })
+
+    // 上传渲染
+    layui.use('upload', function(){
+       var upload = layui.upload;
+
+        //logo上传普通图片上传
+        var uploadInst1 = upload.render({
+            elem: '#uploadLogo'
+            ,url: '$baseUrl/upload/hotel-logo'
+            ,before: function(obj){
+                //预读本地文件示例，不支持ie8
+                obj.preview(function(index, file, result){
+                    $('#uploadLogoImg').attr('src', result); //图片链接（base64）
+                });
+            }
+            ,done: function(res){
+                if(res.code != 200){
+                    return layer.msg('上传失败');
+                }
+                hotelLogoPath = res.relativeFile;
+                console.log('酒店logo地址',hotelLogoPath);
+            }
+            ,error: function(){
+                //演示失败状态，并实现重传
+                var demoText = $('#uploadLogoText');
+                demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-mini demo-reload">重试</a>');
+                demoText.find('.demo-reload').on('click', function(){
+                    uploadInst1.upload();
+                });
+            }
+        });
+
+        //welcome上传普通图片上传
+        var uploadInst2 = upload.render({
+            elem: '#uploadWelcome'
+            ,url: '$baseUrl/upload/hotel-welcome'
+            ,before: function(obj){
+                //预读本地文件示例，不支持ie8
+                obj.preview(function(index, file, result){
+                    $('#uploadWelcomeImg').attr('src', result); //图片链接（base64）
+                });
+            }
+            ,done: function(res){
+                if(res.code != 200){
+                    return layer.msg('上传失败');
+                }
+                hotelWelComePath = res.relativeFile;
+                console.log('酒店welcome地址',hotelWelComePath);
+            }
+            ,error: function(){
+                //演示失败状态，并实现重传
+                var demoText = $('#uploadWelcomeText');
+                demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-mini demo-reload">重试</a>');
+                demoText.find('.demo-reload').on('click', function(){
+                    uploadInst2.upload();
+                });
+            }
+        });
+
+        //多图片上传
+        upload.render({
+            elem: '#uploadContent'
+            ,url: '$baseUrl/upload/hotel-content'
+            ,multiple: true
+            ,before: function(obj){
+                if(contentSortId == 1){
+                    $('#uploadContentImg').empty();
+                }
+                //预读本地文件示例，不支持ie8
+                obj.preview(function(index, file, result){
+                    $('#uploadContentImg').append('<img src="'+ result +'" alt="'+ file.name +'" class="layui-upload-img">')
+                });
+            }
+            ,done: function(res){
+                if(res.code != 200){
+                    alert("上传失败");
+                }
+
+                var contentTemp = res.relativeFile;
+                var content = {
+                    content : contentTemp,
+                    sortId : contentSortId
+                }
+                hotelContentList.push(content);
+                console.log('酒店content',hotelContentList);
+                contentSortId ++;
+            }
+        });
+
+    });
+
+    var layer;
+    layui.use('layer', function(){
+        layer = layui.layer;
+    });
+
+    // 表单提交
+    function submit(){
+        var hotelInfoFull = getFormObj();
+        if(hotelInfoFull == false){
+            return;
+        }
+        var postUrl = '$baseUrl/hotel/info/add'
+        if(operate === 'update'){
+            postUrl = '$baseUrl/hotel/info/update'
+        }
+
+        $.ajax({
+            url: postUrl,
+            type: 'post',
+            data: JSON.stringify(hotelInfoFull),
+            contentType: 'application/json',
+            dataType: 'json',
+            success: function(res){
+                console.log(res)
+                if(res.code == 200){
+                    layer.alert("操作成功",{icon:1},function(index){
+                        window.parent.location.reload();
+                        var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+                        parent.layer.close(index); //再执行关闭
+                    });
+                }else{
+                    layer.alert(data.msg,{icon:0});
+                }
+
+            }
+        })
+
+    }
+
+    function getFormObj(){
+        var hotelName = $("#hotelName").val();
+        var description = $("#description").val();
+        var contactName = $("#contactName").val();
+        var phone = $("#phone").val();
+        var businessArr = new Array();
+        $("input[name='business']:checked").each(function(i){
+            businessArr.push($(this).val());
+        });
+        console.log(businessArr);
+        var province = $("#province option:selected").text();
+        var city = $("#city option:selected").text();
+        var area = $("#area option:selected").text();
+        var address = $("#address").val();
+        var location = $("#location").val();
+        var lng,lat;
+        if(location!=''){
+            var loc = location.split(',');
+            lng = loc[0];
+            lat = loc[1];
+        }
+        // 获取slide的值
+        var rank = $( "#slider" ).slider( "option", "value" );
+
+        if(hotelName == null || hotelName === ''){
+            alert("酒店名称不能为空");
+            return false;
+        }
+        if(location == null || location === ''){
+            alert("酒店坐标不能为空");
+            return false;
+        }
+        if(operate != 'update') {
+            if (hotelLogoPath === '') {
+                alert("酒店LOGO不能为空");
+                return false;
+            }
+            if (hotelLogoPath === '') {
+                alert("酒店欢迎页不能为空");
+                return false;
+            }
+            if (hotelContentList.length < 1) {
+                alert("酒店详情图至少要有一张");
+                return false;
+            }
+        }
+        var hotelInfoFull = {
+            hotelInfo: {
+                hotelId: '$!hotelInfo.hotelId',
+                name : hotelName,
+                province: province,
+                city: city,
+                county: area,
+                address: address,
+                lng: lng,
+                lat: lat,
+                description: description,
+                contactName: contactName,
+                phone: phone,
+                rank: rank,
+                imgUrl: hotelLogoPath,
+                welcomeImgUrl: hotelWelComePath
+            },
+            businessId:businessArr,
+            hotelContentList: hotelContentList
+        }
+        console.log('表单提交信息',hotelInfoFull);
+        return hotelInfoFull;
+    }
+
+
+    // 省市区回显
+    function echoAdd(sheng,shi,qu){
+        var shengCode = '';
+        var shiCode = '';
+        var quCode = '';
+        for( var i=0; i<cityJson.length; i++){
+            if(sheng === cityJson[i].name){
+                shengCode = cityJson[i].postcode
+            }
+            if(shi === cityJson[i].name){
+                shiCode = cityJson[i].postcode
+            }
+            if(qu === cityJson[i].name){
+                quCode = cityJson[i].postcode
+            }
+        }
+        province.add(new Option(sheng, shengCode));
+        city.add(new Option(shi, shiCode));
+        area.add(new Option(qu, quCode));
+    }
+</script>
+</html>

@@ -1,0 +1,53 @@
+{
+    "code": 0,
+    "msg": "",
+    "count": 5,
+    "data": [
+        {
+            "id": 1,
+            "account": "15989781858",
+            "name":"郑钱花",
+            "company":"广东迈峰网络科技有限公司",
+            "department":"市场营销部",
+            "tel":"15989781858",
+            "mail":"me@very.nb",
+            "status":"正常"
+        },{
+            "id": 2,
+            "account": "15989781858",
+            "name":"郑钱花",
+            "company":"广东中视物联有限公司",
+            "department":"研发部",
+            "tel":"15989781858",
+            "mail":"me@very.nb",
+            "status":"正常"
+        },{
+            "id": 3,
+            "account": "15989781858",
+            "name":"郑钱花",
+            "company":"广东技安电子有限公司",
+            "department":"人事部",
+            "tel":"15989781858",
+            "mail":"m@st.er",
+            "status":"正常"
+        },{
+            "id": 4,
+            "account": "15989781858",
+            "name":"郑钱花",
+            "company":"广东迈峰网络科技有限公司",
+            "department":"市场营销部",
+            "tel":"15989781858",
+            "mail":"me@very.nb",
+            "status":"正常"
+        },{
+            "id": 5,
+            "account": "15989781858",
+            "name":"郑钱花",
+            "company":"广东迈峰网络科技有限公司",
+            "department":"市场营销部",
+            "tel":"15989781858",
+            "mail":"me@very.nb",
+            "status":"正常"
+        }
+    ]
+}

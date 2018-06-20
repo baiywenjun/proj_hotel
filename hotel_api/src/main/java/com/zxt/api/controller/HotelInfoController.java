@@ -75,7 +75,9 @@ public class HotelInfoController {
         query.setName(hotelName);
         query.setLng(lng);
         query.setLat(lat);
-        return hotelInfoService.queryHotelInfoFullByPage(query, handle.getPage(), handle.getLimit());
+        //return hotelInfoService.queryHotelInfoFullByPage(query, handle.getPage(), handle.getLimit());
+        return hotelInfoService.queryHotelInfoFullDistanceByPageOver(query,handle.getPage(),handle.getLimit());
+        //return hotelInfoService.queryHotelInfoFullByPageDiscard(query,handle.getPage(),handle.getLimit());
     }
 
 }

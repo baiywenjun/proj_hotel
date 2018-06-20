@@ -1,0 +1,68 @@
+{
+    "code": 0,
+    "msg": "",
+    "count": 5,
+    "data": [
+        {
+            "id": 1,
+            "box_no":"1918192313",
+            "capacity": "90L",
+            "model":"C型号",
+            "material":"PE",
+            "size":"129mm*211mm*176mm",
+            "tempera":"2~8℃",
+            "overdue":"2018-11-22",
+            "method":"月租",
+            "status":"运输中",
+            "apply":"已申请"
+        },{
+            "id": 2,
+            "box_no":"1918192313",
+            "capacity": "90L",
+            "model":"C型号",
+            "material":"PE",
+            "size":"129mm*211mm*176mm",
+            "tempera":"2~8℃",
+            "overdue":"2018-11-22",
+            "method":"月租",
+            "status":"运输中",
+            "apply":"已申请"
+        },{
+            "id": 3,
+            "box_no":"1918192313",
+            "capacity": "90L",
+            "model":"C型号",
+            "material":"PE",
+            "size":"129mm*211mm*176mm",
+            "tempera":"2~8℃",
+            "overdue":"2018-11-22",
+            "method":"月租",
+            "status":"运输中",
+            "apply":"已申请"
+        },{
+            "id": 4,
+            "box_no":"1918192313",
+            "capacity": "90L",
+            "model":"C型号",
+            "material":"PE",
+            "size":"129mm*211mm*176mm",
+            "tempera":"2~8℃",
+            "overdue":"2018-11-22",
+            "method":"月租",
+            "status":"运输中",
+            "apply":"已申请"
+        },{
+            "id": 5,
+            "box_no":"1918192313",
+            "capacity": "90L",
+            "model":"C型号",
+            "material":"PE",
+            "size":"129mm*211mm*176mm",
+            "tempera":"2~8℃",
+            "overdue":"2018-11-22",
+            "method":"月租",
+            "status":"运输中",
+            "apply":"已申请"
+        }
+    ]
+}

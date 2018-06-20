@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>MapDemo</title>
+    <style type="text/css">
+        body{
+            margin: 0px;
+        }
+        #container {
+            width:800px;
+            height: 500px;
+            position: relative;
+        }
+        #myPageTop {
+            border: #0C0C0C solid 1px;
+            margin: 10px;
+            padding: 6px;
+            background: #FFFFFF;
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            z-index: 999;
+        }
+    </style>
+    <script type="text/javascript" src="http://webapi.amap.com/maps?v=1.4.6&key=473c6665fbd2d0a09f64d36dfa3456ca&&plugin=AMap.Scale,AMap.OverView,AMap.ToolBar,AMap.Autocomplete,AMap.PlaceSearch"></script>
+</head>
+<body>
+<div id="container">
+    <div id="myPageTop">
+        <table>
+            <tr>
+                <td>
+                    <label>按关键字搜索：</label>
+                </td>
+                <td class="column2">
+                    <label>左击获取经纬度：</label>
+                </td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>
+                    <input type="text" placeholder="请输入关键字进行搜索" id="tipinput">
+                </td>
+                <td class="column2">
+                    <input type="text" readonly="true" id="lnglat">
+                </td>
+                <td>
+                    <button onclick="submit();">确认</button>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+</body>
+<script>
+    // 地图基本参数
+    var mapOption = {
+        zoom:11,//级别
+        center: [113.324239,23.11981],//中心点坐标
+        viewMode:'3D'//使用3D视图
+    }
+    // 添加工具条
+    var toolBar = new AMap.ToolBar({
+        visible: true,
+        position: 'RB'
+    });
+    var map = new AMap.Map('container',mapOption);
+    map.addControl(toolBar);
+
+    //为地图注册click事件获取鼠标点击出的经纬度坐标
+    var marker;
+    var clickEventListener = map.on('click', function(e) {
+        console.log("you click");
+        if(marker!=null){
+            map.remove(marker);
+        }
+        marker = new AMap.Marker({
+            icon: "http://webapi.amap.com/theme/v1.3/markers/n/mark_b.png",
+            position: [e.lnglat.getLng(), e.lnglat.getLat()]
+        });
+        marker.setMap(map);
+        document.getElementById("lnglat").value = e.lnglat.getLng() + ',' + e.lnglat.getLat()
+    });
+    var auto = new AMap.Autocomplete({
+        input: "tipinput"
+    });
+    AMap.event.addListener(auto, "select", select);//注册监听，当选中某条记录时会触发
+    function select(e) {
+        if (e.poi && e.poi.location) {
+            map.setZoom(15);
+            map.setCenter(e.poi.location);
+        }
+    }
+
+    // 确认坐标
+    function submit(){
+        var location = document.getElementById("lnglat").value;
+        console.log(location);
+        if(location == null || location === ''){
+            alert("请先选择一个坐标")
+            return;
+        }
+        parent.document.getElementById("location").value = location;
+        var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+        parent.layer.close(index); //再执行关闭
+    }
+</script>
+</html>

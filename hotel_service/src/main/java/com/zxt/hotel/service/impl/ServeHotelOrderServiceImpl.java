@@ -10,8 +10,11 @@ import com.zxt.hotel.entity.HotelOrderRoom;
 import com.zxt.hotel.entity.ServeHotelOrder;
 import com.zxt.hotel.mapper.HotelOrderRoomMapper;
 import com.zxt.hotel.mapper.ServeHotelOrderMapper;
+import com.zxt.hotel.pojo.ServeHotelOrderFullVO;
+import com.zxt.hotel.pojo.ServeHotelOrderQuery;
 import com.zxt.hotel.service.ServeHotelOrderService;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,6 +30,9 @@ import java.util.List;
  */
 @Service
 public class ServeHotelOrderServiceImpl extends ServiceImpl<ServeHotelOrderMapper, ServeHotelOrder> implements ServeHotelOrderService {
+
+    @Autowired
+    private ServeHotelOrderMapper serveHotelOrderMapper;
 
     @Override
     /**
@@ -60,4 +66,27 @@ public class ServeHotelOrderServiceImpl extends ServiceImpl<ServeHotelOrderMappe
         order.setStatus(shoConst.CANCEL);
         return this.updateById(order);
     }
+
+    @Override
+    /**
+     * 后台查询服务订单
+     * @param query
+     * @param page
+     * @param limit
+     * @return
+     */
+    public Rt queryListByPage(ServeHotelOrderQuery query, Integer page, Integer limit){
+        Wrapper<ServeHotelOrder> wrapper = new EntityWrapper<>();
+        if(StringUtils.isNotEmpty(query.getRoomNo())){
+            wrapper.eq("room_no",query.getRoomNo());
+        }
+        if(query.getIsServeTypeId() != null){
+            wrapper.eq("is_serve_type_id",query.getIsServeTypeId());
+        }
+        int count = this.selectCount(wrapper);
+        wrapper.orderBy("create_time",false);
+        List<ServeHotelOrderFullVO> serveHotelOrderFullVOList = serveHotelOrderMapper.queryListByPage(new Page(page, limit), wrapper);
+        return  Rt.ok(count,serveHotelOrderFullVOList);
+    }
+
 }

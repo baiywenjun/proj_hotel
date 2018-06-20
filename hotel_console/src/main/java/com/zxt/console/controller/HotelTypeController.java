@@ -27,6 +27,11 @@ public class HotelTypeController {
     @Autowired
     private HotelRoomTypeService hotelRoomTypeService;
 
+    @RequestMapping("/page")
+    public String hotelRoomTypePage(){
+        return "components/hotel-type";
+    }
+
     /**
      * 房型列表-简要
      * @param page

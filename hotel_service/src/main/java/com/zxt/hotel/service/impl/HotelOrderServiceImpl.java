@@ -50,6 +50,12 @@ public class HotelOrderServiceImpl extends ServiceImpl<HotelOrderMapper, HotelOr
         if(StringUtils.isNotEmpty(query.getPaymentStatus())){
             wrapper.eq("payment_status",query.getPaymentStatus());
         }
+        if(StringUtils.isNotEmpty(query.getUserRealName())){
+            wrapper.eq("user_real_name",query.getUserRealName());
+        }
+        if(StringUtils.isNotEmpty(query.getUserPhone())){
+            wrapper.eq("user_phone",query.getUserPhone());
+        }
         int count = this.selectCount(wrapper);
         wrapper.orderBy("ho.create_time",false);
         //Page<HotelOrder> hotelInfoPage = this.selectPage(new Page<>(page, limit), wrapper);

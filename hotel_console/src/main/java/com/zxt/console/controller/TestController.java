@@ -1,7 +1,7 @@
 package com.zxt.console.controller;
 
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 /**
  * Title: todoedit
@@ -9,12 +9,12 @@ import org.springframework.web.bind.annotation.RestController;
  * author: wenjun
  * date: 2018/5/18 14:27
  */
-@RestController
+@Controller
 @RequestMapping("/test")
 public class TestController {
 
-    @RequestMapping("/")
+    @RequestMapping("/index")
     public String hello(){
-        return "hello world";
+        return "index";
     }
 }

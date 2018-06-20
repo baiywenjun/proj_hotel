@@ -1,0 +1,91 @@
+#nav li a span {
+    font-size: 16px;
+    color: #333;
+}
+
+.page-content,
+.left-nav {
+    top: 61px;
+}
+
+.container .left_open {
+    padding-top: 5px;
+    margin-left: -36px;
+}
+
+.layui-nav .layui-nav-item a {
+    height: 60px;
+    line-height: 60px;
+   
+}
+.layui-nav .layui-nav-item dl a {
+    height: 40px;
+    line-height: 40px;
+    margin-top: 0px;
+}
+
+/*dl .layui-nav .layui-nav-item a{
+    height: 40px;
+}*/
+
+.container .layui-nav-more {
+    top: 30px;
+}
+
+.thetitle {
+    display: block;
+    width: 100%;
+    height: 60px;
+    line-height: 60px;
+    color: #fff;
+    text-align: center;
+    position: absolute;
+    // font-weight: bold;
+    font-size: 22px;
+    -webkit-font-smoothing: subpixel-antialiased;
+    // -moz-osx-font-smoothing: grayscale;
+}
+
+.logo {
+    position: relative;
+    z-index: 999;
+}
+
+.logo img {
+    height: 50px;
+    margin-top: 5px;
+}
+
+.pulldownmenu {
+    position: relative;
+    z-index: 999;
+}
+
+.left_open {
+    position: relative;
+    z-index: 10001;
+}
+
+.layui-nav .layui-this:after,
+.layui-nav-bar,
+.layui-nav-tree .layui-nav-itemed:after {
+    background-color: transparent;
+}
+
+.container .layui-nav-child {
+    top: 60px;
+}
+.origintab{
+    background-color: #FFF;
+}
+.container{
+    height: 60px;
+}
+/* .container img{
+    height:56px;
+} */
+.head{
+    height: 70%;
+    margin-right: 10px;
+    border-radius: 50%;
+}

@@ -8,7 +8,9 @@ import com.zxt.api.wechatpay.WxPayConfig;
 import com.zxt.api.wechatpay.payUtil;
 import com.zxt.common.result.R;
 import com.zxt.common.util.IPUtils;
+import com.zxt.hotel.entity.ServeFoodOrder;
 import com.zxt.hotel.service.HotelOrderService;
+import com.zxt.hotel.service.ServeFoodOrderService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;
@@ -49,6 +51,9 @@ public class WechatPayController {
 
     @Autowired
     private HotelOrderService hotelOrderService;
+
+    @Autowired
+    private ServeFoodOrderService foodOrderService;
 
     @PostMapping("/wechat")
     @ApiOperation(httpMethod = "POST", value = "微信支付(money单位是分)")
@@ -119,8 +124,15 @@ public class WechatPayController {
                 String pay_time = map.get("time_end");//支付完成时间
                 String appId = map.get("appid");//公众号id
                 String openid = map.get("openid");//用户标识
-                //系统更新订单，将微信的流水号更新到订单字段总,然后将订单状态改成支付成功状态
-                hotelOrderService.updateOrderByPaid("wechat",out_trade_no, transaction_id);
+
+                if(out_trade_no.charAt(0)=='H'){
+                    //系统更新订单，将微信的流水号更新到订单字段总,然后将订单状态改成支付成功状态
+                    hotelOrderService.updateOrderByPaid("wechat",out_trade_no, transaction_id);
+                }else if(out_trade_no.charAt(0)=='F'){//2018-06-08
+                    //系统更新订单，将微信的流水号更新到订单字段总,然后将订单状态改成支付成功状态
+                    foodOrderService.updateOrderByPaid("food",out_trade_no, transaction_id);
+                    foodOrderService.notifyCallback(map);
+                }
             }
 
         }catch (Exception e) {

@@ -21,6 +21,7 @@
         <result column="create_time" property="createTime" />
         <result column="create_id" property="createId" />
         <result column="hotel_status" property="hotelStatus" />
+        <result column="alias_no" property="aliasNo" />
         <result column="remark" property="remark" />
         <result column="distance" property="distance" />
     </resultMap>
@@ -34,14 +35,14 @@
                         POW(
                             SIN(
                                 (
-                                    #{query.lat} * PI() / 180 - hoi.lat * PI() / 180
+                                    #{query.lat} * PI() / 180 - i.lat * PI() / 180
                                 ) / 2
                             ),
                             2
-                        ) + COS(#{query.lat} * PI() / 180) * COS(hoi.lat * PI() / 180) * POW(
+                        ) + COS(#{query.lat} * PI() / 180) * COS(i.lat * PI() / 180) * POW(
                             SIN(
                                 (
-                                    #{query.lng} * PI() / 180 - hoi.lng * PI() / 180
+                                    #{query.lng} * PI() / 180 - i.lng * PI() / 180
                                 ) / 2
                             ),
                             2
@@ -49,13 +50,225 @@
                     )
                 ) * 1000
             ) AS distance,
-            hoi.*
+            i.*
         FROM
-            hotel_info hoi
+            hotel_info i
         WHERE 1=1
         <if test="query.name != null and query.name != ''">
-            and hoi.NAME like CONCAT('%',#{query.name},'%')
+            and i.NAME like CONCAT('%',#{query.name},'%')
         </if>
     </select>
+
+    <resultMap id="hotelInfoFullOverMap" type="com.zxt.hotel.pojo.HotelInfoFullDistanceVO">
+        <association property="hotelInfoExt" javaType="com.zxt.hotel.pojo.HotelInfoExt">
+            <id column="hotel_id" property="hotelId" />
+            <result column="name" property="name" />
+            <result column="hotel_no" property="hotelNo" />
+            <result column="img_url" property="imgUrl" />
+            <result column="welcome_img_url" property="welcomeImgUrl" />
+            <result column="rank" property="rank" />
+            <result column="province" property="province" />
+            <result column="city" property="city" />
+            <result column="county" property="county" />
+            <result column="address" property="address" />
+            <result column="lng" property="lng" />
+            <result column="lat" property="lat" />
+            <result column="business" property="business" />
+            <result column="description" property="description" />
+            <result column="phone" property="phone" />
+            <result column="contact_name" property="contactName" />
+            <result column="create_time" property="createTime" />
+            <result column="create_id" property="createId" />
+            <result column="hotel_status" property="hotelStatus" />
+            <result column="alias_no" property="aliasNo" />
+            <result column="remark" property="remark" />
+            <result column="distance" property="distance" />
+        </association>
+        <collection property="hotelDictList" ofType="com.zxt.hotel.entity.HotelDict">
+            <id column="dict_id" property="dictId" jdbcType="BIGINT" />
+            <result column="code" property="code" jdbcType="VARCHAR" />
+            <result column="value" property="value" jdbcType="VARCHAR" />
+            <result column="dict_name" property="name" jdbcType="VARCHAR" />
+            <result column="sort_id" property="sortId" jdbcType="INTEGER" />
+            <result column="parent_id" property="parentId" jdbcType="BIGINT" />
+            <result column="level" property="level" jdbcType="INTEGER" />
+            <result column="type" property="type" jdbcType="VARCHAR" />
+            <result column="dict_remark" property="remark" jdbcType="VARCHAR" />
+        </collection>
+        <collection property="hotelContentList" ofType="com.zxt.hotel.entity.HotelContent">
+            <id column="content_id" property="contentId" jdbcType="BIGINT" />
+            <result column="title" property="title" jdbcType="VARCHAR" />
+            <result column="content_img" property="content" jdbcType="VARCHAR" />
+            <result column="content_sort_id" property="sortId" jdbcType="INTEGER" />
+            <result column="content_type" property="type" jdbcType="VARCHAR" />
+            <result column="content_create_time" property="createTime" jdbcType="TIMESTAMP" />
+        </collection>
+    </resultMap>
+
+    <resultMap id="hotelInfoFullMap" type="com.zxt.hotel.pojo.HotelInfoFullVO">
+        <id column="hotel_id" property="hotelId" />
+        <result column="name" property="name" />
+        <result column="hotel_no" property="hotelNo" />
+        <result column="img_url" property="imgUrl" />
+        <result column="welcome_img_url" property="welcomeImgUrl" />
+        <result column="rank" property="rank" />
+        <result column="province" property="province" />
+        <result column="city" property="city" />
+        <result column="county" property="county" />
+        <result column="address" property="address" />
+        <result column="lng" property="lng" />
+        <result column="lat" property="lat" />
+        <result column="business" property="business" />
+        <result column="description" property="description" />
+        <result column="phone" property="phone" />
+        <result column="contact_name" property="contactName" />
+        <result column="create_time" property="createTime" />
+        <result column="create_id" property="createId" />
+        <result column="hotel_status" property="hotelStatus" />
+        <result column="alias_no" property="aliasNo" />
+        <result column="remark" property="remark" />
+        <result column="distance" property="distance" />
+        <collection property="hotelDictList" ofType="com.zxt.hotel.entity.HotelDict">
+            <id column="dict_id" property="dictId" jdbcType="BIGINT" />
+            <result column="code" property="code" jdbcType="VARCHAR" />
+            <result column="value" property="value" jdbcType="VARCHAR" />
+            <result column="dict_name" property="name" jdbcType="VARCHAR" />
+            <result column="sort_id" property="sortId" jdbcType="INTEGER" />
+            <result column="parent_id" property="parentId" jdbcType="BIGINT" />
+            <result column="level" property="level" jdbcType="INTEGER" />
+            <result column="type" property="type" jdbcType="VARCHAR" />
+            <result column="dict_remark" property="remark" jdbcType="VARCHAR" />
+        </collection>
+        <collection property="hotelContentList" ofType="com.zxt.hotel.entity.HotelContent">
+            <id column="content_id" property="contentId" jdbcType="BIGINT" />
+            <result column="title" property="title" jdbcType="VARCHAR" />
+            <result column="content_img" property="content" jdbcType="VARCHAR" />
+            <result column="content_sort_id" property="sortId" jdbcType="INTEGER" />
+            <result column="content_type" property="type" jdbcType="VARCHAR" />
+            <result column="content_create_time" property="createTime" jdbcType="TIMESTAMP" />
+        </collection>
+    </resultMap>
+
+    <select id="queryHotelInfoFullDistanceByPageOver" resultMap="hotelInfoFullOverMap">
+        SELECT
+        ROUND(
+        6378.138 * 2 * ASIN(
+        SQRT(
+        POW(
+        SIN(
+        (
+        #{query.lat} * PI() / 180 - i.lat * PI() / 180
+        ) / 2
+        ),
+        2
+        ) + COS(#{query.lat} * PI() / 180) * COS(i.lat * PI() / 180) * POW(
+        SIN(
+        (
+        #{query.lng} * PI() / 180 - i.lng * PI() / 180
+        ) / 2
+        ),
+        2
+        )
+        )
+        ) * 1000
+        ) AS distance,
+        <include refid="hotelInfoFullField"></include>
+        FROM
+        (
+        SELECT * FROM hotel_info
+        <where>
+            1=1
+            ${ew.sqlSegment}
+        </where>
+        <if test="index != null and size != 0">
+            limit ${index},${size}
+        </if>
+        ) i
+        LEFT JOIN hotel_info_dict_rel dr on dr.hotel_id = i.hotel_id
+        LEFT JOIN hotel_dict d on dr.dict_id = d.dict_id
+        LEFT JOIN hotel_info_content_rel cr on cr.hotel_id = i.hotel_id
+        LEFT JOIN hotel_content c on cr.content_id = c.content_id
+    </select>
+
+    <select id="queryHotelInfoFullDistanceByPage" resultMap="hotelInfoFullMap">
+        SELECT
+            ROUND(
+            6378.138 * 2 * ASIN(
+            SQRT(
+            POW(
+            SIN(
+            (
+            #{query.lat} * PI() / 180 - i.lat * PI() / 180
+            ) / 2
+            ),
+            2
+            ) + COS(#{query.lat} * PI() / 180) * COS(i.lat * PI() / 180) * POW(
+            SIN(
+            (
+            #{query.lng} * PI() / 180 - i.lng * PI() / 180
+            ) / 2
+            ),
+            2
+            )
+            )
+            ) * 1000
+            ) AS distance,
+            <include refid="hotelInfoFullField"></include>
+        FROM
+        (
+        SELECT * FROM hotel_info
+        <where>
+            1=1
+            ${ew.sqlSegment}
+        </where>
+        <if test="index != null and size != 0">
+            limit ${index},${size}
+        </if>
+        ) i
+        LEFT JOIN hotel_info_dict_rel dr on dr.hotel_id = i.hotel_id
+        LEFT JOIN hotel_dict d on dr.dict_id = d.dict_id
+        LEFT JOIN hotel_info_content_rel cr on cr.hotel_id = i.hotel_id
+        LEFT JOIN hotel_content c on cr.content_id = c.content_id
+    </select>
+
+    <select id="queryHotelInfoFullByPage" resultMap="hotelInfoFullMap">
+        SELECT
+            <include refid="hotelInfoFullField"></include>
+        FROM
+        (
+          SELECT * FROM hotel_info
+        <where>
+            1=1
+            ${ew.sqlSegment}
+        </where>
+        <if test="index != null and size != 0">
+            limit ${index},${size}
+        </if>
+        ) i
+        LEFT JOIN hotel_info_dict_rel dr on dr.hotel_id = i.hotel_id
+        LEFT JOIN hotel_dict d on dr.dict_id = d.dict_id
+        LEFT JOIN hotel_info_content_rel cr on cr.hotel_id = i.hotel_id
+        LEFT JOIN hotel_content c on cr.content_id = c.content_id
+
+    </select>
+
+    <sql id="hotelInfoFullField">
+        i.*,
+        d.dict_id,
+        d.code,
+        d.value,
+        d.name as dict_name,
+        d.sort_id,
+        d.parent_id,
+        d.level,
+        d.type,
+        d.remark as dict_remark,
+        c.content_id,
+        c.title,
+        c.content as content_img,
+        c.sort_id as content_sort_id,
+        c.type as content_type,
+        c.create_time as content_create_time
+    </sql>
 
 </mapper>

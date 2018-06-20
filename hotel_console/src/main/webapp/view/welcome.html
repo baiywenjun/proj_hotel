@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>欢迎页面 - 百通e箱冷链容器租赁平台</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <script src="./lib/layui/layui.js" charset="utf-8"></script>
+    <link rel="stylesheet" href="./css/font.css">
+    <link rel="stylesheet" href="./css/xadmin.css">
+    <link rel="stylesheet" href="./css/font-awesome.min.css">
+    <script type="text/javascript" src="./js/jquery-1.12.4.min.js"></script>
+    <script type="text/javascript" src="./js/xadmin.js"></script>
+    <!--[if lt IE 9]>
+              <script src="js/html5.min.js"></script>
+              <script src="js/respond.min.js"></script>
+            <![endif]-->
+    <style type="text/css">
+    .statistics {
+        position: relative;
+    }
+
+    .statistics .layui-icon {
+        position: absolute;
+        /*background-color: #5FB878;*/
+        background-color: #19A078;
+        display: inline-block;
+        height: 101px;
+        width: 100px;
+        line-height: 100px;
+        font-size: 60px;
+        color: #fff;
+        text-align: center;
+        top: 0px;
+        left: -1px;
+    }
+
+    .statistics>div {
+        padding: 0 20px;
+       /* margin-top: 10px;*/
+    }
+    .statistics>div:first-of-type{
+        padding-left: 0px;
+    }
+    .statistics>div:last-of-type{
+        padding-right: 0px;
+    }
+
+    .statistics .layui-card {
+        text-align: center;
+        background-color: #fff;
+        border:solid 1px rgba(233,233,233,.5);
+        box-shadow: 0 1px 2px 0 rgba(0,0,0,.2);
+        height: 100px;
+}
+    }
+    .statistics .layui-card .layui-card-body {
+        
+       /* padding: 0;*/
+    }
+
+    .statistics .layui-card-body p{
+        width: 100%;
+        font-size: 22px;
+        text-align: center;
+        line-height: 28px;
+        /*color: #5FB878;*/
+        color: #19A078;
+        margin-left: 50px;
+    }
+    .statistics .layui-card-body p:first-of-type{
+        color: #666;
+        font-size: 16px;
+        margin-top: 0px;
+    }
+    .statistics .layui-card-body p:last-of-type{
+        color: #999;
+        font-size: 12px;
+    }
+    .table-container{
+        padding: 0;
+        margin: 0;
+        margin-top: -20px;
+    }
+    #msg thead{display: none;}
+    #msg .layui-table td:first-of-type{
+       /* border-top: none;*/
+    }
+    #msg .layui-table-view{
+        border-top: none;
+    }
+    .layui-elem-quote{
+        padding: 8px 15px;
+    }
+    .wrapper{
+        padding: 15px 20px;
+    }
+    .layui-table-tips-main{
+        display: none;
+    }
+    .layui-table-tips-c{
+        display: none;
+    }
+    </style>
+</head>
+
+<body>
+    <div class="wrapper">
+        <div class="">
+            <div class="layui-row statistics">
+                <div class="layui-col-xs4 layui-col-sm4 layui-col-md4">
+                    <div class="layui-card">
+                        <div class="layui-card-body layui-text layui-row">
+                            <div class="layui-icon" style="font-size: 40px;">
+                           <!--  &#xe60a; -->
+                                <i class="fa fa-file-text"></i>
+                            </div>
+                            <p>本日订单</p>
+                            <p>123</p>
+                            <p>+5%</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-col-xs4 layui-col-sm4 layui-col-md4">
+                    <div class="layui-card">
+                        <div class="layui-card-body layui-text layui-row">
+                            <div class="layui-icon" style="font-size: 50px;">
+                           <!--  &#xe63c; -->
+                                <i class="fa fa-cube"></i>
+                            </div>
+                            <p>商品总数</p>
+                            <p>1236</p>
+                            <p>+1%</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-col-xs4 layui-col-sm4 layui-col-md4">
+                    <div class="layui-card">
+                        <div class="layui-card-body layui-text layui-row">
+                            <div class="layui-icon" style="font-size: 40px;">
+                            <!-- &#xe62a; -->
+                                <i class="fa fa-users"></i>
+                            </div>
+                            <p>客户总数</p>
+                            <p>5123</p>
+                            <p>+10%</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <blockquote class="layui-elem-quote" style="margin-top: 20px;">一周订单走势</blockquote>
+        <div id="chart" style="width: 100%;height:200px;"></div>
+        <div class="layui-row layui-col-space15">
+            <div class="layui-col-xs4 layui-col-sm4 layui-col-md4">
+                <blockquote class="layui-elem-quote">
+                 最新订单
+                </blockquote>
+                <div class="table-container">
+                    <table id="orderlist" lay-filter="order"></table>
+                </div>
+            </div>
+            <div class="layui-col-xs4 layui-col-sm4 layui-col-md4">
+                <blockquote class="layui-elem-quote">
+                 最新客户
+                </blockquote>
+                <div class="table-container">
+                    <table id="customerlist" lay-filter="customers"></table>
+                </div>
+            </div>
+            <div class="layui-col-xs4 layui-col-sm4 layui-col-md4" id="msg">
+                <blockquote class="layui-elem-quote">
+                 最新消息
+                </blockquote>
+                <div class="table-container">
+                    <table id="messagelist" lay-filter="messages"></table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--  <div class="layui-fluid">
+        <div class="layui-row">
+            <div class="layui-col-xs4 layui-col-sm4 layui-col-md4">
+                <div class="layui-card">
+                    <div class="layui-card-header">版本信息</div>
+                    <div class="layui-card-body layui-text">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> -->
+    
+    <!-- <blockquote class="layui-elem-quote layui-quote-nm">Powered by <a href="http://www.minephone.com">MINEPHONE</a> Co., Ltd.</blockquote> -->
+    <script>
+    layui.use('table', function() {
+        var table = layui.table;
+        table.render({
+            elem: '#orderlist'
+                // ,height: 'full-280'
+                ,
+            url: 'data/orderlist.json' //数据接口
+                ,
+            page: false //开启分页
+                ,
+            limits: [10, 30, 60],
+            limit: 10,
+            cols: [
+                [ 
+                   { field: 'order_no', title: '订单号', align: 'center' }
+                    , { field: 'name', title: '收货人', align: 'center' }
+                    , { field: 'price', title: '金额',  align: 'center'}
+                ]
+            ],
+            page:false
+        });
+         table.render({
+            elem: '#customerlist',
+            url: 'data/customer.json' //数据接口
+                ,
+            page: false //开启分页
+                ,
+            limits: [10, 30, 60],
+            limit: 10,
+            cols: [
+                [ 
+                   { field: 'account', title: '账号', align: 'center' }
+                    , { field: 'name', title: '姓名', align: 'center' }
+                    , { field: 'tel', title: '手机',  align: 'center'}
+                ]
+            ],
+            page:false
+        });
+        table.render({
+            elem: '#messagelist',
+            url: 'data/messages.json' //数据接口
+                ,
+            page: false //开启分页
+                ,
+            limits: [10, 30, 60],
+            limit: 10,
+            cols: [
+                [ 
+                   { field: 'title', title: '标题', align: 'left',templet:"#msglist" }
+                    
+                ]
+            ],
+            page:false
+        });
+
+    });
+    </script>
+    <script type="text/javascript" src="js/function.js"></script>
+    <script src="lib/echarts.common.min.js"></script>
+    <script type="text/html" id="picTpl">
+        <div class="thepic"><img class="tableimg" src="{{d.img}}" /></div>
+    </script>
+    <script type="text/html" id="msglist">
+        <a style="color: #3879D9" class="layui-table-link" onclick="showModal('{{d.title}}','components/showmessage.html')">{{d.title}}</a>
+    </script>
+    <script type="text/javascript">
+    layui.use(['jquery', 'layer'], function() {
+        var $ = layui.$,
+            layer = layui.layer;
+
+        $(document).ready(function() {
+            layer.photos({
+                photos: '.thepic',
+                anim: 5 //0-6的选择，指定弹出图片动画类型，默认随机（请注意，3.0之前的版本用shift参数）
+            });
+
+        });
+
+
+
+    });
+    </script>
+
+    <script type="text/javascript">
+        // 基于准备好的dom，初始化echarts实例
+        var myChart = echarts.init(document.getElementById('chart'));
+        var waterMarkText = '百通e箱';
+        var canvas = document.createElement('canvas');
+        var ctx = canvas.getContext('2d');
+        canvas.width = canvas.height = 100;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.globalAlpha = 0.08;
+        ctx.font = '20px Microsoft Yahei';
+        ctx.translate(50, 50);
+        ctx.rotate(-Math.PI / 4);
+        ctx.fillText(waterMarkText, 0, 0);
+
+        // 指定图表的配置项和数据
+       option = {
+            xAxis: {
+                type: 'category',
+                data: ['Mon/周一', 'Tue/周二', 'Wed/周三', 'Thu/周四', 'Fri/周五', 'Sat/周六', 'Sun/周日']
+            },
+            yAxis: {
+                type: 'value'
+            },
+             backgroundColor: {
+                type: 'pattern',
+                image: canvas,
+                repeat: 'repeat'
+            },
+             grid: {
+                left: 10,
+                right: 10,
+                bottom: 18,
+                containLabel: true,
+                //containLabel:false,
+                top:10,
+            },
+            series: [{
+                data: [82, 132, 111, 192, 129, 133, 167],
+                type: 'line',
+                smooth: true,
+            //     markPoint: {
+            //     data: [
+            //         {type: 'max', name: '最大值'},
+            //         {type: 'min', name: '最小值'}
+            //     ]
+            // },
+            //     markLine: {
+            //         data: [
+            //             {type: 'average', name: '平均值'}
+            //         ],
+            //         right:30
+            //     }
+                }],
+                color:['#19A078']
+        };
+
+
+        // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption(option);
+    </script>
+    <!--  <script type="text/html" id="action">
+      <a class="layui-table-link" onclick="showOrder('查看订单详情','orderdetail.html','','','{{d.id}}','{{d.status}}')">{{d.title}}</a>
+    </script> -->
+</body>
+
+</html>

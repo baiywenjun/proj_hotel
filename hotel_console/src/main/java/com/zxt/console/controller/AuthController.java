@@ -81,7 +81,7 @@ public class AuthController {
 
     /**
      * 登录验证
-     * @param adminName
+     * @param username
      * @param password
      * @param captchaCode
      * @param request
@@ -89,7 +89,7 @@ public class AuthController {
      */
     @PostMapping(value="/login")
     @ResponseBody
-    public R authorization(String adminName, String password, String captchaCode, HttpServletRequest request){
+    public R authorization(String username, String password, String captchaCode, HttpServletRequest request){
         // 先验证验证码
         //String contextCode = (String) request.getSession().getAttribute(LOGIN_CAPTCHA_KEY);
         // FIXME 开发阶段，关闭验证码
@@ -98,7 +98,7 @@ public class AuthController {
 //		}
         // 获取当前请求线程的用户
         Subject subject = SecurityUtils.getSubject();
-        UsernamePasswordToken token = new UsernamePasswordToken(adminName, password);
+        UsernamePasswordToken token = new UsernamePasswordToken(username, password);
         try {
             subject.login(token);
         } catch (AuthenticationException e) {
@@ -115,7 +115,8 @@ public class AuthController {
             String beforeUrl = savedRequest.getRequestUrl();
             log.debug("beforeUrl:====> " + beforeUrl + "");
         }
-        return R.ok();
+        SysAdmin user = (SysAdmin) subject.getPrincipal();
+        return R.ok("success",user);
     }
 
 

@@ -1,0 +1,33 @@
+a,a:hover{
+			color: #fff;
+		}
+		#prod-detail{
+			margin-top: 20px;
+		}
+		#prod-detail .summary{
+			padding-left: 20px;
+			line-height: 30px;
+		}
+		#prod-detail .summary span{
+			color: #555;
+		}
+		#prod-detail h2{
+			border-bottom: solid 1px #f2f2f2;
+			padding-bottom: 10px;
+			margin-bottom: 10px;
+			text-align: right;
+			padding-right: 30px;
+			font-size: 20px;
+		}
+		#prod-detail .desc{
+			color: #555;
+			line-height: 24px;
+			margin: 20px 0;
+		}
+		.summary .layui-row{
+			margin-top: 20px;
+		}
+		#prod-detail .price span{
+			color: #f40;
+		}
+		

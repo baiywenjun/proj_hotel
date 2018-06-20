@@ -19,6 +19,15 @@ public class GenNo {
         return generatorByTimestamp("H",username);
     }
 
+    /**
+     * 点餐订单生成
+     * @param username username
+     * @return no
+     */
+    public static String foodOrderNo(String username){
+        return generatorByTimestamp("F",username);
+    }
+
     private static String generatorByTimestamp(String flag, String username){
         long currentMs = System.currentTimeMillis();
         // 获取用户后四位尾数
