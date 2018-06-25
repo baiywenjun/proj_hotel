@@ -31,4 +31,10 @@ public interface HotelRoomService extends IService<HotelRoom> {
      * @return
      */
     Rt queryHotelRoomByPage(HotelRoomQuery query, Integer page, Integer limit);
+
+    Rt queryHotelRoomExtByPage(HotelRoomQuery query, Integer page, Integer limit);
+
+    Long addRecord(HotelRoom hotelRoom);
+
+    String processImportData(String filePath);
 }

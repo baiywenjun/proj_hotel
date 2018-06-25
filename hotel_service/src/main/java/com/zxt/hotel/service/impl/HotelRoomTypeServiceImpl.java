@@ -40,6 +40,20 @@ public class HotelRoomTypeServiceImpl extends ServiceImpl<HotelRoomTypeMapper, H
     private HotelTypeDictRelMapper hotelTypeDictRelMapper;
 
     @Override
+    /**
+     * 给profile使用
+     * @param query
+     * @return
+     */
+    public List<HotelRoomType> queryHotelRoomType(HotelRoomTypeQuery query){
+        Wrapper<HotelRoomType> wrapper = new EntityWrapper<>();
+        if(query.getIsHotelId() != null){
+            wrapper.eq("is_hotel_id",query.getIsHotelId());
+        }
+        return this.selectList(wrapper);
+    }
+
+    @Override
     public Rt queryHotelRoomTypeByPage(HotelRoomTypeQuery query, Integer page, Integer limit){
         Wrapper<HotelRoomType> wrapper = new EntityWrapper<>();
         if(query.getIsHotelId() != null){

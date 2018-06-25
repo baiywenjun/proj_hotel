@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zxt.hotel.mapper.HotelRoomMapper" >
+    <resultMap id="hotelRoomExtMap" type="com.zxt.hotel.pojo.HotelRoomExtVO" >
+        <id column="room_id" property="roomId" jdbcType="BIGINT" />
+        <result column="is_room_type_id" property="isRoomTypeId" jdbcType="BIGINT" />
+        <result column="is_hotel_id" property="isHotelId" jdbcType="BIGINT" />
+        <result column="room_no" property="roomNo" jdbcType="VARCHAR" />
+        <result column="hotel_name" property="hotelName" jdbcType="VARCHAR" />
+        <result column="storey" property="storey" jdbcType="VARCHAR" />
+        <result column="qr_code" property="qrCode" jdbcType="VARCHAR" />
+        <result column="qr_code_content" property="qrCodeContent" jdbcType="VARCHAR" />
+        <result column="dev_no" property="devNo" jdbcType="VARCHAR" />
+        <result column="stay_status" property="stayStatus" jdbcType="VARCHAR" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+        <association property="hotelRoomType" javaType="com.zxt.hotel.entity.HotelRoomType">
+            <id column="room_type_id" property="roomTypeId" />
+            <result column="is_hotel_id" property="isHotelId" />
+            <result column="type_code" property="typeCode" />
+            <result column="type_name" property="typeName" />
+            <result column="type_spec" property="typeSpec" />
+            <result column="type_price" property="typePrice" />
+            <result column="type_img" property="typeImg" />
+            <result column="type_content" property="typeContent" />
+            <result column="type_status" property="typeStatus" />
+        </association>
+    </resultMap>
+
+
+    <select id="queryHotelRoomExtByPage" resultMap="hotelRoomExtMap">
+        SELECT
+            hry.*, hr.*
+        FROM
+            hotel_room hr,
+            hotel_room_type hry
+        <where>
+            hr.is_room_type_id = hry.room_type_id
+            ${ew.sqlSegment}
+        </where>
+    </select>
+
+
+</mapper>

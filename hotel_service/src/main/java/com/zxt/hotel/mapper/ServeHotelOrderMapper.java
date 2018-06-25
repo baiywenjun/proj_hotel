@@ -21,4 +21,5 @@ public interface ServeHotelOrderMapper extends BaseMapper<ServeHotelOrder> {
 
     List<ServeHotelOrderFullVO> queryListByPage(Page page,@Param("ew") Wrapper wrapper);
 
+    List<ServeHotelOrderFullVO> queryListByPage2(Page page,@Param("ew") Wrapper<ServeHotelOrder> wrapper);
 }

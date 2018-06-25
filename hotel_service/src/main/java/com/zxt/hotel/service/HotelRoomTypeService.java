@@ -6,6 +6,8 @@ import com.baomidou.mybatisplus.service.IService;
 import com.zxt.hotel.pojo.HotelRoomTypeFullVO;
 import com.zxt.hotel.pojo.HotelRoomTypeQuery;
 
+import java.util.List;
+
 /**
  * <p>
  * 酒店sku 服务类
@@ -15,6 +17,13 @@ import com.zxt.hotel.pojo.HotelRoomTypeQuery;
  * @since 2018-05-18
  */
 public interface HotelRoomTypeService extends IService<HotelRoomType> {
+
+    /**
+     * 给profile使用
+     * @param query
+     * @return
+     */
+    List<HotelRoomType> queryHotelRoomType(HotelRoomTypeQuery query);
 
     Rt queryHotelRoomTypeByPage(HotelRoomTypeQuery query, Integer page, Integer limit);
 

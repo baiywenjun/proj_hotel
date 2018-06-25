@@ -1,7 +1,13 @@
 package com.zxt.hotel.mapper;
 
+import com.baomidou.mybatisplus.mapper.Wrapper;
+import com.baomidou.mybatisplus.plugins.Page;
 import com.zxt.hotel.entity.HotelRoom;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
+import com.zxt.hotel.pojo.HotelRoomExtVO;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
  * <p>
@@ -13,4 +19,5 @@ import com.baomidou.mybatisplus.mapper.BaseMapper;
  */
 public interface HotelRoomMapper extends BaseMapper<HotelRoom> {
 
+    List<HotelRoomExtVO> queryHotelRoomExtByPage(Page page, @Param("ew")Wrapper wrapper);
 }

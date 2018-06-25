@@ -6,6 +6,8 @@ import com.zxt.hotel.entity.HotelInfo;
 import com.zxt.hotel.pojo.HotelInfoFullVO;
 import com.zxt.hotel.pojo.HotelInfoQuery;
 
+import java.util.List;
+
 /**
  * <p>
  * 酒店信息 服务类
@@ -15,6 +17,13 @@ import com.zxt.hotel.pojo.HotelInfoQuery;
  * @since 2018-05-18
  */
 public interface HotelInfoService extends IService<HotelInfo> {
+
+    /**
+     * 给profile使用
+     * @param query
+     * @return
+     */
+    List<HotelInfo> queryHotelInfo(HotelInfoQuery query);
 
     /**
      * 查询酒店信息

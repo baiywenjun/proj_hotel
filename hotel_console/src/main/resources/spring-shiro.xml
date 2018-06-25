@@ -41,11 +41,17 @@
 		<property name="globalSessionTimeout" value="7200000" /><!-- 2小时 -->
 		<!-- 删除失效的session -->
 		<property name="deleteInvalidSessions" value="true" />
-		<property name="sessionIdCookie.name" value="consoleId"/>
+		<!--<property name="sessionIdCookie.name" value="consoleId"/>-->
+		<property name="sessionIdCookie" ref="simpleCookie"/>
 	</bean>
 	
 	<!-- 开启shiro注解支持 -->
 	<bean class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">
 		<property name="securityManager" ref="securityManager" />
+	</bean>
+
+	<bean id="simpleCookie" class="org.apache.shiro.web.servlet.SimpleCookie">
+		<constructor-arg name="name" value="shiro.sesssion"/>
+		<property name="path" value="/"/>
 	</bean>
 </beans>

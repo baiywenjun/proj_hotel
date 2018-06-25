@@ -19,4 +19,6 @@ public interface ServeTypeService extends IService<ServeType> {
      * @return rt
      */
     Rt serveTypeList();
+
+    Rt queryServeTypeByPage(ServeType query, Integer page, Integer limit);
 }

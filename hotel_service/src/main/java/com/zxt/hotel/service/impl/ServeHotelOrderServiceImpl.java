@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.zxt.common.constant.shoConst;
+import com.zxt.common.customs.CallBack;
 import com.zxt.common.result.R;
 import com.zxt.common.result.Rt;
 import com.zxt.hotel.entity.HotelOrderRoom;
@@ -88,5 +89,42 @@ public class ServeHotelOrderServiceImpl extends ServiceImpl<ServeHotelOrderMappe
         List<ServeHotelOrderFullVO> serveHotelOrderFullVOList = serveHotelOrderMapper.queryListByPage(new Page(page, limit), wrapper);
         return  Rt.ok(count,serveHotelOrderFullVOList);
     }
+
+    /**
+     * 后台查询服务订单(根据 serve_hotel_id 查询)
+     * @param query
+     * @param page
+     * @param limit
+     * @return
+     */
+    @Override
+    public Rt queryListByPage2(ServeHotelOrderQuery query, Integer page, Integer limit) {
+        Wrapper<ServeHotelOrder> wrapper = new EntityWrapper<>();
+        if (null != query.getServeHotelId()) {
+            wrapper.eq("serve_hotel_id", query.getServeHotelId());
+        }
+        int count = this.selectCount(wrapper);
+        wrapper.orderBy("create_time", false);
+        List<ServeHotelOrderFullVO> serveHotelOrderFullVOList = serveHotelOrderMapper.queryListByPage2(new Page(page, limit), wrapper);
+        return Rt.ok(count, serveHotelOrderFullVOList);
+    }
+
+    @Override
+    public Rt queryListByPageNCallback(ServeHotelOrderQuery query, Integer page, Integer limit, CallBack<ServeHotelOrderFullVO> callback) {
+        Wrapper<ServeHotelOrder> wrapper = new EntityWrapper<>();
+        if (null != query.getServeHotelId()) {
+            wrapper.eq("serve_hotel_id", query.getServeHotelId());
+        }
+        int count = this.selectCount(wrapper);
+        wrapper.orderBy("create_time", false);
+        List<ServeHotelOrderFullVO> serveHotelOrderFullVOList = serveHotelOrderMapper.queryListByPage2(new Page(page, limit), wrapper);
+        callback.dblist(serveHotelOrderFullVOList);
+        Rt ret=Rt.ok(count, serveHotelOrderFullVOList);
+        if( null != callback && null!=callback.other() && callback.other().size()!=0){
+            ret.put("other",callback.other());
+        }
+        return ret;
+    }
+
 
 }

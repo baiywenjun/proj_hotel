@@ -30,16 +30,46 @@
 
     <select id="queryListByPage" resultMap="serveHotelOrderFullMap">
         SELECT
-            st.*, sho.*
+        st.*, sho.*
         FROM
-            serve_hotel_order sho,
-            serve_type st
+        serve_hotel_order sho,
+        serve_type st
         <where>
-          sho.is_serve_type_id = st.serve_type_id
-          ${ew.sqlSegment}
+            sho.is_serve_type_id = st.serve_type_id
+            ${ew.sqlSegment}
         </where>
     </select>
 
+
+    <select id="queryListByPage2" resultMap="serveHotelOrderFullMap">
+        SELECT
+        st.serve_type_id,
+        st.type_code,
+        st.serve_content,
+        st.serve_price,
+        st.sort_id,
+        sho.serve_hotel_id,
+        sho.is_serve_type_id,
+        sho.is_order_id,
+        sho.is_order_room_id,
+        sho.is_user_id,
+        sho.hotel_name,
+        sho.is_room_id,
+        sho.room_no,
+        sho.serve_name,
+        sho.phone,
+        sho.time_out,
+        sho.status,
+        sho.remark,
+        sho.create_time
+        FROM
+        serve_hotel_order sho,
+        serve_type st
+        <where>
+            sho.is_serve_type_id = st.serve_type_id
+            ${ew.sqlSegment}
+        </where>
+    </select>
 
 
 </mapper>

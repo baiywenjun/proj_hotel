@@ -57,5 +57,21 @@
                     ("00"+ o[k]).substr((""+ o[k]).length));
         return format;
     }
+
+    //2018-06-19添加域名获取
+    Global.domain = function () {
+        return 'https://189itv.cn/ordersys/Public';
+    }
+    Global.hotelTypeDomain = function () {
+        return 'https://189itv.cn/ordersys/Public';
+    }
+    Global.dealStr = function (str) {
+        if( str == undefined || str == null || str== 'undefined' || str == 'null'){
+            return '';
+        }
+        return str;
+    }
+
+
 </script>
 	

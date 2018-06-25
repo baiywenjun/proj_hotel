@@ -11,10 +11,7 @@ import com.zxt.hotel.entity.HotelInfo;
 import com.zxt.hotel.mapper.HotelContentMapper;
 import com.zxt.hotel.mapper.HotelDictMapper;
 import com.zxt.hotel.mapper.HotelInfoMapper;
-import com.zxt.hotel.pojo.HotelInfoExt;
-import com.zxt.hotel.pojo.HotelInfoFullDistanceVO;
-import com.zxt.hotel.pojo.HotelInfoFullVO;
-import com.zxt.hotel.pojo.HotelInfoQuery;
+import com.zxt.hotel.pojo.*;
 import com.zxt.hotel.service.HotelInfoService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +38,23 @@ public class HotelInfoServiceImpl extends ServiceImpl<HotelInfoMapper, HotelInfo
 
     @Autowired
     private HotelInfoMapper hotelInfoMapper;
+
+    @Override
+    /**
+     * 给profile使用
+     * @param query
+     * @return
+     */
+    public List<HotelInfo> queryHotelInfo(HotelInfoQuery query){
+        Wrapper<HotelInfo> wrapper = new EntityWrapper<>();
+        if(query.getHotelId() != null){
+            wrapper.eq("hotel_id",query.getHotelId());
+        }
+        if(StringUtils.isNotEmpty(query.getName())){
+            wrapper.like("name",query.getName());
+        }
+        return this.selectList(wrapper);
+    }
 
     @Override
     public Rt queryHotelInfoByPage(HotelInfoQuery query, Integer page, Integer limit){

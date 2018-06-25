@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+#parse("common/base.html")
+<head>
+    <meta charset="UTF-8">
+    <title>客户信息 - e.TV酒店服务平台</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
+    <link rel="shortcut icon" href="../favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="$baseUrl/static/css/font.css">
+    <link rel="stylesheet" href="$baseUrl/static/css/reset.css">
+    <link rel="stylesheet" href="$baseUrl/static/css/myset.css">
+    <link rel="stylesheet" href="$baseUrl/static/css/normalize.css">
+    <link rel="stylesheet" href="$baseUrl/static/css/xadmin.css">
+    <!--[if lt IE 9]>
+      <script src="$baseUrl/static/js/html5.min.js"></script>
+      <script src="$baseUrl/static/js/respond.min.js"></script>
+    <![endif]-->
+    <style type="text/css">
+    .search-settings .layui-input-inline {
+        width: 200px;
+    }
+
+    .search-settings .company {
+        width: 210px;
+    }
+    </style>
+</head>
+
+<body>
+    <div class="x-nav">
+        <span>当前位置：</span>
+        <span class="layui-breadcrumb">
+      <a href="">后台首页</a>
+      <a href="javascript:location.replace(location.href);">客户管理</a>
+      <a>
+        <cite>客户信息</cite>
+      </a>
+    </span>
+    </div>
+    <div class="search-settings">
+        <blockquote class="layui-elem-quote">
+            <div class="layui-form" action="">
+                <div class="layui-row">
+                    <div class="layui-col-xs3">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">账号</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="account" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-col-xs3">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">姓名</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="name" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-col-xs3">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">手机</label>
+                            <div class="layui-input-inline">
+                                <input type="tel" name="phone" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-col-xs3 ">
+                        <div class="layui-form-item">
+                            <div class="layui-input-inline">
+                                <button class="layui-btn layui-btn-primary layui-btn-sm" onclick="searchReset();">清除</button>
+                                <button class="layui-btn layui-btn-sm my-gr-btn" onclick="search();">立即查询</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </blockquote>
+    </div>
+    <div class="table-container">
+        <table id="customerlist" lay-filter="customers"></table>
+        <div class="layui-input-inline extra">
+            <button class="layui-btn layui-btn-danger layui-btn-sm" onclick="delChecked()"><i class="layui-icon"></i>删除选中</button>
+            <button class="layui-btn layui-btn-normal layui-btn-sm" onclick="showModal('添加房间','$baseUrl/hotel/room/add-page','880','430')"><i class="layui-icon"></i>添加房间</button>
+            <button class="layui-btn layui-btn-normal layui-btn-sm" onclick="showModal('添加账号','customeredit.html','880','430')"><i class="layui-icon"></i>批量导入</button>
+        </div>
+    </div>
+    <script type="text/javascript" src="$baseUrl/static/js/jquery-1.12.4.min.js"></script>
+    <script type="text/javascript" src="$baseUrl/static/lib/layui/layui.js" charset="utf-8"></script>
+    <script type="text/javascript" src="$baseUrl/static/js/xadmin.js"></script>
+    <script type="text/javascript" src="$baseUrl/static/js/function.js"></script>
+    <script>
+        var table;
+        layui.use('table', function() {
+            table = layui.table;
+            table.render({
+                elem: '#customerlist',
+                url: '$baseUrl/hotel/room/lists', //数据接口
+                response: {
+                    statusCode: 200 //成功的状态码，默认：0
+                },
+                page: true, //开启分页
+                limits: [10, 30, 60],
+                limit: 10,
+                cols: [
+                    [ //表头
+                          { type:'checkbox'}
+                        , { field: 'hotelName', title: '酒店名称', align: 'center' }
+                        , { field: 'roomNo', title: '酒店编号', align: 'center' }
+                        , { field: 'storey', title: '楼层', align: 'center' }
+                        , { field: 'typeName', title: '房型', align: 'center', templet:"#typeName"}
+                        , { field: 'typePrice', title: '价格', align: 'center', templet:"#fmtMoney"}
+                        , { field: 'createTime', title: '添加时间', align: 'center', templet:"#fmtTime"}
+                        , { field: 'devNo', title: 'etv设备编号', align: 'center'}
+                        , { field: 'stayStatus', title: '状态', align: 'center'}
+                        , { title: '操作', align: 'center', toolbar: '#toolbar', width: 180 }
+                    ]
+                ],
+                id: 'table'
+            });
+
+            // 操作
+            table.on('tool(customers)', function(obj){
+                if(obj.event === 'delete'){
+                    layer.confirm('真的删除行么？', function(index){
+                        obj.del();
+                        layer.close(index);
+                    });
+                }else if(obj.event === 'forbid'){
+                    layer.confirm('冻结后该账号将不能访问系统！', function(index){
+                        obj.data.status="冻结";
+                        layer.close(index);
+                    });
+                }
+            });
+        });
+
+        // 查询
+        function search(){
+            table.reload('table',{
+                where: {
+                    phone: $("input[name='phone']").val()
+                }
+                ,page: {
+                    curr: 1
+                }
+            });
+
+        }
+
+    </script>
+    <script type="text/html" id="toolbar">
+      <a class="layui-table-link" lay-event="view" onclick="showModal('查看账号详情','customerdetail.html','880','380','{{d.id}}')">查看</a>
+      <span class="vert-line"></span>
+      <a class="layui-table-link" lay-event="update">修改</a>
+      <span class="vert-line"></span>
+      <a class="layui-table-link" lay-event="delete">删除</a>
+    </script>
+    <script type="text/html" id="fmtMoney">
+        {{=	   Global.formatMoney(d.hotelRoomType.typePrice/100,2,'￥')   }}
+    </script>
+    <script type="text/html" id="typeName">
+        {{=	   d.hotelRoomType.typeName   }}
+    </script>
+    <script type="text/html" id="fmtTime">
+        {{= new Date(d.createTime).format('yyyy-MM-dd hh:mm:ss')    }}
+    </script>
+</body>
+
+</html>

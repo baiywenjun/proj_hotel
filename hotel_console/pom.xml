@@ -120,12 +120,7 @@
             <version>0.0.9</version>
         </dependency>
 
-        <!-- apache_poi-->
-        <dependency>
-            <groupId>org.apache.poi</groupId>
-            <artifactId>poi-ooxml</artifactId>
-            <version>3.9</version>
-        </dependency>
+
     </dependencies>
 
 </project>
