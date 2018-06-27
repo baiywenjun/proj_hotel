@@ -44,6 +44,9 @@ public class HotelOrderServiceImpl extends ServiceImpl<HotelOrderMapper, HotelOr
         if(query.getOrderId() != null){
             wrapper.eq("order_id",query.getOrderId());
         }
+        if(StringUtils.isNotEmpty(query.getOrderNo())){
+            wrapper.like("order_no",query.getOrderNo());
+        }
         if(query.getIsUserId() != null){
             wrapper.eq("is_user_id",query.getIsUserId());
         }
@@ -51,10 +54,10 @@ public class HotelOrderServiceImpl extends ServiceImpl<HotelOrderMapper, HotelOr
             wrapper.eq("payment_status",query.getPaymentStatus());
         }
         if(StringUtils.isNotEmpty(query.getUserRealName())){
-            wrapper.eq("user_real_name",query.getUserRealName());
+            wrapper.like("user_real_name",query.getUserRealName());
         }
         if(StringUtils.isNotEmpty(query.getUserPhone())){
-            wrapper.eq("user_phone",query.getUserPhone());
+            wrapper.like("user_phone",query.getUserPhone());
         }
         int count = this.selectCount(wrapper);
         wrapper.orderBy("ho.create_time",false);

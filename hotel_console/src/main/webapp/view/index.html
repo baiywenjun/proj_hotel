@@ -41,7 +41,7 @@
             <li class="layui-nav-item">
                 <a href="javascript:;">
                     <img class="head" src="$baseUrl/static/images/head.jpg" />
-                    Wephone Lee
+                    <span id="adminName"></span>
                 </a>
                 <dl class="layui-nav-child">
                     <dd class="profile">
@@ -63,17 +63,32 @@
             <ul id="nav">
                 <li>
                     <a href="javascript:;">
-                        <span class="fa fa-tasks"></span>
-                        <cite>信息管理</cite>
+                        <span class="fa fa-dashboard"></span>
+                        <cite>平台管理</cite>
                         <i class="iconfont nav_right">&#xe697;</i>
                     </a>
                     <ul class="sub-menu">
+                        <li>
+                            <a _href="$baseUrl/page-data">
+                                <i class="iconfont">&#xe6a7;</i>
+                                <cite>统计信息</cite>
+                            </a>
+                        </li>
                         <li>
                             <a _href="$baseUrl/user/page">
                                 <i class="iconfont">&#xe6a7;</i>
                                 <cite>客户信息</cite>
                             </a>
                         </li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="javascript:;">
+                        <span class="fa fa-hotel"></span>
+                        <cite>酒店管理</cite>
+                        <i class="iconfont nav_right">&#xe697;</i>
+                    </a>
+                    <ul class="sub-menu">
                         <li>
                             <a _href="$baseUrl/hotel/order/page">
                                 <i class="iconfont">&#xe6a7;</i>
@@ -84,24 +99,6 @@
                             <a _href="$baseUrl/hotel/info/page">
                                 <i class="iconfont">&#xe6a7;</i>
                                 <cite>酒店信息</cite>
-                            </a>
-                        </li>
-						<li>
-                            <a _href="$baseUrl/serve/food/order/page">
-                                <i class="iconfont">&#xe6a7;</i>
-                                <cite>点餐信息</cite>
-                            </a>
-                        </li>
-                        <li>
-                            <a _href="$baseUrl/serve/hotel/page">
-                                <i class="iconfont">&#xe6a7;</i>
-                                <cite>酒店服务</cite>
-                            </a>
-                        </li>
-                        <li>
-                            <a _href="$baseUrl/serve/type/page">
-                                <i class="iconfont">&#xe6a7;</i>
-                                <cite>服务类型</cite>
                             </a>
                         </li>
                          <li>
@@ -126,138 +123,38 @@
                 </li>
                 <li>
                     <a href="javascript:;">
-                       <!--  <i class="iconfont">&#xe6ce;</i> -->
-                        <span class="fa fa-cubes"></span>
-                        <cite>点餐管理</cite>
+                        <span class="fa fa-cutlery"></span>
+                        <cite>&nbsp;&nbsp;订餐管理</cite>
                         <i class="iconfont nav_right">&#xe697;</i>
                     </a>
                     <ul class="sub-menu">
                         <li>
-                            <a _href="components/boxrecycle.html">
+                            <a _href="$baseUrl/serve/food/order/page">
                                 <i class="iconfont">&#xe6a7;</i>
-                                <cite>箱体回收</cite>
-                            </a>
-                        </li>
-                        <li>
-                            <a _href="components/boxpick.html">
-                                <i class="iconfont">&#xe6a7;</i>
-                                <cite>箱体分配</cite>
-                            </a>
-                        </li> 
-                    </ul>
-                </li>
-                <li>
-                    <a href="javascript:;">
-                        <!-- <i class="iconfont">&#xe6ce;</i> -->
-                        <span class="fa fa-area-chart"></span>
-                        <cite>查询统计</cite>
-                        <i class="iconfont nav_right">&#xe697;</i>
-                    </a>
-                    <ul class="sub-menu">
-                        <li>
-                            <a _href="components/business.html">
-                                <i class="iconfont">&#xe6a7;</i>
-                                <cite>业务查询</cite>
-                            </a>
-                        </li>
-                        <li>
-                            <a _href="components/boxstock.html">
-                                <i class="iconfont">&#xe6a7;</i>
-                                <cite>箱体查询</cite>
-                            </a>
-                        </li>
-                        <li>
-                            <a _href="components/customers.html">
-                                <i class="iconfont">&#xe6a7;</i>
-                                <cite>客户查询</cite>
+                                <cite>订单信息</cite>
                             </a>
                         </li>
                     </ul>
                 </li>
                 <li>
                     <a href="javascript:;">
-                        <!-- <i class="iconfont">&#xe6ce;</i> -->
-                        <span class="fa fa-television"></span>
-                        <cite>运行监控</cite>
+                        <span class="fa fa-credit-card-alt"></span>
+                        <cite>服务管理</cite>
                         <i class="iconfont nav_right">&#xe697;</i>
                     </a>
                     <ul class="sub-menu">
                         <li>
-                            <a _href="components/position.html">
+                            <a _href="$baseUrl/serve/hotel/page">
                                 <i class="iconfont">&#xe6a7;</i>
-                                <cite>位置监控</cite>
+                                <cite>酒店服务</cite>
                             </a>
                         </li>
                         <li>
-                            <a _href="components/actualtemper.html">
+                            <a _href="$baseUrl/serve/type/page">
                                 <i class="iconfont">&#xe6a7;</i>
-                                <cite>温度监控</cite>
+                                <cite>服务类型</cite>
                             </a>
                         </li>
-                        <li>
-                            <a _href="components/position.html">
-                                <i class="iconfont">&#xe6a7;</i>
-                                <cite>轨迹监控</cite>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-                <li>
-                    <a href="javascript:;">
-                        <!--  <i class="iconfont">&#xe6ce;</i> -->
-                        <span class="fa fa-sitemap"></span>
-                        <cite>网点管理</cite>
-                        <i class="iconfont nav_right">&#xe697;</i>
-                    </a>
-                    <ul class="sub-menu">
-                        <li>
-                            <a _href="components/network.html">
-                                <i class="iconfont">&#xe6a7;</i>
-                                <cite>网点信息</cite>
-                            </a>
-                        </li>
-                        <li>
-                            <a _href="components/networkmap.html">
-                                <i class="iconfont">&#xe6a7;</i>
-                                <cite>网点位置</cite>
-                            </a>
-                        </li>
-                        <li>
-                            <a _href="components/user.html">
-                                <i class="iconfont">&#xe6a7;</i>
-                                <cite>网点人员</cite>
-                            </a>
-                        </li>
-
-                    </ul>
-                </li>
-                <li>
-                    <a href="javascript:;">
-                        <!--  <i class="iconfont">&#xe6ce;</i> -->
-                        <span class="fa fa-cog"></span>
-                        <cite>系统设置</cite>
-                        <i class="iconfont nav_right">&#xe697;</i>
-                    </a>
-                    <ul class="sub-menu">
-                        <li>
-                            <a _href="components/quota.html">
-                                <i class="iconfont">&#xe6a7;</i>
-                                <cite>指标设置</cite>
-                            </a>
-                        </li>
-                        <li>
-                            <a _href="components/alert.html">
-                                <i class="iconfont">&#xe6a7;</i>
-                                <cite>报警设置</cite>
-                            </a>
-                        </li>
-                        <li>
-                            <a _href="components/warn.html">
-                                <i class="iconfont">&#xe6a7;</i>
-                                <cite>预警设置</cite>
-                            </a>
-                        </li>
-
                     </ul>
                 </li>
             </ul>
@@ -273,7 +170,7 @@
             </ul>
             <div class="layui-tab-content">
                 <div class="layui-tab-item layui-show">
-                    <iframe src='$baseUrl/user/page' frameborder="0" scrolling="yes" class="x-iframe" name="main"></iframe>
+                    <iframe src='$baseUrl/page-data' frameborder="0" scrolling="yes" class="x-iframe" name="main"></iframe>
                 </div>
             </div>
         </div>
@@ -296,6 +193,9 @@
         $('.layui-tab-title li').click(function () {
             console.log($(this).index());
         });
+        var userInfoStr = sessionStorage.getItem("userInfo");
+        var userInfo = JSON.parse(userInfoStr);
+        $("#adminName").text(userInfo.adminName);
     </script>
 </body>
 

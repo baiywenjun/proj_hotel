@@ -103,6 +103,10 @@ public class ServeHotelOrderServiceImpl extends ServiceImpl<ServeHotelOrderMappe
         if (null != query.getServeHotelId()) {
             wrapper.eq("serve_hotel_id", query.getServeHotelId());
         }
+
+        if (null != query.getHotelName() && !query.getHotelName().trim().equalsIgnoreCase("")) {
+            wrapper.eq("hotel_name", query.getHotelName());
+        }
         int count = this.selectCount(wrapper);
         wrapper.orderBy("create_time", false);
         List<ServeHotelOrderFullVO> serveHotelOrderFullVOList = serveHotelOrderMapper.queryListByPage2(new Page(page, limit), wrapper);

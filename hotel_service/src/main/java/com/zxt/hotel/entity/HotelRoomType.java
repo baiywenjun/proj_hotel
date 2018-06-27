@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableName;
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * <p>
@@ -36,6 +37,9 @@ public class HotelRoomType implements Serializable {
 	private String typeContent;
 	@TableField("type_status")
 	private String typeStatus;
+
+	@TableField("create_time")
+	private Date createTime;
 
 
 	public Long getRoomTypeId() {
@@ -110,18 +114,27 @@ public class HotelRoomType implements Serializable {
 		this.typeStatus = typeStatus;
 	}
 
+	public Date getCreateTime() {
+		return createTime;
+	}
+
+	public void setCreateTime(Date createTime) {
+		this.createTime = createTime;
+	}
+
 	@Override
 	public String toString() {
 		return "HotelRoomType{" +
-			"roomTypeId=" + roomTypeId +
-			", isHotelId=" + isHotelId +
-			", typeCode=" + typeCode +
-			", typeName=" + typeName +
-			", typeSpec=" + typeSpec +
-			", typePrice=" + typePrice +
-			", typeImg=" + typeImg +
-			", typeContent=" + typeContent +
-			", typeStatus=" + typeStatus +
-			"}";
+				"roomTypeId=" + roomTypeId +
+				", isHotelId=" + isHotelId +
+				", typeCode=" + typeCode +
+				", typeName=" + typeName +
+				", typeSpec=" + typeSpec +
+				", typePrice=" + typePrice +
+				", typeImg=" + typeImg +
+				", typeContent=" + typeContent +
+				", typeStatus=" + typeStatus +
+				", createTime=" + createTime +
+				"}";
 	}
 }

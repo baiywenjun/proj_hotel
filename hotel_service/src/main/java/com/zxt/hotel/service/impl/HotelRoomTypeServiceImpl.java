@@ -12,6 +12,7 @@ import com.zxt.hotel.mapper.HotelDictMapper;
 import com.zxt.hotel.mapper.HotelRoomTypeMapper;
 import com.zxt.hotel.mapper.HotelTypeDictRelMapper;
 import com.zxt.hotel.pojo.HotelRoomTypeFullVO;
+import com.zxt.hotel.pojo.HotelRoomTypeNHotelVO;
 import com.zxt.hotel.pojo.HotelRoomTypeQuery;
 import com.zxt.hotel.service.HotelRoomTypeService;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
@@ -98,5 +99,24 @@ public class HotelRoomTypeServiceImpl extends ServiceImpl<HotelRoomTypeMapper, H
         hotelTypeDictRel.setDictId(dictId);
         Integer insert2 = hotelTypeDictRelMapper.insert(hotelTypeDictRel);
         return (insert1 && insert2 > 0);
+    }
+
+    /**
+     * 2018-06-20添加
+     * 跟 queryHotelRoomTypeFullByPage 相似
+     * @param query
+     * @param page
+     * @param limit
+     * @return
+     */
+    @Override
+    public Rt queryHotelRoomTypeNHotelByPage(HotelRoomTypeQuery query, Integer page, Integer limit) {
+        Wrapper<HotelRoomType> wrapper = new EntityWrapper<>();
+        if(query.getIsHotelId() != null){
+            wrapper.eq("is_hotel_id",query.getIsHotelId());
+        }
+        int count = this.selectCount(wrapper);
+        List<HotelRoomTypeNHotelVO> hotelRoomTypeFullVOList = hotelRoomTypeMapper.queryHotelRoomTypeNHotelByPage(new Page(page, limit), query);
+        return Rt.ok(count,hotelRoomTypeFullVOList);
     }
 }

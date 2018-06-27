@@ -31,10 +31,11 @@ public class HotelOrderController {
 
     @RequestMapping("/lists")
     @ResponseBody
-    public Rt hotelOrderList(HttpServletRequest request,String userRealName, String userPhone, String paymentStatus,
+    public Rt hotelOrderList(HttpServletRequest request,String orderNo, String userRealName, String userPhone, String paymentStatus,
                              Integer page, Integer limit){
         // todo 后续基于权限，查询登陆人所属权限的订单
         HotelOrderQuery query = new HotelOrderQuery();
+        query.setOrderNo(orderNo);
         query.setUserRealName(userRealName);
         query.setUserPhone(userPhone);
         query.setPaymentStatus(paymentStatus);

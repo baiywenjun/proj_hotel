@@ -41,8 +41,14 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     @Override
     public Rt queryUserByPage(SysUserQuery query,Integer page, Integer limit){
         Wrapper<SysUser> wrapper = new EntityWrapper<>();
+        if(StringUtils.isNotEmpty(query.getUsername())){
+            wrapper.like("username",query.getUsername());
+        }
+        if(StringUtils.isNotEmpty(query.getName())){
+            wrapper.like("name",query.getName());
+        }
         if(StringUtils.isNotEmpty(query.getPhone())){
-            wrapper.eq("phone",query.getPhone());
+            wrapper.like("phone",query.getPhone());
         }
         int count = this.selectCount(wrapper);
         wrapper.orderBy("create_time",false);

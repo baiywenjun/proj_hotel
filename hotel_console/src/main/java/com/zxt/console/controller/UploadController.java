@@ -42,6 +42,9 @@ public class UploadController {
     @Value("${hotel_content}")
     private String hotelContent;
 
+    @Value("${hotel_room_type}")
+    private String hotelRoomType;
+
     @RequestMapping("/hotel-logo")
     public R uploadHotelLogo(HttpServletRequest request, HttpServletResponse response){
         String uploadPath = this.uploadPath + this.hotelLogo;
@@ -58,6 +61,12 @@ public class UploadController {
     public R uploadHotelContent(HttpServletRequest request, HttpServletResponse response){
         String uploadPath = this.uploadPath + this.hotelContent;
         return extractUpload(request, response, uploadPath,this.hotelContent);
+    }
+
+    @RequestMapping("/hotel-room-type")
+    public R uploadHotelRoomType(HttpServletRequest request, HttpServletResponse response){
+        String uploadPath = this.uploadPath + this.hotelRoomType;
+        return extractUpload(request, response, uploadPath,this.hotelRoomType);
     }
 
     private R extractUpload(HttpServletRequest request, HttpServletResponse response, String uploadPath, String relativePath) {

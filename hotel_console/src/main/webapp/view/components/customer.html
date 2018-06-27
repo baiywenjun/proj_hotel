@@ -47,7 +47,7 @@
                         <div class="layui-form-item">
                             <label class="layui-form-label">账号</label>
                             <div class="layui-input-inline">
-                                <input type="text" name="account" autocomplete="off" class="layui-input">
+                                <input type="text" name="username" autocomplete="off" class="layui-input">
                             </div>
                         </div>
                     </div>
@@ -56,14 +56,6 @@
                             <label class="layui-form-label">姓名</label>
                             <div class="layui-input-inline">
                                 <input type="text" name="name" autocomplete="off" class="layui-input">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="layui-col-xs3">
-                        <div class="layui-form-item">
-                            <label class="layui-form-label">手机</label>
-                            <div class="layui-input-inline">
-                                <input type="tel" name="phone" autocomplete="off" class="layui-input">
                             </div>
                         </div>
                     </div>
@@ -81,10 +73,6 @@
     </div>
     <div class="table-container">
         <table id="customerlist" lay-filter="customers"></table>
-        <div class="layui-input-inline extra">
-            <button class="layui-btn layui-btn-danger layui-btn-sm" onclick="delChecked()"><i class="layui-icon"></i>删除选中</button>
-            <button class="layui-btn layui-btn-normal layui-btn-sm" onclick="showModal('添加账号','customeredit.html','880','430')"><i class="layui-icon"></i>添加账号</button>
-        </div>
     </div>
     <script type="text/javascript" src="$baseUrl/static/js/jquery-1.12.4.min.js"></script>
     <script type="text/javascript" src="$baseUrl/static/lib/layui/layui.js" charset="utf-8"></script>
@@ -148,7 +136,8 @@
         function search(){
             table.reload('table',{
                 where: {
-                    phone: $("input[name='phone']").val()
+                    name: $("input[name='name']").val(),
+                    username: $("input[name='username']").val()
                 }
                 ,page: {
                     curr: 1

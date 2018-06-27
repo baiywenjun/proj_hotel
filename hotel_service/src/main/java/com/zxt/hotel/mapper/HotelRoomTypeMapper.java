@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.plugins.Page;
 import com.zxt.hotel.entity.HotelRoomType;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
 import com.zxt.hotel.pojo.HotelRoomTypeFullVO;
+import com.zxt.hotel.pojo.HotelRoomTypeNHotelVO;
 import com.zxt.hotel.pojo.HotelRoomTypeQuery;
 import org.apache.ibatis.annotations.Param;
 
@@ -22,5 +23,7 @@ public interface HotelRoomTypeMapper extends BaseMapper<HotelRoomType> {
     List<HotelRoomTypeFullVO> queryHotelRoomTypeFullByPage(Page page, @Param("query") HotelRoomTypeQuery query);
 
     HotelRoomTypeFullVO queryById(Long roomTypeId);
+
+    List<HotelRoomTypeNHotelVO> queryHotelRoomTypeNHotelByPage(Page page, @Param("query") HotelRoomTypeQuery query);
 
 }

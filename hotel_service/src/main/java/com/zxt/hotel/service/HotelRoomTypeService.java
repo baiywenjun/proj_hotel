@@ -4,6 +4,7 @@ import com.zxt.common.result.Rt;
 import com.zxt.hotel.entity.HotelRoomType;
 import com.baomidou.mybatisplus.service.IService;
 import com.zxt.hotel.pojo.HotelRoomTypeFullVO;
+import com.zxt.hotel.pojo.HotelRoomTypeNHotelVO;
 import com.zxt.hotel.pojo.HotelRoomTypeQuery;
 
 import java.util.List;
@@ -38,4 +39,7 @@ public interface HotelRoomTypeService extends IService<HotelRoomType> {
      * @return
      */
     Boolean addRecord(HotelRoomType hotelRoomType, Long dictId);
+
+    Rt queryHotelRoomTypeNHotelByPage(HotelRoomTypeQuery query, Integer page, Integer limit);
+
 }

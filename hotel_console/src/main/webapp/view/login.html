@@ -99,7 +99,7 @@
                         if(res.code == 200){
                             layer.msg("欢迎你"+res.data.adminName);
                             if (typeof(Storage) !== "undefined") {
-                                sessionStorage.setItem("userInfo", res.data);
+                                sessionStorage.setItem("userInfo", JSON.stringify(res.data));
                             } else {
                                 alert("抱歉！您的浏览器不支持 WebStorage,请升级浏览器");
                             }

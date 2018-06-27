@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.zxt.hotel.mapper.HotelRoomTypeMapper" >
+
     <resultMap id="hotelRoomTypeFullMap" type="com.zxt.hotel.pojo.HotelRoomTypeFullVO" >
         <id column="room_type_id" property="roomTypeId" />
         <result column="is_hotel_id" property="isHotelId" />
@@ -11,6 +12,7 @@
         <result column="type_img" property="typeImg" />
         <result column="type_content" property="typeContent" />
         <result column="type_status" property="typeStatus" />
+        <result column="create_time" property="createTime" /><!-- 2018-06-20号 添加create_time -->
         <collection  property="hotelDictList" ofType="com.zxt.hotel.entity.HotelDict" >
             <id column="dict_id" property="dictId" />
             <result column="code" property="code"/>
@@ -24,6 +26,43 @@
         </collection>
     </resultMap>
 
+    <!-- 2018-06-20号 -->
+    <resultMap id="hotelRoomTypeNHotelMap" type="com.zxt.hotel.pojo.HotelRoomTypeNHotelVO" >
+        <id column="room_type_id" property="roomTypeId" />
+        <result column="is_hotel_id" property="isHotelId" />
+        <result column="type_code" property="typeCode" />
+        <result column="type_name" property="typeName" />
+        <result column="type_spec" property="typeSpec" />
+        <result column="type_price" property="typePrice" />
+        <result column="type_img" property="typeImg" />
+        <result column="type_content" property="typeContent" />
+        <result column="type_status" property="typeStatus" />
+        <result column="create_time" property="createTime" />
+        <collection  property="hotelInfoList" ofType="com.zxt.hotel.entity.HotelInfo" >
+            <id column="hotel_id" property="hotelId" />
+            <result column="name" property="name" />
+            <result column="hotel_no" property="hotelNo" />
+            <result column="img_url" property="imgUrl" />
+            <result column="welcome_img_url" property="welcomeImgUrl" />
+            <result column="rank" property="rank" />
+            <result column="province" property="province" />
+            <result column="city" property="city" />
+            <result column="county" property="county" />
+            <result column="address" property="address" />
+            <result column="lng" property="lng" />
+            <result column="lat" property="lat" />
+            <result column="business" property="business" />
+            <result column="description" property="description" />
+            <result column="phone" property="phone" />
+            <result column="contact_name" property="contactName" />
+            <result column="create_time" property="createTime" />
+            <result column="create_id" property="createId" />
+            <result column="hotel_status" property="hotelStatus" />
+            <result column="alias_no" property="aliasNo" />
+            <result column="remark" property="remark" />
+            <result column="distance" property="distance" />
+        </collection>
+    </resultMap>
     <!--<select id="queryHotelRoomTypeFullByPage" resultMap="hotelRoomTypeFullMap">
         SELECT
             hrt.*, hd.*
@@ -67,5 +106,17 @@
         and hry.room_type_id = #{roomTypeId}
     </select>
 
+    <select id="queryHotelRoomTypeNHotelByPage" resultMap="hotelRoomTypeNHotelMap" >
+        SELECT
+        hrt.*,
+        info.*
+        FROM
+        hotel_room_type hrt
+        LEFT JOIN	hotel_info info ON hrt.is_hotel_id = info.hotel_id
+        WHERE 1=1
+        <if test="query.isHotelId != null and query.isHotelId !=''">
+            and hrt.is_hotel_id = #{query.isHotelId}
+        </if>
+    </select>
 
 </mapper>

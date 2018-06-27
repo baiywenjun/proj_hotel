@@ -96,7 +96,7 @@
             table = layui.table;
             table.render({
                 elem: '#customerlist',
-                url: '$baseUrl/hotel/type/lists', //数据接口
+                url: '$baseUrl/hotel/type/lists2', //数据接口
                 response: {
                     statusCode: 200 //成功的状态码，默认：0
                 },
@@ -109,7 +109,7 @@
                         , { field: 'typeName', title: '房型名称', align: 'center' }
                         , { field: 'typePrice', title: '价格', align: 'right', templet:"#fmtMoney" }
                         , { field: 'typeSpec', title: '规格', align: 'center' ,templet:"#asmTypeSpec"}
-                        , { field: 'typeImg', title: '房型图片', align: 'center'}
+                        , { field: 'typeImg', title: '房型图片', align: 'center' ,templet:'fmtTypeImg'}
                         , { field: 'typeContent', title: '房型描述', align: 'center'}
                         , { field: 'typeStatus', title: '状态', align: 'center'}
                         , { title: '操作', align: 'center', toolbar: '#toolbar', width: 120 }
@@ -168,6 +168,10 @@
         {{#    }                                                 }}
         {{= typeSpec                                             }}
     </script>
+    <script type="text/html" id="fmtTypeImg">
+        {{= <img src=Global.domain()+d.typeImg /> }}
+    </script>
+
 
 </body>
 

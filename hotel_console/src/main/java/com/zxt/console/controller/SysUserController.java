@@ -30,9 +30,11 @@ public class SysUserController {
 
     @RequestMapping("/list")
     @ResponseBody
-    public Rt queryUserListByPage(String phone,Integer page, Integer limit){
+    public Rt queryUserListByPage(String username, String name, String phone,Integer page, Integer limit){
         PageUtil.PageDomain handle = PageUtil.handle(page, limit);
         SysUserQuery query = new SysUserQuery();
+        query.setUsername(username);
+        query.setName(name);
         query.setPhone(phone);
         Rt rt = sysUserService.queryUserByPage(query, handle.getPage(), handle.getLimit());
         return rt;

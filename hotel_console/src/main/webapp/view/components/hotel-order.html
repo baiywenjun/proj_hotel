@@ -45,9 +45,9 @@
                 <div class="layui-row">
                     <div class="layui-col-xs3">
                         <div class="layui-form-item">
-                            <label class="layui-form-label">账号</label>
+                            <label class="layui-form-label">订单编号</label>
                             <div class="layui-input-inline">
-                                <input type="text" name="account" autocomplete="off" class="layui-input">
+                                <input type="text" name="orderNo" autocomplete="off" class="layui-input">
                             </div>
                         </div>
                     </div>
@@ -55,15 +55,19 @@
                         <div class="layui-form-item">
                             <label class="layui-form-label">姓名</label>
                             <div class="layui-input-inline">
-                                <input type="text" name="name" autocomplete="off" class="layui-input">
+                                <input type="text" name="userRealName" autocomplete="off" class="layui-input">
                             </div>
                         </div>
                     </div>
                     <div class="layui-col-xs3">
                         <div class="layui-form-item">
-                            <label class="layui-form-label">手机</label>
+                            <label class="layui-form-label">订单状态</label>
                             <div class="layui-input-inline">
-                                <input type="tel" name="phone" autocomplete="off" class="layui-input">
+                                <select name="paymentStatus">
+                                    <option value="">全部</option>
+                                    <option value="wait">未付款</option>
+                                    <option value="paid">已付款</option>
+                                </select>
                             </div>
                         </div>
                     </div>
@@ -81,10 +85,6 @@
     </div>
     <div class="table-container">
         <table id="customerlist" lay-filter="customers"></table>
-        <div class="layui-input-inline extra">
-            <button class="layui-btn layui-btn-danger layui-btn-sm" onclick="delChecked()"><i class="layui-icon"></i>删除选中</button>
-            <button class="layui-btn layui-btn-normal layui-btn-sm" onclick="showModal('添加账号','customeredit.html','880','430')"><i class="layui-icon"></i>添加账号</button>
-        </div>
     </div>
     <script type="text/javascript" src="$baseUrl/static/js/jquery-1.12.4.min.js"></script>
     <script type="text/javascript" src="$baseUrl/static/lib/layui/layui.js" charset="utf-8"></script>
@@ -113,8 +113,8 @@
                         , { field: 'endDate', title: '离店时间', align: 'center', templet:"#fmtDate-b"}
                         , { field: 'totalDate', title: '入住天数', align: 'center'}
                         , { field: 'amountPrice', title: '总计费用', align: 'center', templet: "#fmtMoney"}
-                        , { field: 'paymentType', title: '支付方式', align: 'center'}
-                        , { field: 'paymentStatus', title: '支付状态', align: 'center'}
+                        , { field: 'paymentType', title: '支付方式', align: 'center', templet: "#fmtType"}
+                        , { field: 'paymentStatus', title: '支付状态', align: 'center', templet: "#fmtStatus"}
                         , { field: 'payNo', title: '支付流水号', align: 'center'}
                         , { field: 'createTime', title: '创建时间', align: 'center', templet:"#fmtTime"}
                         , { title: '操作', align: 'center', toolbar: '#toolbar', width: 120 }
@@ -143,7 +143,9 @@
         function search(){
             table.reload('table',{
                 where: {
-                    phone: $("input[name='phone']").val()
+                    orderNo: $("input[name='orderNo']").val(),
+                    userRealName: $("input[name='userRealName']").val(),
+                    paymentStatus: $("select[name='paymentStatus']").val()
                 }
                 ,page: {
                     curr: 1
@@ -170,6 +172,20 @@
     </script>
     <script type="text/html" id="fmtMoney">
         {{=	   Global.formatMoney(d.amountPrice/100,2,'￥')   }}
+    </script>
+    <script type="text/html" id="fmtType">
+        {{#	 if(d.paymentType == 'wechat'){      }}
+                微信
+        {{#  }else if(d.paymentType =='yi') {    }}
+                易支付
+        {{#   } }}
+    </script>
+    <script type="text/html" id="fmtStatus">
+        {{#	 if(d.paymentStatus == 'paid'){      }}
+        <span style="color: darkgreen">已支付</span>
+        {{#  }else if(d.paymentStatus =='wait') {    }}
+        <span style="color: red">未支付</span>
+        {{#   } }}
     </script>
 </body>
 
