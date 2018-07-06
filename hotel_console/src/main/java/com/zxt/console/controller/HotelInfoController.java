@@ -23,7 +23,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -67,6 +69,14 @@ public class HotelInfoController {
         return "components/hotel-add";
     }
 
+    @RequestMapping("/view-page")
+    public String hotelViewPage(Model model, String id){
+        HotelInfoFullVO hotelInfoFullVO = hotelInfoService.queryHotelInfoFUllVOById(Long.parseLong(id));
+        model.addAttribute("hotelInfo",hotelInfoFullVO);
+        model.addAttribute("operate","view");
+        return "components/hotel-add";
+    }
+
     @RequestMapping("/amap")
     public String aMap(String id){
         return "components/hotel-amap";
@@ -78,7 +88,9 @@ public class HotelInfoController {
         PageUtil.PageDomain handle = PageUtil.handle(page, limit);
         HotelInfoQuery query = new HotelInfoQuery();
         query.setName(hotelName);
-        return hotelInfoService.queryHotelInfoFullByPage(query, handle.getPage(), handle.getLimit());
+        //return hotelInfoService.queryHotelInfoFullByPage(query, handle.getPage(), handle.getLimit());
+        Map<String,Object> map = new HashMap<>();
+        return hotelInfoService.queryHotelInfoFullByAuthAndPage(map,query,handle.getPage(),handle.getLimit());
     }
 
 

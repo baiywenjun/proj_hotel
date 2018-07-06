@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html>
+#parse("common/base.html")
+<head>
+    <meta charset="UTF-8">
+    <title>客户信息 - e.TV酒店服务平台</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
+    <link rel="shortcut icon" href="../favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="$baseUrl/static/css/font.css">
+    <link rel="stylesheet" href="$baseUrl/static/css/reset.css">
+    <link rel="stylesheet" href="$baseUrl/static/css/myset.css">
+    <link rel="stylesheet" href="$baseUrl/static/css/normalize.css">
+    <link rel="stylesheet" href="$baseUrl/static/css/xadmin.css">
+
+    <link rel="stylesheet" href="$baseUrl/static/css/bootstrap.min.css">
+    <link rel="stylesheet" href="$baseUrl/static/css/font-awesome.min.css">
+    <link rel="stylesheet" href="$baseUrl/static/plugins/jqgrid/ui.jqgrid-bootstrap.css">
+    <link rel="stylesheet" href="$baseUrl/static/plugins/ztree/css/metroStyle/metroStyle.css">
+    <link rel="stylesheet" href="$baseUrl/static/css/main.css">
+
+    <link rel="stylesheet" href="$baseUrl/static/css/bootstrap-table.min.css">
+    <link rel="stylesheet" href="$baseUrl/static/plugins/treegrid/jquery.treegrid.css">
+
+    <!--[if lt IE 9]>
+      <script src="$baseUrl/static/js/html5.min.js"></script>
+      <script src="$baseUrl/static/js/respond.min.js"></script>
+    <![endif]-->
+    <style type="text/css">
+    .search-settings .layui-input-inline {
+        width: 200px;
+    }
+
+    .search-settings .company {
+        width: 210px;
+    }
+    </style>
+</head>
+
+<body>
+<div id="rrapp" v-cloak>
+    <div v-show="showList">
+        <div class="grid-btn">
+            <a class="btn btn-primary" @click="add"><i class="fa fa-plus"></i>&nbsp;新增</a>
+            <a class="btn btn-primary" @click="update"><i class="fa fa-pencil-square-o"></i>&nbsp;修改</a>
+            <a class="btn btn-primary" @click="del"><i class="fa fa-trash-o"></i>&nbsp;删除</a>
+        </div>
+        <table id="deptTable" data-mobile-responsive="true" data-click-to-select="true">
+            <thead>
+            <tr>
+                <th data-field="selectItem" data-checkbox="true"></th>
+            </tr>
+            </thead>
+        </table>
+    </div>
+
+    <div v-show="!showList" class="panel panel-default">
+        <div class="panel-heading">{{title}}</div>
+        <form class="form-horizontal">
+            <div class="form-group">
+                <div class="col-sm-2 control-label">部门名称</div>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" v-model="dept.name" placeholder="部门名称"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-2 control-label">上级部门</div>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" style="cursor:pointer;" v-model="dept.parentName"
+                           @click="deptTree" readonly="readonly" placeholder="一级部门"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-2 control-label">排序号</div>
+                <div class="col-sm-10">
+                    <input type="number" class="form-control" v-model="dept.orderNum" placeholder="排序号"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-2 control-label"></div>
+                <input type="button" class="btn btn-primary" @click="saveOrUpdate" value="确定"/>
+                &nbsp;&nbsp;<input type="button" class="btn btn-warning" @click="reload" value="返回"/>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- 选择部门 -->
+<div id="deptLayer" style="display: none;padding:10px;">
+    <ul id="deptTree" class="ztree"></ul>
+</div>
+</body>
+<script src="$baseUrl/static/js/jquery-1.12.4.min.js"></script>
+<script src="$baseUrl/static/plugins/layer/layer.js"></script>
+<script src="$baseUrl/static/lib/bootstrap.min.js"></script>
+<script src="$baseUrl/static/lib/vue.min.js"></script>
+<script src="$baseUrl/static/plugins/jqgrid/grid.locale-cn.js"></script>
+<script src="$baseUrl/static/plugins/jqgrid/jquery.jqGrid.min.js"></script>
+<script src="$baseUrl/static/plugins/ztree/jquery.ztree.all.min.js"></script>
+<script src="$baseUrl/static/js/common.js"></script>
+<script src="$baseUrl/static/lib/bootstrap-table.min.js"></script>
+<script src="$baseUrl/static/plugins/treegrid/jquery.treegrid.min.js"></script>
+<script src="$baseUrl/static/plugins/treegrid/jquery.treegrid.bootstrap3.js"></script>
+<script src="$baseUrl/static/plugins/treegrid/jquery.treegrid.extension.js"></script>
+<script src="$baseUrl/static/plugins/treegrid/tree.table.js"></script>
+<script>
+    var setting = {
+        data: {
+            simpleData: {
+                enable: true,
+                idKey: "deptId",
+                pIdKey: "parentId",
+                rootPId: -1
+            },
+            key: {
+                url:"nourl"
+            }
+        }
+    };
+    var ztree;
+
+    var vm = new Vue({
+        el:'#rrapp',
+        data:{
+            showList: true,
+            title: null,
+            dept:{
+                parentName:null,
+                parentId:0,
+                orderNum:0
+            }
+        },
+        methods: {
+            getDept: function(){
+                //加载部门树
+                $.get(baseURL + "/dept/select", function(r){
+                    ztree = $.fn.zTree.init($("#deptTree"), setting, r.deptList);
+                    var node = ztree.getNodeByParam("deptId", vm.dept.parentId);
+                    ztree.selectNode(node);
+
+                    vm.dept.parentName = node.name;
+                })
+            },
+            add: function(){
+                vm.showList = false;
+                vm.title = "新增";
+                vm.dept = {parentName:null,parentId:0,orderNum:0};
+                vm.getDept();
+            },
+            update: function () {
+                var deptId = getDeptId();
+                if(deptId == null){
+                    return ;
+                }
+
+                $.get(baseURL + "/dept/info/"+deptId, function(r){
+                    vm.showList = false;
+                    vm.title = "修改";
+                    vm.dept = r.dept;
+
+                    vm.getDept();
+                });
+            },
+            del: function () {
+                var deptId = getDeptId();
+                if(deptId == null){
+                    return ;
+                }
+
+                confirm('确定要删除选中的记录？', function(){
+                    $.ajax({
+                        type: "POST",
+                        url: baseURL + "/dept/delete",
+                        data: "deptId=" + deptId,
+                        success: function(r){
+                            if(r.code === 0){
+                                alert('操作成功', function(){
+                                    vm.reload();
+                                });
+                            }else{
+                                alert(r.msg);
+                            }
+                        }
+                    });
+                });
+            },
+            saveOrUpdate: function (event) {
+                var url = vm.dept.deptId == null ? "/dept/save" : "/dept/update";
+                $.ajax({
+                    type: "POST",
+                    url: baseURL + url,
+                    contentType: "application/json",
+                    data: JSON.stringify(vm.dept),
+                    success: function(r){
+                        if(r.code === 0){
+                            alert('操作成功', function(){
+                                vm.reload();
+                            });
+                        }else{
+                            alert(r.msg);
+                        }
+                    }
+                });
+            },
+            deptTree: function(){
+                layer.open({
+                    type: 1,
+                    offset: '50px',
+                    skin: 'layui-layer-molv',
+                    title: "选择部门",
+                    area: ['300px', '450px'],
+                    shade: 0,
+                    shadeClose: false,
+                    content: jQuery("#deptLayer"),
+                    btn: ['确定', '取消'],
+                    btn1: function (index) {
+                        var node = ztree.getSelectedNodes();
+                        //选择上级部门
+                        vm.dept.parentId = node[0].deptId;
+                        vm.dept.parentName = node[0].name;
+
+                        layer.close(index);
+                    }
+                });
+            },
+            reload: function () {
+                vm.showList = true;
+                Dept.table.refresh();
+            }
+        }
+    });
+
+    var Dept = {
+        id: "deptTable",
+        table: null,
+        layerIndex: -1
+    };
+
+    /**
+     * 初始化表格的列
+     */
+    Dept.initColumn = function () {
+        var columns = [
+            {field: 'selectItem', radio: true},
+            {title: '部门ID', field: 'deptId', visible: false, align: 'center', valign: 'middle', width: '80px'},
+            {title: '部门名称', field: 'name', align: 'center', valign: 'middle', sortable: true, width: '180px'},
+            {title: '上级部门', field: 'parentName', align: 'center', valign: 'middle', sortable: true, width: '100px'},
+            {title: '排序号', field: 'orderNum', align: 'center', valign: 'middle', sortable: true, width: '100px'}]
+        return columns;
+    };
+
+
+    function getDeptId () {
+        var selected = $('#deptTable').bootstrapTreeTable('getSelections');
+        if (selected.length == 0) {
+            alert("请选择一条记录");
+            return null;
+        } else {
+            return selected[0].id;
+        }
+    }
+
+
+    $(function () {
+        $.get(baseURL + "/dept/info", function(r){
+            var colunms = Dept.initColumn();
+            var table = new TreeTable(Dept.id, baseURL + "/dept/list", colunms);
+            table.setRootCodeValue(r.deptId);
+            table.setExpandColumn(2);
+            table.setIdField("deptId");
+            table.setCodeField("deptId");
+            table.setParentCodeField("parentId");
+            table.setExpandAll(false);
+            table.init();
+            Dept.table = table;
+        });
+    });
+
+</script>
+</html>

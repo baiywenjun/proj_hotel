@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.zxt.hotel.mapper.SysMenuMapper">
+	<resultMap id="baseMap" type="com.zxt.hotel.entity.SysMenu">
+		<id column="menu_id" property="menuId"/>
+		<result column="parent_id" property="parentId"/>
+		<result column="name" property="name"/>
+		<result column="url" property="url"/>
+		<result column="perms" property="perms"/>
+		<result column="type" property="type"/>
+		<result column="icon" property="icon"/>
+		<result column="order_num" property="orderNum"/>
+	</resultMap>
+
+
+	<select id="queryListParentId" resultMap="baseMap">
+		select * from sys_menu where parent_id = #{parentId} order by order_num asc 
+	</select>
+	
+	<select id="queryNotButtonList" resultMap="baseMap">
+		select * from sys_menu where type != 2 order by order_num asc 
+	</select>
+	
+</mapper>

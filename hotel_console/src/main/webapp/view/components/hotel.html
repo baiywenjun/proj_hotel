@@ -84,7 +84,7 @@
         <div class="layui-input-inline extra">
             <button class="layui-btn layui-btn-danger layui-btn-sm" onclick="delChecked()"><i class="layui-icon"></i>删除选中</button>
             <button class="layui-btn layui-btn-normal layui-btn-sm" onclick="showModal('添加酒店','$baseUrl/hotel/info/add-page','1000','600')"><i class="layui-icon"></i>添加酒店</button>
-            <button class="layui-btn layui-btn-normal layui-btn-sm" onclick="addHotel();"><i class="layui-icon"></i>添加酒店2</button>
+            <!--<button class="layui-btn layui-btn-normal layui-btn-sm" onclick="addHotel();"><i class="layui-icon"></i>添加酒店2</button>-->
         </div>
     </div>
     <script type="text/javascript" src="$baseUrl/static/js/jquery-1.12.4.min.js"></script>
@@ -131,6 +131,8 @@
                     console.log(obj);
                     // 弹出修改框
                     showModal('修改酒店','$baseUrl/hotel/info/update-page','880','530',obj.data.hotelId);
+                }else if(obj.event === 'view'){
+                    showModal('查看酒店','$baseUrl/hotel/info/view-page','880','530',obj.data.hotelId);
                 }
             });
         });
@@ -156,7 +158,7 @@
 
     </script>
     <script type="text/html" id="toolbar">
-      <a class="layui-table-link" lay-event="view" onclick="showModal('查看账号详情','customerdetail.html','880','380','{{d.id}}')">查看</a>
+      <a class="layui-table-link" lay-event="view" >查看</a>
       <span class="vert-line"></span>
       <a class="layui-table-link" lay-event="update">修改</a>
       <span class="vert-line"></span>

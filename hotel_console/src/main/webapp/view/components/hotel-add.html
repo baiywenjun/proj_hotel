@@ -122,7 +122,7 @@
         <div class="layui-form-item">
             <label class="layui-form-label">酒店坐标</label>
             <div class="layui-input-block">
-                #if($operate == "update")
+                #if($operate == "update" || $operate == 'view')
                 #set($location = $!hotelInfo.lng + "," + $!hotelInfo.lat)
                 #end
                 <input type="text" id="location" name="location" value="$!location" autocomplete="off" class="layui-input">
@@ -164,7 +164,7 @@
         </div>
         <!-- 图片上传区 END -->
 
-        <div class="layui-form-item">
+        <div id="button" class="layui-form-item">
             <div class="layui-input-block">
                 <button class="layui-btn" onclick="submit();">立即提交</button>
                 <button type="reset" class="layui-btn layui-btn-primary">重置</button>
@@ -224,9 +224,9 @@
             handle.text( ui.value );
         }
     });
-    if(operate === 'update'){
+    if(operate === 'update' || operate === 'view'){
         // checkbox 回显,直接使用模版引擎
-        console.log("ok")
+        //console.log("ok")
         #foreach($item in $hotelInfo.hotelDictList)
         var dictId = $item.dictId
         $(":checkbox[value='"+dictId+"']").prop("checked", true)
@@ -239,6 +239,7 @@
         $("#uploadWelcomeImg").attr("src",hotelWelcomePath)
         #foreach($item in $hotelInfo.hotelContentList)
         var contentImg = '$baseServer' + '$item.content'
+        //console.log("debugger",contentImg);
         $('#uploadContentImg').append('<img src="'+ contentImg +'" alt="" class="layui-upload-img">')
         #end
 
@@ -252,6 +253,10 @@
         var shi = '$hotelInfo.city'
         var qu = '$hotelInfo.county'
         echoAdd(sheng,shi,qu);
+    }
+
+    if(operate === 'view'){
+        $("#button").hide();
     }
 
     // 用于数据提交的变量
@@ -386,7 +391,7 @@
                         parent.layer.close(index); //再执行关闭
                     });
                 }else{
-                    layer.alert(data.msg,{icon:0});
+                    layer.alert(res.msg,{icon:0});
                 }
 
             }

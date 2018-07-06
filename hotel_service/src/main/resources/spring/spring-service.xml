@@ -19,14 +19,21 @@
 
 		<!-- MVC中已经扫描 -->
 		<!-- 对service进行组件扫描 -->
-		<context:component-scan base-package="com.zxt.hotel.service,com.zxt.common.upload"></context:component-scan>
+		<context:component-scan base-package="com.zxt.hotel.service,com.zxt.common.upload,com.zxt.common.aspect"></context:component-scan>
 
 		<!-- redis工具类 -->
 		<bean id="redisUtil" class="com.zxt.common.config.RedisUtils"></bean>
 
 
+	<!--<bean id="customAspect" class="com.zxt.common.aspect.CustomAspect"></bean>-->
 
-
+	<!--<aop:config>
+		<aop:pointcut id="testPt" expression="execution(* com.zxt.hotel.service.impl.HotelInfoServiceImpl.*(..))"></aop:pointcut>
+		<aop:aspect ref="customAspect">
+			<aop:around method="aroundMethod" pointcut-ref="testPt"></aop:around>
+		</aop:aspect>
+	</aop:config>-->
+	<aop:aspectj-autoproxy/>
 
 
 </beans>

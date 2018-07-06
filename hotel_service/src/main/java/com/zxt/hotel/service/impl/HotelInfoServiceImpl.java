@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
+import com.zxt.common.annotation.DataFilter;
+import com.zxt.common.constant.Constant;
 import com.zxt.common.result.Rt;
 import com.zxt.hotel.entity.HotelContent;
 import com.zxt.hotel.entity.HotelDict;
@@ -14,6 +16,8 @@ import com.zxt.hotel.mapper.HotelInfoMapper;
 import com.zxt.hotel.pojo.*;
 import com.zxt.hotel.service.HotelInfoService;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,6 +33,8 @@ import java.util.*;
  */
 @Service
 public class HotelInfoServiceImpl extends ServiceImpl<HotelInfoMapper, HotelInfo> implements HotelInfoService {
+
+    Logger log = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     private HotelDictMapper hotelDictMapper;
@@ -81,6 +87,21 @@ public class HotelInfoServiceImpl extends ServiceImpl<HotelInfoMapper, HotelInfo
         if(StringUtils.isNotEmpty(query.getName())){
             wrapper.like("name",query.getName());
         }
+        int count = this.selectCount(wrapper);
+        List<HotelInfoFullVO> hotelInfoFullVOList = hotelInfoMapper.queryHotelInfoFullByPage(wrapper,page-1,limit);
+        return Rt.ok(count,hotelInfoFullVOList);
+    }
+
+    @Override
+    @DataFilter(deptId="hotel_id")
+    public Rt queryHotelInfoFullByAuthAndPage(Map<String,Object> auth,HotelInfoQuery query, Integer page, Integer limit){
+        Wrapper<HotelInfo> wrapper = new EntityWrapper<>();
+        String sqlFilter = (String)auth.get(Constant.SQL_FILTER);
+        log.info(sqlFilter);
+        if(StringUtils.isNotEmpty(query.getName())){
+            wrapper.like("name",query.getName());
+        }
+        wrapper.addFilterIfNeed(auth.get(Constant.SQL_FILTER) != null, (String)auth.get(Constant.SQL_FILTER));
         int count = this.selectCount(wrapper);
         List<HotelInfoFullVO> hotelInfoFullVOList = hotelInfoMapper.queryHotelInfoFullByPage(wrapper,page-1,limit);
         return Rt.ok(count,hotelInfoFullVOList);

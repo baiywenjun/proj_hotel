@@ -33,6 +33,8 @@ public class SysAdmin implements Serializable {
 	private String phone;
 	private String type;
 	private String status;
+	@TableField("dept_id")
+	private Long deptId;
 	@TableField("create_time")
 	private Date createTime;
 	private String remark;
@@ -132,6 +134,14 @@ public class SysAdmin implements Serializable {
 
 	public void setType(String type) {
 		this.type = type;
+	}
+
+	public Long getDeptId() {
+		return deptId;
+	}
+
+	public void setDeptId(Long deptId) {
+		this.deptId = deptId;
 	}
 
 	@Override

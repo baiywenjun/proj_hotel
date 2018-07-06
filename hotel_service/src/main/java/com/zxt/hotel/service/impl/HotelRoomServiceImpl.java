@@ -16,6 +16,7 @@ import com.zxt.hotel.pojo.HotelRoomQuery;
 import com.zxt.hotel.pojo.HotelRoomTypeFullVO;
 import com.zxt.hotel.service.HotelRoomService;
 import com.zxt.hotel.service.RoomImport;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -78,7 +79,13 @@ public class HotelRoomServiceImpl extends ServiceImpl<HotelRoomMapper, HotelRoom
         if(query.getIsRoomTypeId() != null){
             wrapper.eq("is_room_type_id",query.getIsRoomTypeId());
         }
-        if(query.getStayStatus() != null){
+        if(StringUtils.isNotEmpty(query.getRoomNo())){
+            wrapper.like("room_no",query.getRoomNo());
+        }
+        if(StringUtils.isNotEmpty(query.getDevNo())){
+            wrapper.like("dev_no",query.getDevNo());
+        }
+        if(StringUtils.isNotEmpty(query.getStayStatus())){
             wrapper.eq("stay_status",query.getStayStatus());
         }
         int count = this.selectCount(wrapper);
@@ -97,7 +104,13 @@ public class HotelRoomServiceImpl extends ServiceImpl<HotelRoomMapper, HotelRoom
         if(query.getIsRoomTypeId() != null){
             wrapper.eq("is_room_type_id",query.getIsRoomTypeId());
         }
-        if(query.getStayStatus() != null){
+        if(StringUtils.isNotEmpty(query.getRoomNo())){
+            wrapper.like("room_no",query.getRoomNo());
+        }
+        if(StringUtils.isNotEmpty(query.getDevNo())){
+            wrapper.like("dev_no",query.getDevNo());
+        }
+        if(StringUtils.isNotEmpty(query.getStayStatus())){
             wrapper.eq("stay_status",query.getStayStatus());
         }
         int count = this.selectCount(wrapper);

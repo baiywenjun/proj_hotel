@@ -1,13 +1,14 @@
 package com.zxt.hotel.service;
 
+import com.baomidou.mybatisplus.service.IService;
+import com.zxt.common.result.R;
 import com.zxt.common.result.Rt;
 import com.zxt.hotel.entity.HotelRoomType;
-import com.baomidou.mybatisplus.service.IService;
 import com.zxt.hotel.pojo.HotelRoomTypeFullVO;
-import com.zxt.hotel.pojo.HotelRoomTypeNHotelVO;
 import com.zxt.hotel.pojo.HotelRoomTypeQuery;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -42,4 +43,5 @@ public interface HotelRoomTypeService extends IService<HotelRoomType> {
 
     Rt queryHotelRoomTypeNHotelByPage(HotelRoomTypeQuery query, Integer page, Integer limit);
 
+    R addHotelRoomType(Map map);
 }

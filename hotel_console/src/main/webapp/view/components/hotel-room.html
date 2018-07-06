@@ -45,25 +45,29 @@
                 <div class="layui-row">
                     <div class="layui-col-xs3">
                         <div class="layui-form-item">
-                            <label class="layui-form-label">账号</label>
+                            <label class="layui-form-label">房间编号</label>
                             <div class="layui-input-inline">
-                                <input type="text" name="account" autocomplete="off" class="layui-input">
+                                <input type="text" name="roomNo" autocomplete="off" class="layui-input">
                             </div>
                         </div>
                     </div>
                     <div class="layui-col-xs3">
                         <div class="layui-form-item">
-                            <label class="layui-form-label">姓名</label>
+                            <label class="layui-form-label">ETV设备编号</label>
                             <div class="layui-input-inline">
-                                <input type="text" name="name" autocomplete="off" class="layui-input">
+                                <input type="text" name="devNo" autocomplete="off" class="layui-input">
                             </div>
                         </div>
                     </div>
                     <div class="layui-col-xs3">
                         <div class="layui-form-item">
-                            <label class="layui-form-label">手机</label>
+                            <label class="layui-form-label">入住状态</label>
                             <div class="layui-input-inline">
-                                <input type="tel" name="phone" autocomplete="off" class="layui-input">
+                                <select name="stayStatus">
+                                    <option value="" >所有</option>
+                                    <option value="stay">已入住</option>
+                                    <option value="quit">未入住</option>
+                                </select>
                             </div>
                         </div>
                     </div>
@@ -108,17 +112,24 @@
                     [ //表头
                           { type:'checkbox'}
                         , { field: 'hotelName', title: '酒店名称', align: 'center' }
-                        , { field: 'roomNo', title: '酒店编号', align: 'center' }
+                        , { field: 'roomNo', title: '房间编号', align: 'center' }
                         , { field: 'storey', title: '楼层', align: 'center' }
                         , { field: 'typeName', title: '房型', align: 'center', templet:"#typeName"}
                         , { field: 'typePrice', title: '价格', align: 'center', templet:"#fmtMoney"}
-                        , { field: 'createTime', title: '添加时间', align: 'center', templet:"#fmtTime"}
                         , { field: 'devNo', title: 'etv设备编号', align: 'center'}
-                        , { field: 'stayStatus', title: '状态', align: 'center'}
-                        , { title: '操作', align: 'center', toolbar: '#toolbar', width: 180 }
+                        , { field: 'stayStatus', title: '状态', align: 'center', templet:"#fmtStatus"}
+                        , { field: 'createTime', title: '添加时间', align: 'center', templet:"#fmtTime"}
+                        , { title: '操作', align: 'center', toolbar: '#toolbar' }
                     ]
                 ],
-                id: 'table'
+                id: 'table',
+                done: function(res, curr, count) {
+                    //如果是异步请求数据方式，res即为你接口返回的信息。
+                    //如果是直接赋值的方式，res即为：{data: [], count: 99} data为当前页数据、count为数据总长度
+                    //console.log(res);
+                    var hotelRoomJsonStr = JSON.stringify(res.data);
+                    sessionStorage.setItem('hotelRoomJson',hotelRoomJsonStr);
+                }
             });
 
             // 操作
@@ -128,11 +139,8 @@
                         obj.del();
                         layer.close(index);
                     });
-                }else if(obj.event === 'forbid'){
-                    layer.confirm('冻结后该账号将不能访问系统！', function(index){
-                        obj.data.status="冻结";
-                        layer.close(index);
-                    });
+                }else if(obj.event === 'update'){
+                    showModal('修改房间信息','$baseUrl/hotel/room/update-page','800','500',obj.data.roomId);
                 }
             });
         });
@@ -141,7 +149,9 @@
         function search(){
             table.reload('table',{
                 where: {
-                    phone: $("input[name='phone']").val()
+                    roomNo: $("input[name='roomNo']").val(),
+                    devNo: $("input[name='devNo']").val(),
+                    stayStatus: $("select[name='stayStatus']").val()
                 }
                 ,page: {
                     curr: 1
@@ -152,8 +162,6 @@
 
     </script>
     <script type="text/html" id="toolbar">
-      <a class="layui-table-link" lay-event="view" onclick="showModal('查看账号详情','customerdetail.html','880','380','{{d.id}}')">查看</a>
-      <span class="vert-line"></span>
       <a class="layui-table-link" lay-event="update">修改</a>
       <span class="vert-line"></span>
       <a class="layui-table-link" lay-event="delete">删除</a>
@@ -166,6 +174,11 @@
     </script>
     <script type="text/html" id="fmtTime">
         {{= new Date(d.createTime).format('yyyy-MM-dd hh:mm:ss')    }}
+    </script>
+    <script type="text/html" id="fmtStatus">
+        {{# if(d.stayStatus == 'stay'){ }}
+        入住中
+        {{#  } }}
     </script>
 </body>
 

@@ -29,7 +29,7 @@
 
     <select id="queryHotelRoomExtByPage" resultMap="hotelRoomExtMap">
         SELECT
-            hry.*, hr.*
+            hr.*,hry.*
         FROM
             hotel_room hr,
             hotel_room_type hry

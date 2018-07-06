@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+#parse("common/base.html")
+<head>
+    <meta charset="UTF-8">
+    <title>客户信息 - e.TV酒店服务平台</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
+    <link rel="shortcut icon" href="../favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="$baseUrl/static/css/font.css">
+    <link rel="stylesheet" href="$baseUrl/static/css/reset.css">
+    <link rel="stylesheet" href="$baseUrl/static/css/myset.css">
+    <link rel="stylesheet" href="$baseUrl/static/css/normalize.css">
+    <link rel="stylesheet" href="$baseUrl/static/css/xadmin.css">
+    <!--[if lt IE 9]>
+      <script src="$baseUrl/static/js/html5.min.js"></script>
+      <script src="$baseUrl/static/js/respond.min.js"></script>
+    <![endif]-->
+    <style type="text/css">
+    .search-settings .layui-input-inline {
+        width: 200px;
+    }
+
+    .search-settings .company {
+        width: 210px;
+    }
+    </style>
+</head>
+
+<body>
+    <div class="x-nav">
+        <span>当前位置：</span>
+        <span class="layui-breadcrumb">
+      <a href="">后台首页</a>
+      <a href="javascript:location.replace(location.href);">客户管理</a>
+      <a>
+        <cite>客户信息</cite>
+      </a>
+    </span>
+    </div>
+    <div class="search-settings">
+        <blockquote class="layui-elem-quote">
+            <div class="layui-form" action="">
+                <div class="layui-row">
+                    <div class="layui-col-xs3">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">酒店名称</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="hotelName" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-col-xs3 ">
+                        <div class="layui-form-item">
+                            <div class="layui-input-inline">
+                                <button class="layui-btn layui-btn-primary layui-btn-sm" onclick="searchReset();">清除</button>
+                                <button class="layui-btn layui-btn-sm my-gr-btn" onclick="search();">立即查询</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </blockquote>
+    </div>
+    <div class="table-container">
+        <table id="hotelList" lay-filter="table"></table>
+        <div class="layui-input-inline extra">
+            <button class="layui-btn layui-btn-danger layui-btn-sm" onclick="delChecked()"><i class="layui-icon"></i>删除选中</button>
+            <button class="layui-btn layui-btn-normal layui-btn-sm" onclick="showModal('添加管理员','$baseUrl/admin/add-page','800','500')"><i class="layui-icon"></i>添加管理员</button>
+        </div>
+    </div>
+    <script type="text/javascript" src="$baseUrl/static/js/jquery-1.12.4.min.js"></script>
+    <script type="text/javascript" src="$baseUrl/static/lib/layui/layui.js" charset="utf-8"></script>
+    <script type="text/javascript" src="$baseUrl/static/js/xadmin.js"></script>
+    <script type="text/javascript" src="$baseUrl/static/js/function.js"></script>
+    <script>
+        var table;
+        layui.use('table', function() {
+            table = layui.table;
+            table.render({
+                elem: '#hotelList',
+                url: '$baseUrl/admin/list', //数据接口
+                response: {
+                    statusCode: 200 //成功的状态码，默认：0
+                },
+                page: true, //开启分页
+                limits: [10, 30, 60],
+                limit: 10,
+                cols: [
+                    [ //表头
+                          { type:'checkbox'}
+                        , { field: 'adminName', title: '帐号名称', align: 'center' }
+                        , { field: 'name', title: '姓名', align: 'center'}
+                        , { field: 'sex', title: '性别', align: 'center',width:220, templet:"#fmtSex" }
+                        , { field: 'birthday', title: '生日', align: 'center',width:220}
+                        , { field: 'phone', title: '联系电话', align: 'center'}
+                        , { field: 'deptName', title: '部门', align: 'center'}
+                        , { field: 'status', title: '状态', align: 'center'}
+                        , { field: 'createTime', title: '创建时间', align: 'center',width:150, templet:"#fmtTime"}
+                        , { title: '操作', align: 'center', toolbar: '#toolbar', width: 120 }
+                    ]
+                ],
+                id: 'table',
+                done: function(res, curr, count) {
+                    //如果是异步请求数据方式，res即为你接口返回的信息。
+                    //如果是直接赋值的方式，res即为：{data: [], count: 99} data为当前页数据、count为数据总长度
+                    //console.log(res);
+                    var adminJsonStr = JSON.stringify(res.data);
+                    sessionStorage.setItem('adminJson',adminJsonStr);
+                }
+            });
+
+            // 操作
+            table.on('tool(table)', function(obj){
+                if(obj.event === 'delete'){
+                    layer.confirm('真的要删除吗？', function(index){
+                        obj.del();
+                        layer.close(index);
+                    });
+                }else if(obj.event === 'update'){
+                    console.log(obj);
+                    // 弹出修改框
+                    showModal('修改管理员','$baseUrl/admin/update-page','880','530',obj.data.adminId);
+                }else if(obj.event === 'view'){
+                    showModal('查看酒店','$baseUrl/hotel/info/view-page','880','530',obj.data.hotelId);
+                }
+            });
+        });
+
+        // 查询
+        function search(){
+            table.reload('table',{
+                where: {
+                    hotelName: $("input[name='hotelName']").val()
+                }
+                ,page: {
+                    curr: 1
+                }
+            });
+        }
+
+        // test 添加酒店
+        function addHotel(){
+            //addTab('添加酒店','$baseUrl/hotel/info/add-page',3);
+            alert("ok")
+            window.parent.zxtComm.tabAdd('添加酒店','$baseUrl/hotel/info/add-page',3);
+        }
+
+    </script>
+    <script type="text/html" id="toolbar">
+      <a class="layui-table-link" lay-event="view" >查看</a>
+      <span class="vert-line"></span>
+      <a class="layui-table-link" lay-event="update">修改</a>
+      <span class="vert-line"></span>
+      <a class="layui-table-link" lay-event="delete">删除</a>
+    </script>
+    <script type="text/html" id="fmtTime">
+        {{= new Date(d.createTime).format('yyyy-MM-dd hh:mm:ss')    }}
+    </script>
+    <script type="text/html" id="fmtSex">
+        {{#  if (d.sex=='0'){   }}
+            女
+        {{#  } else if (d.sex == '1'){    }}
+            男
+        {{#  } }}
+    </script>
+</body>
+
+</html>

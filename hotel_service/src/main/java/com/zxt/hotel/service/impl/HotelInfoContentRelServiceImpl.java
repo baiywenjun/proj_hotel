@@ -55,6 +55,6 @@ public class HotelInfoContentRelServiceImpl extends ServiceImpl<HotelInfoContent
             flag_b = hotelContentService.deleteBatchIds(contentIdList);
         }
         boolean flag_a = this.delete(wrapper);
-        return (flag_a && flag_b);
+        return (flag_b);
     }
 }

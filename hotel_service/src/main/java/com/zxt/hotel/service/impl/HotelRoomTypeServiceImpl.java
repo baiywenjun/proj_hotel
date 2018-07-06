@@ -3,25 +3,22 @@ package com.zxt.hotel.service.impl;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.plugins.Page;
+import com.baomidou.mybatisplus.service.impl.ServiceImpl;
+import com.zxt.common.result.R;
 import com.zxt.common.result.Rt;
-import com.zxt.hotel.entity.HotelDict;
-import com.zxt.hotel.entity.HotelInfo;
 import com.zxt.hotel.entity.HotelRoomType;
 import com.zxt.hotel.entity.HotelTypeDictRel;
-import com.zxt.hotel.mapper.HotelDictMapper;
 import com.zxt.hotel.mapper.HotelRoomTypeMapper;
 import com.zxt.hotel.mapper.HotelTypeDictRelMapper;
 import com.zxt.hotel.pojo.HotelRoomTypeFullVO;
 import com.zxt.hotel.pojo.HotelRoomTypeNHotelVO;
 import com.zxt.hotel.pojo.HotelRoomTypeQuery;
 import com.zxt.hotel.service.HotelRoomTypeService;
-import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
  * <p>
@@ -118,5 +115,46 @@ public class HotelRoomTypeServiceImpl extends ServiceImpl<HotelRoomTypeMapper, H
         int count = this.selectCount(wrapper);
         List<HotelRoomTypeNHotelVO> hotelRoomTypeFullVOList = hotelRoomTypeMapper.queryHotelRoomTypeNHotelByPage(new Page(page, limit), query);
         return Rt.ok(count,hotelRoomTypeFullVOList);
+    }
+
+    @Override
+    public R addHotelRoomType(Map map) {
+        HotelRoomType hotelRoomType = new HotelRoomType();
+        try {
+            hotelRoomType.setIsHotelId(Long.parseLong(map.get("hotelName") + ""));
+            hotelRoomType.setTypeCode(map.get("typeCode") + "");
+            hotelRoomType.setTypeName(map.get("typeName") + "");
+            hotelRoomType.setTypeImg(map.get("typeImg") + "");
+            hotelRoomType.setTypePrice(Integer.parseInt(map.get("typePrice") + ""));
+            hotelRoomType.setTypeContent(map.get("typeContent") + "");
+            hotelRoomType.setTypeStatus(map.get("typeStatus") + "");
+            hotelRoomType.setCreateTime(new Date());
+        } catch (Exception e) {
+            return R.error(0, e.getMessage());
+        }
+
+        //===================== 处理 typeSpec start
+        StringBuilder typeSpecBuilder = new StringBuilder();
+        Iterator<String> it = map.keySet().iterator();
+        while (it.hasNext()) {
+            String next = it.next();
+            Object value=map.get(next);
+            if (next.contains("typeSpec[") && value.toString().contains("on")) {
+                next=next.trim().replace("typeSpec[","").replace("]","");
+                typeSpecBuilder.append(next+ ",");
+            }
+        }
+        String[] specs=typeSpecBuilder.toString().split(",");
+        Integer[] specsInt=new Integer[specs.length];
+        for(int i=0;i<specs.length;i++){
+            specsInt[i]=Integer.parseInt(specs[i]);
+        }
+        Arrays.sort(specsInt);
+        String join = StringUtils.join(specsInt, ",");
+        hotelRoomType.setTypeSpec(join);
+        //===================== 处理 typeSpec end
+
+        Boolean flag= this.insert(hotelRoomType);
+        return (flag) ? R.ok() : R.error();
     }
 }

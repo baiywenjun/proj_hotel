@@ -16,6 +16,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -65,6 +66,13 @@ public class HotelRoomController {
         return "components/room-add";
     }
 
+    @RequestMapping("/update-page")
+    public String hotelRoomUpdatePage(Model model,String id){
+        model.addAttribute("roomId",id);
+        model.addAttribute("operate","update");
+        return "components/room-add";
+    }
+
     @RequestMapping("/import-page")
     public String hotelRoomImportPage(){
         return "components/room-import";
@@ -81,11 +89,13 @@ public class HotelRoomController {
      */
     @RequestMapping("/list")
     @ResponseBody
-    public Rt queryHotelRoomList(Long hotelId, Long roomTypeId, String stayStatus, Integer page, Integer limit){
+    public Rt queryHotelRoomList(Long hotelId, Long roomTypeId,String roomNo, String devNo, String stayStatus, Integer page, Integer limit){
         PageUtil.PageDomain handle = PageUtil.handle(page, limit);
         HotelRoomQuery query = new HotelRoomQuery();
         query.setIsHotelId(hotelId);
         query.setIsRoomTypeId(roomTypeId);
+        query.setRoomNo(roomNo);
+        query.setDevNo(devNo);
         query.setStayStatus(stayStatus);
         return hotelRoomService.queryHotelRoomByPage(query, handle.getPage(), handle.getLimit());
     }
@@ -101,11 +111,13 @@ public class HotelRoomController {
      */
     @RequestMapping("/lists")
     @ResponseBody
-    public Rt queryHotelRoomFullList(Long hotelId, Long roomTypeId, String stayStatus, Integer page, Integer limit) {
+    public Rt queryHotelRoomFullList(Long hotelId, Long roomTypeId,String roomNo, String devNo, String stayStatus, Integer page, Integer limit) {
         PageUtil.PageDomain handle = PageUtil.handle(page, limit);
         HotelRoomQuery query = new HotelRoomQuery();
         query.setIsHotelId(hotelId);
         query.setIsRoomTypeId(roomTypeId);
+        query.setRoomNo(roomNo);
+        query.setDevNo(devNo);
         query.setStayStatus(stayStatus);
         return hotelRoomService.queryHotelRoomExtByPage(query,handle.getPage(),handle.getLimit());
     }
@@ -141,6 +153,21 @@ public class HotelRoomController {
         }
         Long hotelRoomId = hotelRoomService.addRecord(hotelRoom);
         return (hotelRoomId!=null)?R.ok("success",hotelRoomId):R.error();
+    }
+
+    /**
+     * 修改房间记录
+     * @param hotelRoom
+     * @return
+     */
+    @PostMapping("/update")
+    @ResponseBody
+    public R updateRoom(@RequestBody HotelRoom hotelRoom){
+        if(hotelRoom.getRoomId() == null){
+            return R.error(403,"主键不能为空");
+        }
+        boolean flag = hotelRoomService.updateById(hotelRoom);
+        return (flag)?R.ok():R.error();
     }
 
     /**

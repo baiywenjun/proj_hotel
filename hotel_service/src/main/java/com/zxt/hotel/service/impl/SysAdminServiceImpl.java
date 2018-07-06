@@ -8,7 +8,9 @@ import com.zxt.common.result.Rt;
 import com.zxt.hotel.entity.HotelInfo;
 import com.zxt.hotel.entity.SysAdmin;
 import com.zxt.hotel.mapper.SysAdminMapper;
+import com.zxt.hotel.pojo.SysAdminExtVO;
 import com.zxt.hotel.service.SysAdminService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -26,6 +28,9 @@ import java.util.List;
 @Service
 public class SysAdminServiceImpl extends ServiceImpl<SysAdminMapper, SysAdmin> implements SysAdminService {
 
+    @Autowired
+    private SysAdminMapper sysAdminMapper;
+
     @Override
     public SysAdmin queryByLogin(String adminName){
         Wrapper<SysAdmin> wrapper = new EntityWrapper<>();
@@ -39,9 +44,10 @@ public class SysAdminServiceImpl extends ServiceImpl<SysAdminMapper, SysAdmin> i
         // todo 欠缺封装QueryDomain
         Wrapper<SysAdmin> wrapper = new EntityWrapper<>();
         int count = this.selectCount(wrapper);
-        Page<SysAdmin> hotelInfoPage = this.selectPage(new Page<>(page, limit), wrapper);
-        List<SysAdmin> records = hotelInfoPage.getRecords();
-        return Rt.ok(count,records);
+        //Page<SysAdmin> hotelInfoPage = this.selectPage(new Page<>(page, limit), wrapper);
+        //List<SysAdmin> records = hotelInfoPage.getRecords();
+        List<SysAdminExtVO> sysAdminExtVOList = sysAdminMapper.querySysAdminExtList(new Page(page, limit), wrapper);
+        return Rt.ok(count,sysAdminExtVOList);
     }
 
     @Override
@@ -50,6 +56,19 @@ public class SysAdminServiceImpl extends ServiceImpl<SysAdminMapper, SysAdmin> i
         sysAdmin.setCreateTime(new Date());
         boolean insert = this.insert(sysAdmin);
         return insert;
+    }
+
+    @Override
+    public List<Long> queryAllMenuId(Long adminId){
+        return baseMapper.queryAllMenuId(adminId);
+    }
+
+    @Override
+    public Long addRecord(SysAdmin sysAdmin){
+        sysAdmin.setPassword("123");
+        sysAdmin.setCreateTime(new Date());
+        this.insert(sysAdmin);
+        return sysAdmin.getAdminId();
     }
 
 }

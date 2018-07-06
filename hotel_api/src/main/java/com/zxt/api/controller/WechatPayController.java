@@ -128,10 +128,11 @@ public class WechatPayController {
                 if(out_trade_no.charAt(0)=='H'){
                     //系统更新订单，将微信的流水号更新到订单字段总,然后将订单状态改成支付成功状态
                     hotelOrderService.updateOrderByPaid("wechat",out_trade_no, transaction_id);
-                }else if(out_trade_no.charAt(0)=='F'){//2018-06-08
+                }else if(out_trade_no.startsWith("F")){//2018-06-08
                     //系统更新订单，将微信的流水号更新到订单字段总,然后将订单状态改成支付成功状态
                     foodOrderService.updateOrderByPaid("food",out_trade_no, transaction_id);
                     foodOrderService.notifyCallback(map);
+                    return;
                 }
             }
 

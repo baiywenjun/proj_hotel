@@ -1,12 +1,14 @@
 package com.zxt.hotel.service;
 
 import com.baomidou.mybatisplus.service.IService;
+import com.zxt.common.annotation.DataFilter;
 import com.zxt.common.result.Rt;
 import com.zxt.hotel.entity.HotelInfo;
 import com.zxt.hotel.pojo.HotelInfoFullVO;
 import com.zxt.hotel.pojo.HotelInfoQuery;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -33,6 +35,9 @@ public interface HotelInfoService extends IService<HotelInfo> {
      */
     Rt queryHotelInfoByPage(HotelInfoQuery query, Integer page, Integer limit);
 
+
+    @DataFilter(deptId="hotel_id")
+    Rt queryHotelInfoFullByAuthAndPage(Map<String, Object> auth, HotelInfoQuery query, Integer page, Integer limit);
 
     /**
      * 根据主键查找酒店详细信息

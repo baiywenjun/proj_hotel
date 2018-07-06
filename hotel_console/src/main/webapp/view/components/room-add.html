@@ -85,10 +85,9 @@
 <script type="text/javascript" src="$baseUrl/static/js/xadmin.js"></script>
 <script type="text/javascript" src="$baseUrl/static/js/function.js"></script>
 <script>
-    //$("#isHotelId").append("<option value='2'>四季酒店</option>");
     // 获取酒店列表
     $.ajax({
-        //async:false,
+        async:false,
         url:'$baseUrl/profile/hotel',
         type:'get',
         dataType:'json',
@@ -105,15 +104,38 @@
         }
     });
 
-    // 获取房型列表选择
+    // 点击获取房型列表选择
     function getRoomType(){
-        $("#isRoomTypeId").empty();
         var hotelId = $("#isHotelId").val();
         getRoomTypeByHotelId(hotelId);
     }
 
+    var operate = '$!operate';
+    var roomId = '$!roomId';
+    if(operate === 'update'){
+        var hotelRoomJsonStr = sessionStorage.getItem("hotelRoomJson");
+        var hotelRoomJson = JSON.parse(hotelRoomJsonStr);
+        console.log(hotelRoomJson);
+        for (var i=0; i<hotelRoomJson.length; i++){
+            if(hotelRoomJson[i].roomId == roomId){
+                var room = hotelRoomJson[i];
+                $("#isHotelId").val(room.isHotelId);
+                $("#isHotelId").attr("disabled",true);
+                getRoomTypeByHotelId(room.isHotelId);
+                $("#isRoomTypeId").val(room.isRoomTypeId);
+                $("#roomNo").val(room.roomNo);
+                $("#storey").val(room.storey);
+                $("#devNo").val(room.devNo);
+                break;
+            }
+        }
+    }
+
+    // 渲染房型信息
     function getRoomTypeByHotelId(hotelId){
+        $("#isRoomTypeId").empty();
         $.ajax({
+            async:false,
             url:'$baseUrl/profile/roomtype',
             type:'get',
             data: {"hotelId": hotelId},
@@ -133,19 +155,33 @@
 
     // 提交
     function submit(){
-        var result = getFormField();
-        console.log(result);
-        if(result == false){
+        var room = getFormField();
+        console.log(room);
+        if(room == false){
             return;
         }
+        var url = '$baseUrl/hotel/room/add';
+        if(operate === 'update'){
+            url = '$baseUrl/hotel/room/update'
+            room.roomId = roomId;
+        }
+
         $.ajax({
-            url:'$baseUrl/hotel/room/add',
+            url: url,
             type:'post',
-            data:JSON.stringify(result),
+            data:JSON.stringify(room),
             contentType: 'application/json',
             dataType:'json',
             success: function(res){
-                console.log(res);
+                if(res.code == 200){
+                    layer.alert("操作成功",{icon:1},function(index){
+                        window.parent.location.reload();
+                        var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+                        parent.layer.close(index); //再执行关闭
+                    });
+                }else{
+                    layer.alert(res.msg,{icon:0});
+                }
             }
         });
     }
@@ -192,5 +228,6 @@
             $("#storey").val(sub);
         }
     }
+
 </script>
 </html>

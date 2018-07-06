@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    #parse("common/base.html")
+    <meta charset="UTF-8">
+    <title>e.TV酒店服务平台</title>
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="target-densitydpi=device-dpi,width=1350,user-scalable=no" />
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="$baseUrl/static/css/font.css">
+    <link rel="stylesheet" href="$baseUrl/static/css/xadmin.css">
+    <link rel="stylesheet" href="$baseUrl/static/css/font-awesome.min.css">
+    <link rel="stylesheet" href="$baseUrl/static/css/reset.css">
+    <link rel="stylesheet" href="$baseUrl/static/css/normalize.css">
+    <link rel="stylesheet" href="$baseUrl/static/lib/layui/css/layui.css">
+    <link rel="stylesheet" href="$baseUrl/static/css/myset.css">
+    <link rel="stylesheet" href="$baseUrl/static/css/admin.css">
+    <!--[if lt IE 9]>
+      <script src="$baseUrl/static/js/html5.min.js"></script>
+      <script src="$baseUrl/static/js/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+    <!-- 顶部开始 -->
+    <div class="container">
+        <div class="logo">
+            <a href="./index.html">
+                <!-- e.TV酒店服务平台 -->
+                <img src="$baseUrl/static/images/logo.png">
+            </a>
+        </div>
+        <div class="left_open">
+            <i title="展开左侧栏" class="iconfont">&#xe699;</i>
+        </div>
+        <div class="thetitle">e.TV酒店服务平台</div>
+        <ul style="height: 60px;" class="layui-nav right pulldownmenu" lay-filter="">
+            <li class="layui-nav-item">
+                <a href="javascript:;">
+                    <img class="head" src="$baseUrl/static/images/head.jpg" />
+                    <span id="adminName"></span>
+                </a>
+                <dl class="layui-nav-child">
+                    <dd class="profile">
+                        <a _href="components/profile.html">个人信息</a>
+                    </dd>
+                    <dd>
+                        <a href="$baseUrl/auth/logout">退出</a>
+                    </dd>
+                </dl>
+            </li>
+        </ul>
+
+    </div>
+    <!-- 顶部结束 -->
+    <!-- 中部开始 -->
+    <!-- 左侧菜单开始 -->
+    <div class="left-nav">
+        <div id="side-nav">
+            <ul id="nav" v-cloak>
+                <!-- vue模版 -->
+                <li v-for="itemP in menuList">
+                    <a href="javascript:;">
+                        <span :class="itemP.icon"></span>
+                        <cite>{{itemP.name}}</cite>
+                        <i class="iconfont nav_right">&#xe697;</i>
+                    </a>
+                    <ul class="sub-menu" v-for="itemC in itemP.list">
+                        <li>
+                            <a :_href="itemC.url">
+                                <i class="iconfont">&#xe6a7;</i>
+                                <cite>{{itemC.name}}</cite>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+            </ul>
+        </div>
+    </div>
+    <!-- <div class="x-slide_left"></div> -->
+    <!-- 左侧菜单结束 -->
+    <!-- 右侧主体开始 -->
+    <div class="page-content" style="">
+        <div class="layui-tab tab" lay-filter="xbs_tab" lay-allowclose="false">
+            <ul class="layui-tab-title">
+                <li class="layui-this">信息一览</li>
+            </ul>
+            <div class="layui-tab-content">
+                <div class="layui-tab-item layui-show">
+                    <iframe src='$baseUrl/page-data' frameborder="0" scrolling="yes" class="x-iframe" name="main"></iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="page-content-bg"></div>
+    <!-- 右侧主体结束 -->
+    <!-- 中部结束 -->
+    <!-- 底部开始 -->
+    <div class="footer">
+        <div class="copyright">Copyright © 2017 - 2018
+            <a style="color: #fff;" href="#">e.TV酒店服务平台</a> All Rights Reserved</div>
+    </div>
+    <!-- 底部结束 -->
+    <script type="text/javascript" src="$baseUrl/static/js/jquery-1.12.4.min.js"></script>
+    <script src="$baseUrl/static//lib/layui/layui.js" charset="utf-8"></script>
+    <script type="text/javascript" src="$baseUrl/static/js/xadmin.js"></script>
+    <script type="text/javascript" src="$baseUrl/static/js/function.js"></script>
+    <script type="text/javascript" src="$baseUrl/static/lib/vue.min.js"></script>
+    <script type="text/javascript">
+
+        var navVm = new Vue({
+            el: "#nav",
+            data : {
+                menuList:[]
+            }
+        })
+
+        $.ajax({
+            async : false,
+            url : Global.baseUrl + '/menu/nav',
+            type: 'get',
+            dataType:'json',
+            success : function (res) {
+                console.log(res);
+                navVm.menuList = res.menuList;
+            }
+        })
+
+        var userInfoStr = sessionStorage.getItem("userInfo");
+        var userInfo = JSON.parse(userInfoStr);
+        $("#adminName").text(userInfo.adminName);
+    </script>
+</body>
+
+</html>
